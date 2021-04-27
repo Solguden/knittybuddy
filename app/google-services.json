@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "855330478626",
+    "project_id": "knittybuddy-d2f37",
+    "storage_bucket": "knittybuddy-d2f37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855330478626:android:3030b9765cacc8973a087b",
+        "android_client_info": {
+          "package_name": "dk.au.mad21spring.group20.knittybuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855330478626-t44qs0lojp47c4ab4dh9naahui2g4llu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoi5ldgEnKzBFWRJHDtk-5_uRs5FtmHfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855330478626-t44qs0lojp47c4ab4dh9naahui2g4llu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

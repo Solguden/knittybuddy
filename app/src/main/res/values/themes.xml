@@ -6,6 +6,7 @@
         <item name="colorPrimaryVariant">@color/backgroundHeader</item>
         <item name="colorPrimarySurface">@color/background</item>
         <item name="colorOnPrimary">@color/textColor</item>
+        <item name="backgroundColor">@color/background</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -18,10 +19,13 @@
     <style name="buttonStyle" parent="@android:style/Widget.Button.Small">
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/round_shape</item>
+        <item name="backgroundTint">@color/buttonHeader</item>
     </style>
 
     <style name="textFieldStyle" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">casual</item>
     </style>
 </resources>

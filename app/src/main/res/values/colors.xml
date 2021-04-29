@@ -12,4 +12,6 @@
     <color name="buttonHeader">#EF9A9A</color>
     <color name="background">#FFCDD2</color>
     <color name="backgroundHeader">#F3B8B8</color>
+    <color name="outlinerDark">#EF5350</color>
+    <color name="outlinerLight">#E57373</color>
 </resources>

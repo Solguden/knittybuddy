@@ -4,6 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".project.ProjectDetailsActivity">
+
+    <Button
+        android:id="@+id/btn_projectDetail_back"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/round_button"
+        app:backgroundTint="@color/buttonHeader"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/go_back" />
+
+    <TextView
+        android:id="@+id/txt_projectDetailHeader"
+        style="@style/textFieldStyle"
+        android:layout_width="188dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_squared_shape_2"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="project name"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/project_name" />
+
+    <TextView
+        android:id="@+id/txt_projectDetailText"
+        style="@style/textFieldStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_squared_shape"
+        android:fontFamily="casual"
+        android:gravity="top|left"
+        android:text="Notes bla bla bla"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_projectDetail_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_projectDetailHeader"
+        tools:text="Notes bla bla bla" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

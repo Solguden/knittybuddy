@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StrikkeMakker</string>
+    <string name="go_back">Tilbage</string>
+    <string name="add_project">Tilføj</string>
+    <string name="add_new">Tilføj ny</string>
+    <string name="my_projects">Mine projekter</string>
+    <string name="project_name">Projekt navn</string>
+    <string name="cancel">Annuller</string>
+    <string name="ok">OK</string>
+</resources>

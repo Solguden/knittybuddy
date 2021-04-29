@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">KnittyBuddy</string>
+    <string name="go_back">Go back</string>
+    <string name="add_project">Add project</string>
+    <string name="add_new">Add new</string>
+    <string name="my_projects">My projects</string>
+    <string name="project_name">Project name</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

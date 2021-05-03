@@ -1,15 +1,17 @@
-package dk.au.mad21spring.group20.knittybuddy.Feed;
+package dk.au.mad21spring.group20.knittybuddy.feed;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 
@@ -17,7 +19,8 @@ import dk.au.mad21spring.group20.knittybuddy.R;
 public class FeedActivity extends AppCompatActivity {
     FeedViewModel feedVM;
     Button addButton;
-    ArrayList<Feed> feedList = new ArrayList<>();
+    Button ownerButton;
+    List<Feed> feedList = new ArrayList<>();
     TextView txtFeed;
 
     @Override
@@ -26,9 +29,9 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         feedVM = new ViewModelProvider(this).get(FeedViewModel.class);
-        feedVM.getFeed().observe(this, new Observer<ArrayList<Feed>>() {
+        feedVM.getFeed().observe(this, new Observer<List<Feed>>() {
             @Override
-            public void onChanged(ArrayList<Feed> feed) {
+            public void onChanged(List<Feed> feed) {
                 feedList = feed;
                 updateUI();
             }
@@ -42,6 +45,14 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
 
+        ownerButton = findViewById(R.id.ownerIdBtn);
+        ownerButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                getBasedOnOwnerId();
+            }
+        });
+
         txtFeed = findViewById(R.id.txtFeed);
 
         updateUI();
@@ -49,6 +60,25 @@ public class FeedActivity extends AppCompatActivity {
 
     private void AddRandom(){
         feedVM.addRandomFeed();
+    }
+
+    private void getBasedOnOwnerId(){
+        List<Feed> list = new ArrayList<>();
+        list = feedVM.getByOwnerId(84);
+
+
+
+//        if(list.size()<1) {
+//            txtFeed.setText("No owner");
+//        } else {
+//            String display = "Feed count: "+list.size() ;
+//            for(Feed f : list){
+//                display += "\n" + f.getTopic()+ " " + f.getDescription() + " " + f.getDifficilty() +  " " + f.getOwnerId();
+//            }
+//            txtFeed.setText(display);
+//        }
+//        Log.w("TEEEST", list.indexOf(0) + " ");
+
     }
 
     private void updateUI(){

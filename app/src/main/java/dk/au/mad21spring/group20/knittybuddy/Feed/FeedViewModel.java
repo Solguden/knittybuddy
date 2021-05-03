@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.Feed;
+package dk.au.mad21spring.group20.knittybuddy.feed;
 
 import android.util.Log;
 
@@ -18,41 +18,21 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
 
 public class FeedViewModel extends ViewModel {
     private static final String TAG = "MainViewModel";
-    MutableLiveData<ArrayList<Feed>> feed;
-
-    public LiveData<ArrayList<Feed>> getFeed() {
-        if(feed==null){
-            loadData();
-        }
-        return feed;
+    LiveData<List<Feed>> feed;
+    Repository repository;
+    public FeedViewModel(){
+        repository = Repository.getRepositoryInstance();
+        feed = repository.getFeed();
     }
 
-    private void loadData() {
-        feed = new MutableLiveData<ArrayList<Feed>>();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("feed")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                        ArrayList<Feed> updatedFeed = new ArrayList<>();
-                        if(snapshot!=null && !snapshot.isEmpty()){
-                            for(DocumentSnapshot doc : snapshot.getDocuments()){
-                                Feed f = doc.toObject(Feed.class);
-                                if(f!=null) {
-                                    updatedFeed.add(f);
-                                }
-                            }
-                            feed.setValue(updatedFeed);
-                        }
-                    }
-                });
-    }
+    public LiveData<List<Feed>> getFeed() { return feed; }
 
     public void generateFeedBasedOnFollowers(){
 
@@ -69,35 +49,21 @@ public class FeedViewModel extends ViewModel {
         String description = descriptions[random.nextInt(descriptions.length)];
         int ownerId = random.nextInt(80) + 20;
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("feed").
-                add(new Feed(topic,difficulty,description,ownerId))
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+        repository.addFeed(new Feed(topic,difficulty,description,ownerId));
     }
 
-    public void deleteAll(){
-        FirebaseFirestore.getInstance()
-                .collection("feed")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot snapshots) {
-                for(DocumentSnapshot doc : snapshots){
-                    doc.getReference().delete();
-                }
-            }
-        });
+    public List<Feed> getByOwnerId(int ownerId){ return repository.getByOwnerId(ownerId); }
 
+    public void deleteAll(){
+//        FirebaseFirestore.getInstance()
+//                .collection("feed")
+//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot snapshots) {
+//                for(DocumentSnapshot doc : snapshots){
+//                    doc.getReference().delete();
+//                }
+//            }
+//        });
     }
 }

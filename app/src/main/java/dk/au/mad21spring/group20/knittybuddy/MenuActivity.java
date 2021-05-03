@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import dk.au.mad21spring.group20.knittybuddy.Feed.FeedActivity;
+import dk.au.mad21spring.group20.knittybuddy.feed.FeedActivity;
 import dk.au.mad21spring.group20.knittybuddy.Inspiration.InspirationListActivity;
 import dk.au.mad21spring.group20.knittybuddy.Project.ProjectListActivity;
 

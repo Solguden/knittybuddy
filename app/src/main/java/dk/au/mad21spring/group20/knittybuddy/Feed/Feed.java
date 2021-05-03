@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.Feed;
+package dk.au.mad21spring.group20.knittybuddy.feed;
 
 public class Feed {
     private String Topic;

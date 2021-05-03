@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.project;
+package dk.au.mad21spring.group20.knittybuddy.Project.ViewModel;
 
 import android.util.Log;
 
@@ -19,10 +19,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import dk.au.mad21spring.group20.knittybuddy.Project.Project;
 
-public class ProjectViewModel extends ViewModel {
 
-    private static final String TAG = "ProjectViewModel";
+public class ProjectListViewModel extends ViewModel {
+
+    private static final String TAG = "ProjectListViewModel";
     MutableLiveData<ArrayList<Project>> projects;
 
     public LiveData<ArrayList<Project>> getProjects() {

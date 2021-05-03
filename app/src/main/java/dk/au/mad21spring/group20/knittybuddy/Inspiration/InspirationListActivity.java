@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.inspiration;
+package dk.au.mad21spring.group20.knittybuddy.Inspiration;
 
 import androidx.appcompat.app.AppCompatActivity;
 

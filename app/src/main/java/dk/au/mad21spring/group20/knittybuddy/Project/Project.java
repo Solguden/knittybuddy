@@ -1,6 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.project;
-
-import android.widget.ImageView;
+package dk.au.mad21spring.group20.knittybuddy.Project;
 
 public class Project {
     private int Id;

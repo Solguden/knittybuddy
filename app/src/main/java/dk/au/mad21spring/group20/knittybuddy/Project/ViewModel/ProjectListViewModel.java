@@ -20,35 +20,35 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.Project.Project;
 
 
 public class ProjectListViewModel extends AndroidViewModel {
 
+    //attributes
     private static final String TAG = "ProjectListViewModel";
     MutableLiveData<ArrayList<Project>> projects;
 
+    //constructor
     public ProjectListViewModel(@NonNull Application application) {
         super(application);
 
         projects = getAllProjects();
     }
 
+    //methods
     public MutableLiveData<ArrayList<Project>> getAllProjects() {
         if(projects==null){
-            loadData();
+            //loadData(); TO DO: build this method in the repository
         }
         return projects;
-    }
-
-    private void loadData() { //TO DO: build this method in the repository
     }
 
     public void addProject(Project project){ //TO DO: build this method in the repository
     }
 
-    public void getProject(int id){ //TO DO: build this method in the repository
+    public Project getProject(String id){ //TO DO: build this method in the repository
+        return new Project();
     }
 }

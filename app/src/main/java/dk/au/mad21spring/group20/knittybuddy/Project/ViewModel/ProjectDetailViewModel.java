@@ -1,6 +1,33 @@
 package dk.au.mad21spring.group20.knittybuddy.Project.ViewModel;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class ProjectDetailViewModel extends ViewModel {
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.au.mad21spring.group20.knittybuddy.Project.Project;
+
+public class ProjectDetailViewModel extends AndroidViewModel {
+
+    //attributes
+    private static final String TAG = "ProjectDetailViewModel";
+    LiveData<Project> thisProject;
+
+    //constructor
+    public ProjectDetailViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    //methods
+    public LiveData<Project> getProject(String id){
+        if (thisProject == null){
+            //thisProject = getProject(); TO DO: build this method in the repository
+        }
+        return thisProject;
+    }
 }

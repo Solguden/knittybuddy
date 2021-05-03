@@ -8,18 +8,20 @@ import android.view.View;
 import android.widget.Button;
 
 import dk.au.mad21spring.group20.knittybuddy.feed.FeedActivity;
-import dk.au.mad21spring.group20.knittybuddy.project.ProjectEditActivity;
+import dk.au.mad21spring.group20.knittybuddy.inspiration.InspirationListActivity;
 import dk.au.mad21spring.group20.knittybuddy.project.ProjectListActivity;
 
 public class MenuActivity extends AppCompatActivity {
 
     //widgets
-    private Button feedBtn;
-    private Button projectsBtn;
+    private Button btnFeed;
+    private Button btnProjects;
+    private Button btnInspiration;
 
     //attributes
     public static final int REQUEST_CODE_FEED = 101;
     public static final int REQUEST_CODE_PROJECTS = 201;
+    public static final int REQUEST_CODE_INSPIRATION = 301;
 
     //life cycle
     @Override
@@ -27,20 +29,30 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        feedBtn = findViewById(R.id.feedBtn);
-        projectsBtn = findViewById(R.id.btn_menu_project);
+        //instantiation of widgets
+        btnFeed = findViewById(R.id.btn_menu_feed);
+        btnProjects = findViewById(R.id.btn_menu_project);
+        btnInspiration = findViewById(R.id.btn_menu_Inspiration);
 
-        feedBtn.setOnClickListener(new View.OnClickListener(){
+        //button listeners
+        btnFeed.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 goToFeed();
             }
         });
 
-        projectsBtn.setOnClickListener(new View.OnClickListener(){
+        btnProjects.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 goToProjectList();
+            }
+        });
+
+        btnInspiration.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                goToInspiration();
             }
         });
     }
@@ -54,6 +66,11 @@ public class MenuActivity extends AppCompatActivity {
     private void goToProjectList(){
         Intent intent = new Intent(this, ProjectListActivity.class);
         startActivityForResult(intent,REQUEST_CODE_PROJECTS );
+    }
+
+    private void goToInspiration(){
+        Intent intent = new Intent(this, InspirationListActivity.class);
+        startActivityForResult(intent,REQUEST_CODE_INSPIRATION );
     }
 
 }

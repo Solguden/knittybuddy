@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".project.ProjectDetailsActivity">
+    tools:context=".Project.ProjectDetailsActivity">
 
     <Button
         android:id="@+id/btn_projectDetail_back"
+        style="@style/buttonStyle"
         android:layout_width="76dp"
         android:layout_height="76dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/round_button"
-        app:backgroundTint="@color/buttonHeader"
+        android:text="@string/go_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/go_back" />
@@ -26,8 +26,7 @@
         android:layout_width="188dp"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_squared_shape_2"
-        android:fontFamily="casual"
+        android:background="@drawable/rounded_squared_shape_dark"
         android:gravity="center"
         android:text="project name"
         android:textStyle="bold"
@@ -47,8 +46,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_squared_shape"
-        android:fontFamily="casual"
+        android:background="@drawable/rounded_squared_shape_light"
         android:gravity="top|left"
         android:text="Notes bla bla bla"
         android:textStyle="bold"

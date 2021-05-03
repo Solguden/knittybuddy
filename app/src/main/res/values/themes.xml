@@ -21,6 +21,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:background">@drawable/round_shape</item>
         <item name="backgroundTint">@color/buttonHeader</item>
+        <item name="android:fontFamily">casual</item>
     </style>
 
     <style name="textFieldStyle" parent="@android:style/Widget.TextView">

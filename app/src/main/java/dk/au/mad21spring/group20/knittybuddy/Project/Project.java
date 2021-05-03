@@ -1,7 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.Project;
 
 public class Project {
-    private int Id;
+    private String Id;
     private String Name;
     private String Description;
     private String ImageId;
@@ -9,7 +9,7 @@ public class Project {
 
     public Project(){}
 
-    public Project(int id, String name, String description, String imageId, String pdf){
+    public Project(String id, String name, String description, String imageId, String pdf){
         Id = id;
         Name = name;
         Description = description;
@@ -17,11 +17,11 @@ public class Project {
         Pdf = pdf;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 

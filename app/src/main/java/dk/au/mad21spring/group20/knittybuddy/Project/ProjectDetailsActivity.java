@@ -21,9 +21,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
     Button btnGoBack;
 
     //attributes
-    private int projectId;
-    //test
-    private List<Project> projectList;
+    private String projectId;
 
     //life cycle
     @Override
@@ -35,11 +33,11 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         txtProjectName = findViewById(R.id.txt_projectDetailHeader);
         txtProjectDetails = findViewById(R.id.txt_projectDetailText);
         btnGoBack = findViewById(R.id.btn_projectDetail_back);
-        projectId = 0; //default value
+        projectId = ""; //default value
 
         //get data from ProjectListActivity, who started this activity
         Intent data = getIntent();
-        projectId = data.getIntExtra("id",0); //TO DO: hardcode name and default
+        projectId = data.getStringExtra("id"); //TO DO: hardcode name and default
 
         //button listener
         btnGoBack.setOnClickListener(new View.OnClickListener() {
@@ -49,26 +47,13 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             }
         });
 
-        //test
-        projectList = new ArrayList<Project>();
-        Project testProject1 = new Project(1, "Sommerkjole", "Fin luftig kjole", "111", "pdfLink");
-        Project testProject2 = new Project(2, "Vinter trøje", "Dejlig varm sweather", "222", "pdfLink");
-        projectList.add(testProject1);
-        projectList.add(testProject2);
         updateUI(projectId);
     }
 
     //methods
-    private void updateUI(int id){
-        if  (id != 0){
-            txtProjectName.setText(projectList.get(id).getName());
-            txtProjectDetails.setText(projectList.get(id).getDescription());
+    private void updateUI(String id){
+        if  (id != ""){
+            //implement code which gets the project info from db (viewmodel)
         }
-        else{
-            Project prjDefault = new Project(0, "default", "default", "default", "default");
-            txtProjectName.setText(prjDefault.getName());
-            txtProjectDetails.setText(prjDefault.getDescription());
-        }
-
     }
 }

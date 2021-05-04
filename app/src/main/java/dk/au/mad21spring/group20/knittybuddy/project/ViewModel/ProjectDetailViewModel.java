@@ -1,16 +1,12 @@
-package dk.au.mad21spring.group20.knittybuddy.Project.ViewModel;
+package dk.au.mad21spring.group20.knittybuddy.project.ViewModel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import dk.au.mad21spring.group20.knittybuddy.Project.Project;
+import dk.au.mad21spring.group20.knittybuddy.project.Project;
 
 public class ProjectDetailViewModel extends AndroidViewModel {
 

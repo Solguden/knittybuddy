@@ -5,7 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".Project.ProjectDetailsActivity">
+    tools:context=".project.ProjectDetailsActivity">
+
+    <ImageView
+        android:id="@+id/projectImageDetail"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_projectDetailHeader"
+        app:layout_constraintVertical_bias="0.046"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/btn_projectDetail_back"
@@ -35,25 +48,41 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/project_name" />
 
-    <TextView
+    <EditText
         android:id="@+id/txt_projectDetailText"
         style="@style/textFieldStyle"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="332dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_squared_shape_light"
         android:gravity="top|left"
         android:text="Notes bla bla bla"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_projectDetail_back"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_projectDetailHeader"
+        app:layout_constraintStart_toStartOf="@+id/projectImageDetail"
+        app:layout_constraintTop_toBottomOf="@+id/projectImageDetail"
         tools:text="Notes bla bla bla" />
+
+    <Button
+        android:id="@+id/publishDetailProjectBtn"
+        style="@style/buttonStyle"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="@string/publish"
+        app:layout_constraintBottom_toBottomOf="@+id/projectImageDetail"
+        app:layout_constraintEnd_toEndOf="@+id/txt_projectDetailText" />
+
+    <Button
+        android:id="@+id/pdfDetailProjectBtn"
+        style="@style/buttonStyle"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/pdf"
+        app:layout_constraintBottom_toTopOf="@+id/publishDetailProjectBtn"
+        app:layout_constraintEnd_toEndOf="@+id/publishDetailProjectBtn"
+        app:layout_constraintStart_toStartOf="@+id/publishDetailProjectBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

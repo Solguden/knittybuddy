@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.Project;
+package dk.au.mad21spring.group20.knittybuddy.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 

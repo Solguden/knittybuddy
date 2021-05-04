@@ -8,4 +8,6 @@
     <string name="project_name">Projekt navn</string>
     <string name="cancel">Annuller</string>
     <string name="ok">OK</string>
+    <string name="publish">Udgiv</string>
+    <string name="pdf">PDF</string>
 </resources>

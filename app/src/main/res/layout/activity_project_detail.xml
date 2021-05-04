@@ -23,8 +23,8 @@
     <Button
         android:id="@+id/btn_projectDetail_back"
         style="@style/buttonStyle"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
@@ -32,6 +32,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/go_back" />
+
+    <Button
+        android:id="@+id/deleteProjectDetailBtn"
+        style="@style/buttonStyle"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:text="@string/delete"
+        app:layout_constraintStart_toStartOf="@+id/txt_projectDetailText"
+        app:layout_constraintTop_toTopOf="@+id/btn_projectDetail_back" />
 
     <TextView
         android:id="@+id/txt_projectDetailHeader"

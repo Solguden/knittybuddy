@@ -10,4 +10,5 @@
     <string name="ok">OK</string>
     <string name="publish">Udgiv</string>
     <string name="pdf">PDF</string>
+    <string name="delete">Slet</string>
 </resources>

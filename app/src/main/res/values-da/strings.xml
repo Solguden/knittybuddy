@@ -13,4 +13,5 @@
     <string name="delete">Slet</string>
     <string name="openPdf">Åbner pdf fil</string>
     <string name="unpublish">Fjern udgivelse</string>
+    <string name="Save">Gem</string>
 </resources>

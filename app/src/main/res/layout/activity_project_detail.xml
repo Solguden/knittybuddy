@@ -34,6 +34,17 @@
         tools:text="@string/go_back" />
 
     <Button
+        android:id="@+id/saveProjectDetailBtn"
+        style="@style/buttonStyle"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:text="@string/Save"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/goBackProjectDetailBtn"
+        app:layout_constraintStart_toEndOf="@+id/deleteProjectDetailBtn"
+        app:layout_constraintTop_toTopOf="@+id/deleteProjectDetailBtn" />
+
+    <Button
         android:id="@+id/deleteProjectDetailBtn"
         style="@style/buttonStyle"
         android:layout_width="82dp"
@@ -66,13 +77,13 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/rounded_squared_shape_light"
         android:gravity="top|left"
-        android:text="Notes bla bla bla"
+        android:text=" "
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/goBackProjectDetailBtn"
+        app:layout_constraintBottom_toTopOf="@+id/saveProjectDetailBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/projectImageDetail"
         app:layout_constraintTop_toBottomOf="@+id/projectImageDetail"
-        tools:text="Notes bla bla bla" />
+        tools:text=" " />
 
     <Button
         android:id="@+id/publishDetailProjectBtn"

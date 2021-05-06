@@ -12,4 +12,5 @@
     <string name="delete">Delete</string>
     <string name="openPdf">Opens PDF file</string>
     <string name="unpublish">Undo publish</string>
+    <string name="Save">Save</string>
 </resources>

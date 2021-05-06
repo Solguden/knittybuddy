@@ -1,8 +1,10 @@
 package dk.au.mad21spring.group20.knittybuddy.project;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +25,8 @@ public class ProjectDetailsActivity extends AppCompatActivity {
     Button goBackBtn;
     Button pdfBtn;
     Button publishBtn;
+    Button saveBtn;
+    AlertDialog.Builder builder;
 
     //attributes
     private String projectId;
@@ -40,20 +44,25 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         goBackBtn = findViewById(R.id.goBackProjectDetailBtn);
         pdfBtn = findViewById(R.id.pdfDetailProjectBtn);
         publishBtn = findViewById(R.id.publishDetailProjectBtn);
+        saveBtn = findViewById(R.id.saveProjectDetailBtn);
         projectId = ""; //default value
+        builder = new AlertDialog.Builder(this, R.style.alertBoxStyle);
 
         //get data from ProjectListActivity, who started this activity
         Intent data = getIntent();
         projectId = data.getStringExtra("id"); //TO DO: hardcode name and default
 
         //have some code here that gets the project object from the viewModel
-        thisProject = new Project();
+        thisProject = new Project("default", "default", "", "default", "default", false);
 
         //button listener
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
+                    confirmBack();
+                }
+                else finish();
             }
         });
 
@@ -80,6 +89,16 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             }
         });
 
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //confirmSaveChanges();
+                thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
+                makeToast("Changes saved");
+                saveBtn.setVisibility(View.INVISIBLE);
+            }
+        });
+
         descriptionProjectDetailsEditTxt.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -88,18 +107,64 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                addSaveButton();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
             }
         });
 
         updateUI(projectId);
     }
 
+
     //methods
+    private void addSaveButton() {
+        saveBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void confirmBack() {
+        builder.setMessage("Are you sure you want to go back without saving the changes?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    //reference: https://www.javatpoint.com/android-alert-dialog-example
+    private void confirmSaveChanges() {
+        builder.setMessage("Do you want so save the changes?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
+                        makeToast("Changes saved");
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        makeToast("Changes not saved");
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     private void updateUI(String id){
         if  (id != ""){
             //implement code which gets the project info from db (viewmodel)

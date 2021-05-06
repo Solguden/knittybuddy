@@ -11,4 +11,6 @@
     <string name="publish">Udgiv</string>
     <string name="pdf">PDF</string>
     <string name="delete">Slet</string>
+    <string name="openPdf">Åbner pdf fil</string>
+    <string name="unpublish">Fjern udgivelse</string>
 </resources>

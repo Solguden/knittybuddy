@@ -16,12 +16,12 @@
         android:layout_marginLeft="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_projectDetailHeader"
+        app:layout_constraintTop_toBottomOf="@+id/headerProjectDetailTxt"
         app:layout_constraintVertical_bias="0.046"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/btn_projectDetail_back"
+        android:id="@+id/goBackProjectDetailBtn"
         style="@style/buttonStyle"
         android:layout_width="82dp"
         android:layout_height="82dp"
@@ -39,11 +39,11 @@
         android:layout_width="82dp"
         android:layout_height="82dp"
         android:text="@string/delete"
-        app:layout_constraintStart_toStartOf="@+id/txt_projectDetailText"
-        app:layout_constraintTop_toTopOf="@+id/btn_projectDetail_back" />
+        app:layout_constraintStart_toStartOf="@+id/descriptionProjectDetailEditTxt"
+        app:layout_constraintTop_toTopOf="@+id/goBackProjectDetailBtn" />
 
     <TextView
-        android:id="@+id/txt_projectDetailHeader"
+        android:id="@+id/headerProjectDetailTxt"
         style="@style/textFieldStyle"
         android:layout_width="188dp"
         android:layout_height="56dp"
@@ -58,7 +58,7 @@
         tools:text="@string/project_name" />
 
     <EditText
-        android:id="@+id/txt_projectDetailText"
+        android:id="@+id/descriptionProjectDetailEditTxt"
         style="@style/textFieldStyle"
         android:layout_width="0dp"
         android:layout_height="332dp"
@@ -68,7 +68,7 @@
         android:gravity="top|left"
         android:text="Notes bla bla bla"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btn_projectDetail_back"
+        app:layout_constraintBottom_toTopOf="@+id/goBackProjectDetailBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/projectImageDetail"
         app:layout_constraintTop_toBottomOf="@+id/projectImageDetail"
@@ -77,16 +77,16 @@
     <Button
         android:id="@+id/publishDetailProjectBtn"
         style="@style/buttonStyle"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="50dp"
         android:text="@string/publish"
         app:layout_constraintBottom_toBottomOf="@+id/projectImageDetail"
-        app:layout_constraintEnd_toEndOf="@+id/txt_projectDetailText" />
+        app:layout_constraintEnd_toEndOf="@+id/descriptionProjectDetailEditTxt" />
 
     <Button
         android:id="@+id/pdfDetailProjectBtn"
         style="@style/buttonStyle"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:text="@string/pdf"

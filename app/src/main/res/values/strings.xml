@@ -10,4 +10,6 @@
     <string name="publish">Publish</string>
     <string name="pdf">PDF</string>
     <string name="delete">Delete</string>
+    <string name="openPdf">Opens PDF file</string>
+    <string name="unpublish">Undo publish</string>
 </resources>

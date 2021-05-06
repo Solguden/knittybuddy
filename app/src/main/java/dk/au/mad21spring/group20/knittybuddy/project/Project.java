@@ -6,15 +6,19 @@ public class Project {
     private String Description;
     private String ImageId;
     private String Pdf;
+    private boolean Published;
 
-    public Project(){}
+    public Project(){
+        Published = false;
+    }
 
-    public Project(String id, String name, String description, String imageId, String pdf){
+    public Project(String id, String name, String description, String imageId, String pdf, boolean published){
         Id = id;
         Name = name;
         Description = description;
         ImageId = imageId;
         Pdf = pdf;
+        Published = published;
     }
 
     public String getId() {
@@ -49,12 +53,16 @@ public class Project {
         ImageId = imageId;
     }
 
-    public String setPdf() {
+    public String getPdf() {
         return Pdf;
     }
 
     public void setPdf(String pdf) {
         Pdf = pdf;
     }
+
+    public boolean getPublished() { return Published; }
+
+    public void setPublished(boolean published) { Published = published; }
 
 }

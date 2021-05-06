@@ -12,7 +12,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
@@ -21,7 +20,7 @@ import dk.au.mad21spring.group20.knittybuddy.model.Project;
 public class ProjectDetailsActivity extends AppCompatActivity {
 
     //widgets
-    TextView nameProjectTxt;
+    EditText nameProjectEditTxt;
     EditText descriptionProjectDetailsEditTxt;
     Button goBackBtn;
     Button pdfBtn;
@@ -38,10 +37,10 @@ public class ProjectDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_detail);
+        setContentView(R.layout.fragment_project_detail);
 
         //instantiation of widgets
-        nameProjectTxt = findViewById(R.id.headerProjectDetailTxt);
+        nameProjectEditTxt = findViewById(R.id.headerProjectDetailEditTxt);
         descriptionProjectDetailsEditTxt = findViewById(R.id.descriptionProjectDetailEditTxt);
         goBackBtn = findViewById(R.id.goBackProjectDetailBtn);
         pdfBtn = findViewById(R.id.pdfDetailProjectBtn);
@@ -56,18 +55,22 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         projectId = data.getStringExtra("id"); //TO DO: hardcode name and default
 
         //have some code here that gets the project object from the viewModel
-        thisProject = new Project("default", "default", "", "default", "default", false, "default");
+        thisProject = new Project("", "Hej", "", "", "", false, "");
         //button listener
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
-                    confirmBack();
+                    if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
+                        confirmBack();
+                    }
+                }
+                else if (nameProjectEditTxt.getText().toString().equals("")){
+                    makeToast("You must enter a project name");
                 }
                 else finish();
             }
         });
-
 
         pdfBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +100,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //confirmSaveChanges();
                 thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
+                thisProject.setName(nameProjectEditTxt.getText().toString());
                 makeToast("Changes saved");
                 saveBtn.setVisibility(View.INVISIBLE);
             }
@@ -110,6 +114,22 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         });
 
         descriptionProjectDetailsEditTxt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                addSaveButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        nameProjectEditTxt.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -202,9 +222,8 @@ public class ProjectDetailsActivity extends AppCompatActivity {
     }
 
     private void updateUI(String id){
-        if  (id != ""){
-            //implement code which gets the project info from db (viewmodel)
-        }
+        nameProjectEditTxt.setText(thisProject.getName());
+        nameProjectEditTxt.setText(thisProject.getDescription());
     }
 
     public void makeToast(String txt){

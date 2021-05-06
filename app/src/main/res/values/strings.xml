@@ -13,4 +13,6 @@
     <string name="openPdf">Opens PDF file</string>
     <string name="unpublish">Undo publish</string>
     <string name="Save">Save</string>
+    <string name="enterProjectName">Enter project name here</string>
+    <string name="enterDescription">Enter discription here</string>
 </resources>

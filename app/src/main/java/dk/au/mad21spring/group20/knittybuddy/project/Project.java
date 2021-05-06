@@ -7,18 +7,20 @@ public class Project {
     private String ImageId;
     private String Pdf;
     private boolean Published;
+    private String UserId;
 
     public Project(){
         Published = false;
     }
 
-    public Project(String id, String name, String description, String imageId, String pdf, boolean published){
+    public Project(String id, String name, String description, String imageId, String pdf, boolean published, String userId){
         Id = id;
         Name = name;
         Description = description;
         ImageId = imageId;
         Pdf = pdf;
         Published = published;
+        UserId = userId;
     }
 
     public String getId() {

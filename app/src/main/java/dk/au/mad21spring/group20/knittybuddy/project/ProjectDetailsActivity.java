@@ -53,7 +53,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         projectId = data.getStringExtra("id"); //TO DO: hardcode name and default
 
         //have some code here that gets the project object from the viewModel
-        thisProject = new Project("default", "default", "", "default", "default", false);
+        thisProject = new Project("default", "default", "", "default", "default", false, "default");
 
         //button listener
         goBackBtn.setOnClickListener(new View.OnClickListener() {

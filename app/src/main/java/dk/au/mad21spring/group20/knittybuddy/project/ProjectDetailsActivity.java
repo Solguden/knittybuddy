@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 public class ProjectDetailsActivity extends AppCompatActivity {
 
@@ -26,6 +27,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
     Button pdfBtn;
     Button publishBtn;
     Button saveBtn;
+    Button deleteBtn;
     AlertDialog.Builder builder;
 
     //attributes
@@ -45,6 +47,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         pdfBtn = findViewById(R.id.pdfDetailProjectBtn);
         publishBtn = findViewById(R.id.publishDetailProjectBtn);
         saveBtn = findViewById(R.id.saveProjectDetailBtn);
+        deleteBtn = findViewById(R.id.deleteProjectDetailBtn);
         projectId = ""; //default value
         builder = new AlertDialog.Builder(this, R.style.alertBoxStyle);
 
@@ -54,7 +57,6 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
         //have some code here that gets the project object from the viewModel
         thisProject = new Project("default", "default", "", "default", "default", false, "default");
-
         //button listener
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +67,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                 else finish();
             }
         });
+
 
         pdfBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +102,13 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             }
         });
 
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelete();
+            }
+        });
+
         descriptionProjectDetailsEditTxt.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -118,18 +128,44 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         updateUI(projectId);
     }
 
-
     //methods
     private void addSaveButton() {
         saveBtn.setVisibility(View.VISIBLE);
     }
 
+    private void deleteProject(String id) {
+        //kode som sletter et projekt
+    }
+
+    //reference: https://www.javatpoint.com/android-alert-dialog-example
     private void confirmBack() {
         builder.setMessage("Are you sure you want to go back without saving the changes?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    //reference: https://www.javatpoint.com/android-alert-dialog-example
+    private void confirmDelete() {
+        builder.setMessage("Are you sure you want to delete this project")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteProject(thisProject.getId());
+                        makeToast("Project deleted");
                         finish();
                     }
                 })

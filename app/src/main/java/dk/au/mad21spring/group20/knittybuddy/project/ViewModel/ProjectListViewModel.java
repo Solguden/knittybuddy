@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 
-import dk.au.mad21spring.group20.knittybuddy.project.Project;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 
 public class ProjectListViewModel extends AndroidViewModel {

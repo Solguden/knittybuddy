@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 public class ProjectListActivity extends AppCompatActivity implements ProjectAdapter.IProjectItemClickedListener {
 

@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.project;
+package dk.au.mad21spring.group20.knittybuddy.model;
 
 public class Project {
     private String Id;

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 //this class is inspired by lecture 3 "ListAndGrid" demo code
 //this class handles the scrolling of projects in the project list

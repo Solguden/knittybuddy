@@ -68,17 +68,23 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             projectDetail = new ProjectDetailsFragment();
 
             //setProjects
-            getProjects();
+            //projectDetail.setProject(projects.get(selectedProjectIndex));
 
             //both fragments get added to the containers, but one is invisible
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.list_container, projectList, LIST_FRAG)
                     .add(R.id.details_container, projectDetail, DETAIL_FRAG)
                     .commit();
-        } else {
-            selectedProjectIndex = savedInstanceState.getInt("index");
-            userView = (UserView) savedInstanceState.getSerializable("user");
 
+            //load projects
+            getProjects();
+
+        } else {
+            //selectedProjectIndex = savedInstanceState.getInt("index");
+            //userView = (UserView) savedInstanceState.getSerializable("user");
+
+            //load projects
+            getProjects();
             if (userView == null){
                 userView = UserView.LIST_VIEW; //default
             }
@@ -93,9 +99,6 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
                 projectDetail = new ProjectDetailsFragment();
             }
         }
-
-        //load projects
-        getProjects();
 
         updateFragmentViewState(userView);
     }
@@ -135,7 +138,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         return true;
     }
 
-    private void changeDetailContainerFragment(UserView view) { //Spørgsmål: hvor bestemmer man hvilket project som skal vises i detail view???
+    private void changeDetailContainerFragment(UserView view) {
         if (view == UserView.DETAIL_VIEW) {
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.animation_slide_in,R.anim.animation_slide_out)
@@ -160,21 +163,14 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
 
     //method from implemented interface
     @Override
-    public void onProjectSelected(int position) {
-        getProjects();
-        if(projectDetail!=null){
-            Project selectedProject = projects.get(position);
-            if(selectedProject!=null) {
-                selectedProjectIndex = position;
-                projectDetail.setProject(selectedProject);
-            }
-        }
+    public void onProjectSelected(Project project) {
+        projectDetail.setProject(project);
         updateFragmentViewState(UserView.DETAIL_VIEW);
     }
 
     @Override
-    public void finnish() {
-        finnish();
+    public void finish() {
+        finish();
     }
 
     public void getProjects(){

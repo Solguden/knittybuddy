@@ -15,8 +15,9 @@
         <activity android:name=".inspiration.InspirationDetailActivity"></activity>
         <activity android:name=".inspiration.InspirationListActivity" />
         <activity android:name=".feed.FeedActivity" />
-        <activity android:name=".project.ProjectDetailsActivity" />
-        <activity android:name=".project.ProjectListActivity" />
+        <activity android:name=".old.OldProjectDetailsActivity" />
+        <activity android:name=".old.OldProjectListActivity" />
+        <activity android:name=".project.ProjectMainActivity" />
         <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,7 +1,6 @@
-package dk.au.mad21spring.group20.knittybuddy.project;
+package dk.au.mad21spring.group20.knittybuddy.old;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +15,10 @@ import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
+import dk.au.mad21spring.group20.knittybuddy.project.ProjectAdapter;
 import dk.au.mad21spring.group20.knittybuddy.project.ViewModel.ProjectListViewModel;
 
-public class ProjectListActivity extends AppCompatActivity implements ProjectAdapter.IProjectItemClickedListener {
+public class OldProjectListActivity extends AppCompatActivity implements ProjectAdapter.IProjectItemClickedListener {
 
     //widgets
     Button btnAddNewProject;
@@ -89,14 +89,14 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
     //methods
     //user can add a new project
     private void addProject() {
-        Intent detailsIntent = new Intent(this, ProjectDetailsActivity.class);
+        Intent detailsIntent = new Intent(this, OldProjectDetailsActivity.class);
         startActivity(detailsIntent);
     }
 
     //user opens an existing project
     @Override
     public void onProjectClicked(int index) {
-        Intent detailsIntent = new Intent(this, ProjectDetailsActivity.class);
+        Intent detailsIntent = new Intent(this, OldProjectDetailsActivity.class);
         detailsIntent.putExtra("id",projectList.get(index).getId()); //TO DO: hardcode name
         startActivity(detailsIntent);
         //startActivityForResult(detailsIntent, 100); //TO DO: hardcode requestCode

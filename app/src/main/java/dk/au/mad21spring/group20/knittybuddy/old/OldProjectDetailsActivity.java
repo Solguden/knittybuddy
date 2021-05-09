@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.project;
+package dk.au.mad21spring.group20.knittybuddy.old;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,7 @@ import android.widget.Toast;
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
-public class ProjectDetailsActivity extends AppCompatActivity {
+public class OldProjectDetailsActivity extends AppCompatActivity {
 
     //widgets
     EditText nameProjectEditTxt;

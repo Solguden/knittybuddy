@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,7 +38,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
+import dk.au.mad21spring.group20.knittybuddy.login.RegisterActivity;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
+import dk.au.mad21spring.group20.knittybuddy.model.User;
 
 public class Repository {
     private ExecutorService executor;       //for asynch processing
@@ -62,6 +66,27 @@ public class Repository {
             instance = new Repository();
         }
         return instance;
+    }
+
+    //Login
+    public MutableLiveData<Boolean> createUser(User user){
+        MutableLiveData<Boolean> created = new MutableLiveData<Boolean>(false);
+        db.collection("users").add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        created.setValue(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                        created.setValue(false);
+                    }
+                });
+        return created;
     }
 
     //Feed

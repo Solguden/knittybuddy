@@ -19,9 +19,7 @@ public class MenuActivity extends AppCompatActivity {
     private Button btnInspiration;
 
     //attributes
-    public static final int REQUEST_CODE_FEED = 101;
-    public static final int REQUEST_CODE_PROJECTS = 201;
-    public static final int REQUEST_CODE_INSPIRATION = 301;
+
 
     //life cycle
     @Override
@@ -60,17 +58,17 @@ public class MenuActivity extends AppCompatActivity {
     //methods
     private void goToFeed(){
         Intent intent = new Intent(this, FeedActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_FEED );
+        startActivityForResult(intent,Constants.REQUEST_CODE_FEED );
     }
 
     private void goToProjectList(){
         Intent intent = new Intent(this, ProjectMainActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_PROJECTS );
+        startActivityForResult(intent,Constants.REQUEST_CODE_PROJECTS );
     }
 
     private void goToInspiration(){
         Intent intent = new Intent(this, InspirationListActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_INSPIRATION );
+        startActivityForResult(intent,Constants.REQUEST_CODE_INSPIRATION );
     }
 
 }

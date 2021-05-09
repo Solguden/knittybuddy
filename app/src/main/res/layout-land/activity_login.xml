@@ -19,7 +19,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
-        android:id="@+id/emailRegisterTxt"
+        android:id="@+id/emailLoginTxt"
         android:layout_width="255dp"
         android:layout_height="40dp"
         android:layout_marginStart="68dp"
@@ -43,7 +43,7 @@
         app:srcCompat="@drawable/knittybuddy_launcher_pink" />
 
     <EditText
-        android:id="@+id/passwordRegisterTxt"
+        android:id="@+id/passwordLoginText"
         android:layout_width="255dp"
         android:layout_height="40dp"
         android:layout_marginStart="32dp"
@@ -52,7 +52,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toEndOf="@+id/emailRegisterTxt"
+        app:layout_constraintStart_toEndOf="@+id/emailLoginTxt"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button

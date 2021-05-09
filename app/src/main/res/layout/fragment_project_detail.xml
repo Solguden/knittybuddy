@@ -9,15 +9,16 @@
 
     <ImageView
         android:id="@+id/projectImageDetail"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
 
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionProjectDetailEditTxt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerProjectDetailEditTxt"
-        app:layout_constraintVertical_bias="0.046"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -39,7 +40,7 @@
         android:layout_width="82dp"
         android:layout_height="82dp"
         android:text="@string/Save"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/goBackProjectDetailBtn"
         app:layout_constraintStart_toEndOf="@+id/deleteProjectDetailBtn"
         app:layout_constraintTop_toTopOf="@+id/deleteProjectDetailBtn" />
@@ -49,8 +50,11 @@
         style="@style/buttonStyle"
         android:layout_width="82dp"
         android:layout_height="82dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:text="@string/delete"
-        app:layout_constraintStart_toStartOf="@+id/descriptionProjectDetailEditTxt"
+        app:layout_constraintBottom_toBottomOf="@+id/goBackProjectDetailBtn"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/goBackProjectDetailBtn" />
 
     <EditText
@@ -72,18 +76,18 @@
         android:id="@+id/descriptionProjectDetailEditTxt"
         style="@style/textFieldStyle"
         android:layout_width="0dp"
-        android:layout_height="332dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="376dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_squared_shape_light"
         android:gravity="top|left"
+        android:hint="@string/enterDescription"
         android:text=" "
         android:textStyle="bold"
-        android:hint="@string/enterDescription"
-        app:layout_constraintBottom_toTopOf="@+id/saveProjectDetailBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/projectImageDetail"
-        app:layout_constraintTop_toBottomOf="@+id/projectImageDetail"
+        app:layout_constraintBottom_toTopOf="@+id/goBackProjectDetailBtn"
+        app:layout_constraintEnd_toEndOf="@+id/publishDetailProjectBtn"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text=" " />
 
     <Button
@@ -93,17 +97,18 @@
         android:layout_height="50dp"
         android:text="@string/publish"
         app:layout_constraintBottom_toBottomOf="@+id/projectImageDetail"
-        app:layout_constraintEnd_toEndOf="@+id/descriptionProjectDetailEditTxt" />
+        app:layout_constraintEnd_toEndOf="@+id/pdfDetailProjectBtn" />
 
     <Button
         android:id="@+id/pdfDetailProjectBtn"
         style="@style/buttonStyle"
         android:layout_width="140dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/pdf"
         app:layout_constraintBottom_toTopOf="@+id/publishDetailProjectBtn"
-        app:layout_constraintEnd_toEndOf="@+id/publishDetailProjectBtn"
-        app:layout_constraintStart_toStartOf="@+id/publishDetailProjectBtn" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

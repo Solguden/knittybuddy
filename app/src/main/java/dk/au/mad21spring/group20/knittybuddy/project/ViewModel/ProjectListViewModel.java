@@ -24,7 +24,7 @@ public class ProjectListViewModel extends AndroidViewModel {
     public ProjectListViewModel(@NonNull Application application) {
         super(application);
         repository = Repository.getRepositoryInstance();
-        projects = getAllProjects();
+        projects = repository.getAllProjects();
     }
 
     //methods

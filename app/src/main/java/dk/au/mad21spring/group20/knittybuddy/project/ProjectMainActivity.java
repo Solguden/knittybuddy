@@ -51,9 +51,6 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         listContainer = findViewById(R.id.list_container);
         detailContainer = findViewById(R.id.details_container);
 
-        //load projects
-        projects = projectList.getAllProjects();
-
         //determine device type
         if (!isTablet(this)){
             deviceType = DeviceType.MOBILE;
@@ -71,6 +68,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             projectDetail = new ProjectDetailsFragment();
 
             //setProjects
+            getProjects();
 
             //both fragments get added to the containers, but one is invisible
             getSupportFragmentManager().beginTransaction()
@@ -95,6 +93,9 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
                 projectDetail = new ProjectDetailsFragment();
             }
         }
+
+        //load projects
+        getProjects();
 
         updateFragmentViewState(userView);
     }
@@ -160,6 +161,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
     //method from implemented interface
     @Override
     public void onProjectSelected(int position) {
+        getProjects();
         if(projectDetail!=null){
             Project selectedProject = projects.get(position);
             if(selectedProject!=null) {
@@ -168,5 +170,14 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             }
         }
         updateFragmentViewState(UserView.DETAIL_VIEW);
+    }
+
+    @Override
+    public void finnish() {
+        finnish();
+    }
+
+    public void getProjects(){
+        projects = projectList.getAllProjects();
     }
 }

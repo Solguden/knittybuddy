@@ -4,4 +4,5 @@ public interface IProjectSelector {
 
     void addNewProject();
     void onProjectSelected(int position);
+    void finnish();
 }

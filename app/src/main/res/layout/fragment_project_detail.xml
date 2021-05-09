@@ -39,7 +39,7 @@
         android:layout_width="82dp"
         android:layout_height="82dp"
         android:text="@string/Save"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/goBackProjectDetailBtn"
         app:layout_constraintStart_toEndOf="@+id/deleteProjectDetailBtn"
         app:layout_constraintTop_toTopOf="@+id/deleteProjectDetailBtn" />

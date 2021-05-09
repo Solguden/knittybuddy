@@ -78,15 +78,7 @@ public class ProjectDetailsFragment extends Fragment {
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
-                    if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
-                        confirmBack();
-                    }
-                }
-                else if (nameProjectEditTxt.getText().toString().equals("")){
-                    makeToast("You must enter a project name");
-                }
-                //else finish();
+                goBack();
             }
         });
 
@@ -113,6 +105,7 @@ public class ProjectDetailsFragment extends Fragment {
             }
         });
 
+        saveBtn.setVisibility(View.GONE);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +156,8 @@ public class ProjectDetailsFragment extends Fragment {
             }
         });
 
+        updateUI();
+
         return v;
     }
 
@@ -200,6 +195,18 @@ public class ProjectDetailsFragment extends Fragment {
 
     private void deleteProject(String id) {
         //kode som sletter et projekt
+    }
+
+    private void goBack() {
+        if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
+            if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
+                confirmBack();
+            }
+        }
+        else if (nameProjectEditTxt.getText().toString().equals("")){
+            makeToast("You must enter a project name");
+        }
+        //else finish();
     }
 
     //reference: https://www.javatpoint.com/android-alert-dialog-example
@@ -266,7 +273,7 @@ public class ProjectDetailsFragment extends Fragment {
 //        alert.show();
 //    }
 
-    private void updateUI(String id){
+    private void updateUI(){
         nameProjectEditTxt.setText(thisProject.getName());
         nameProjectEditTxt.setText(thisProject.getDescription());
     }

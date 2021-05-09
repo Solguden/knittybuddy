@@ -79,8 +79,8 @@ public class OldProjectListActivity extends AppCompatActivity implements Project
         });
 
         //test
-        Project testProject1 = new Project("1", "Sommerkjole", "Fin luftig kjole", "111", "pdfLink", false, "1");
-        Project testProject2 = new Project("2", "Vinter trøje", "Dejlig varm sweather", "222", "pdfLink", false, "1");
+        Project testProject1 = new Project("1", "Sommerkjole", "Fin luftig kjole", 111, "pdfLink", false, "1");
+        Project testProject2 = new Project("2", "Vinter trøje", "Dejlig varm sweather", 111, "pdfLink", false, "1");
         projectList.add(testProject1);
         projectList.add(testProject2);
         adapter.updateProjectList(projectList);

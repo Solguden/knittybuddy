@@ -22,9 +22,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SnapshotMetadata;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -136,7 +139,10 @@ public class Repository {
                         ArrayList<Project> newProjectList = new ArrayList<>();
                         if(snapshot!=null && !snapshot.isEmpty()){
                             for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Log.d("image id from database", "" + doc.toObject(Project.class).getImageId());
+                                Log.d("name from database", "" + doc.toObject(Project.class).getName());
                                 Project p = doc.toObject(Project.class);
+                                p.setId(doc.getId());
                                 if(p!=null) {
                                     newProjectList.add(p);
                                 }
@@ -147,6 +153,67 @@ public class Repository {
                 });
         return projects;
     }
+
+    public void updateProject(String userId, String name){
+        Task<QuerySnapshot> docref = db.collection("projects")
+                .whereEqualTo("userid", userId)
+                .whereEqualTo("name", name)
+                .get();
+
+    }
+
+    public MutableLiveData<List<Project>> getProjectById(String userId, String name){
+        projectList = new MutableLiveData<List<Project>>();
+        db.collection("projects")
+                .whereEqualTo("userid", userId)
+                .whereEqualTo("name", name)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        ArrayList<Project> updatedProject = new ArrayList<>();
+                        if(snapshot!=null && !snapshot.isEmpty()){
+                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Project p = doc.toObject(Project.class);
+                                p.setId(doc.getId());
+                                if(p!=null) {
+                                    updatedProject.add(p);
+                                }
+                            }
+                            projectList.setValue(updatedProject);
+                        }
+                    }
+                });
+        return projectList;
+    }
+
+    public void addProject(Project project){
+        db.collection("projects")
+                .add(project)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+
+    //reference: https://www.youtube.com/watch?v=KxY5-dBSdgk&ab_channel=yoursTRULY
+    public void updateProject(Project project){
+        DocumentReference ref = db.collection("projects").document(project.getId());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("description", project.getDescription());
+        map.put("name", project.getName());
+
+        ref.update(map);
+    }
+
 
     public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
         MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();

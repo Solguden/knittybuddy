@@ -19,17 +19,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.project.IProjectSelector;
-import dk.au.mad21spring.group20.knittybuddy.project.ProjectAdapter;
 import dk.au.mad21spring.group20.knittybuddy.project.ViewModel.ProjectDetailViewModel;
-import dk.au.mad21spring.group20.knittybuddy.project.ViewModel.ProjectListViewModel;
 
 public class ProjectDetailsFragment extends Fragment {
 
@@ -49,7 +45,7 @@ public class ProjectDetailsFragment extends Fragment {
 
     //attributes
     private Project thisProject;
-    private int projectIndex;
+    private String id;
 
     private IProjectSelector projectSelector;
 
@@ -76,9 +72,13 @@ public class ProjectDetailsFragment extends Fragment {
         deleteBtn = v.findViewById(R.id.deleteProjectDetailBtn);
 
         builder = new AlertDialog.Builder(getContext(), R.style.alertBoxStyle);
-        thisProject = new Project();
 
-        updateUI();
+        thisProject = new Project();
+        thisProject.setImageId(R.drawable.knittybuddy_launcher_pink);
+        thisProject.setId("0");
+        thisProject.setPdf("pdf");
+        thisProject.setPublished(false);
+        thisProject.setUserId("4");
 
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,8 +117,18 @@ public class ProjectDetailsFragment extends Fragment {
                 //confirmSaveChanges();
                 thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
                 thisProject.setName(nameProjectEditTxt.getText().toString());
-                makeToast("Changes saved");
-                saveBtn.setVisibility(View.INVISIBLE);
+                if (thisProject.getName().equals("")){
+                    makeToast("You must provide a project name");
+                } else {
+                    if (thisProject.getId().equals("0")){
+                        detailVM.addNewProject(thisProject);
+                        makeToast("Project created");
+                    } else {
+                        detailVM.updateProject(thisProject);
+                        makeToast("Changes saved");
+                    }
+                    saveBtn.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -172,6 +182,13 @@ public class ProjectDetailsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        detailVM = new ViewModelProvider(getActivity()).get(ProjectDetailViewModel.class);
+        detailVM.getProject(thisProject.getUserId(), thisProject.getName()).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> project) {
+                updateUI(project.get(0));
+            }
+        });
     }
 
     @Override
@@ -188,10 +205,16 @@ public class ProjectDetailsFragment extends Fragment {
 
     //methods
     public void setProject(Project project){
-
+//        detailVM.getProject(userId, name).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
+//            @Override
+//            public void onChanged(List<Project> project) {
+//                updateUI(project.get(0));
+//            }
+//        });
+        thisProject = project;
+        updateUI(thisProject);
     }
 
-    //methods
     private void addSaveButton() {
         saveBtn.setVisibility(View.VISIBLE);
     }
@@ -219,7 +242,7 @@ public class ProjectDetailsFragment extends Fragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //finish();
+                        projectSelector.finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -276,9 +299,9 @@ public class ProjectDetailsFragment extends Fragment {
 //        alert.show();
 //    }
 
-    private void updateUI(){
-        nameProjectEditTxt.setText(thisProject.getName());
-        nameProjectEditTxt.setText(thisProject.getDescription());
+    private void updateUI(Project project){
+        nameProjectEditTxt.setText(project.getName());
+        descriptionProjectDetailsEditTxt.setText(project.getDescription());
         projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
     }
 

@@ -1,10 +1,12 @@
 package dk.au.mad21spring.group20.knittybuddy.model;
 
+import com.google.firebase.firestore.auth.User;
+
 public class Project {
     private String Id;
     private String Name;
     private String Description;
-    private String ImageId;
+    private int ImageId;
     private String Pdf;
     private boolean Published;
     private String UserId;
@@ -13,7 +15,7 @@ public class Project {
         Published = false;
     }
 
-    public Project(String id, String name, String description, String imageId, String pdf, boolean published, String userId){
+    public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId){
         Id = id;
         Name = name;
         Description = description;
@@ -34,7 +36,6 @@ public class Project {
     public String getName() {
         return Name;
     }
-
     public void setName(String name) {
         Name = name;
     }
@@ -47,11 +48,11 @@ public class Project {
         Description = description;
     }
 
-    public String getImageId() {
+    public int getImageId() {
         return ImageId;
     }
 
-    public void setImageId(String imageId) {
+    public void setImageId(int imageId) {
         ImageId = imageId;
     }
 
@@ -66,5 +67,9 @@ public class Project {
     public boolean getPublished() { return Published; }
 
     public void setPublished(boolean published) { Published = published; }
+
+    public String getUserId() { return UserId; }
+
+    public void setUserId(String userId) { UserId = userId; }
 
 }

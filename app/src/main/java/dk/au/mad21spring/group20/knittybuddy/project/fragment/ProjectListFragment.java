@@ -2,6 +2,7 @@ package dk.au.mad21spring.group20.knittybuddy.project.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
         btnGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                projectSelector.finnish();
+                projectSelector.finish();
             }
         });
 
@@ -129,13 +130,13 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     @Override
     public void onProjectClicked(int index){
         thisProject = projectList.get(index);
-        onProjectSelected(index);
+        onProjectSelected(thisProject);
     }
 
     //method from IProjectSelector
-    public void onProjectSelected(int position){
+    public void onProjectSelected(Project project){
         if(projectSelector!=null) {
-            projectSelector.onProjectSelected(position);
+            projectSelector.onProjectSelected(project);
         }
     }
 

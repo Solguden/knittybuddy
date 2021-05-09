@@ -10,4 +10,7 @@
     <string name="publish">Publish</string>
     <string name="pdf">PDF</string>
     <string name="delete">Delete</string>
+    <string name="inspiration_description">Inspiration description</string>
+    <string name="inspiration">Inspiration</string>
+    <string name="search">Search</string>
 </resources>

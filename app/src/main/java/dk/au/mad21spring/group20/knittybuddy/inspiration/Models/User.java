@@ -1,0 +1,20 @@
+package dk.au.mad21spring.group20.knittybuddy.inspiration.Models;
+
+public class User {
+    public int id;
+//    public String large_photo_url;
+    public String photo_url;
+    public String small_photo_url;
+    public String tiny_photo_url;
+    public String username;
+}
+
+//"users": [
+//                    {
+//                        "id": 1415368,
+//                        "username": "tincanknits",
+//                        "tiny_photo_url": "https://avatars-d.ravelrycache.com/tincanknits/633077163/IMG_0463_tiny.jpg",
+//                        "small_photo_url": "https://avatars-d.ravelrycache.com/tincanknits/633077163/IMG_0463_small.jpg",
+//                        "photo_url": "https://avatars-d.ravelrycache.com/tincanknits/633077163/IMG_0463_large.jpg"
+//                    }
+//                ]

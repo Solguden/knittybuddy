@@ -15,10 +15,10 @@
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordRegisterTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordLoginText" />
 
     <EditText
-        android:id="@+id/emailRegisterTxt"
+        android:id="@+id/emailLoginTxt"
         android:layout_width="255dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
@@ -40,7 +40,7 @@
         app:srcCompat="@drawable/knittybuddy_launcher_pink" />
 
     <EditText
-        android:id="@+id/passwordRegisterTxt"
+        android:id="@+id/passwordLoginText"
         android:layout_width="255dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
@@ -49,7 +49,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailRegisterTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/emailLoginTxt" />
 
     <Button
         android:id="@+id/registerRegisterBtn"

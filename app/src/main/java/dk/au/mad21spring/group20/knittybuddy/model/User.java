@@ -7,9 +7,10 @@ public class User {
 
     public User(){};
 
-    public User(String fullName, String email) {
+    public User(String fullName, String email, String userId) {
         FullName = fullName;
         Email = email;
+        UserId = userId;
     }
 
     public String getFullName() {

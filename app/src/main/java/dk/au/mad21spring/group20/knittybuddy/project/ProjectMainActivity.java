@@ -51,9 +51,6 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         listContainer = findViewById(R.id.list_container);
         detailContainer = findViewById(R.id.details_container);
 
-        //load projects
-        projects = projectList.getAllProjects();
-
         //determine device type
         if (!isTablet(this)){
             deviceType = DeviceType.MOBILE;
@@ -95,6 +92,9 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
                 projectDetail = new ProjectDetailsFragment();
             }
         }
+
+        //load projects
+        projects = projectList.getAllProjects();
 
         updateFragmentViewState(userView);
     }

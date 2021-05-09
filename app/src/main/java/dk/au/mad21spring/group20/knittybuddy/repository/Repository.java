@@ -40,6 +40,7 @@ public class Repository {
     private MutableLiveData<List<Feed>> feedList;
     private MutableLiveData<List<Project>> projectList;
     private FirebaseFirestore db;
+
     //RequestQueue queue; //For Volley
     Context context;
     private static Repository instance;
@@ -50,6 +51,7 @@ public class Repository {
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
         initFeed();
+        projectList = getAllProjectsFromDB();
     }
 
     public static Repository getRepositoryInstance(){
@@ -122,7 +124,29 @@ public class Repository {
         return feedList;
     }
 
+    //project
     public LiveData<List<Project>> getAllProjects(){return projectList;}
+
+    public MutableLiveData<List<Project>> getAllProjectsFromDB(){
+        MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
+        db.collection("projects")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        ArrayList<Project> newProjectList = new ArrayList<>();
+                        if(snapshot!=null && !snapshot.isEmpty()){
+                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Project p = doc.toObject(Project.class);
+                                if(p!=null) {
+                                    newProjectList.add(p);
+                                }
+                            }
+                            projects.setValue(newProjectList);
+                        }
+                    }
+                });
+        return projects;
+    }
 
     public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
         MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();

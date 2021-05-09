@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import dk.au.mad21spring.group20.knittybuddy.feed.FeedActivity;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.InspirationListActivity;
-import dk.au.mad21spring.group20.knittybuddy.project.ProjectListActivity;
+import dk.au.mad21spring.group20.knittybuddy.project.ProjectMainActivity;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -64,7 +64,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void goToProjectList(){
-        Intent intent = new Intent(this, ProjectListActivity.class);
+        Intent intent = new Intent(this, ProjectMainActivity.class);
         startActivityForResult(intent,REQUEST_CODE_PROJECTS );
     }
 

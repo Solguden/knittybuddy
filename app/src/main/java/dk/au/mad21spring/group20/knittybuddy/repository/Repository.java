@@ -33,10 +33,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 public class Repository {
     private ExecutorService executor;       //for asynch processing
     private MutableLiveData<List<Feed>> feedList;
+    private MutableLiveData<List<Project>> projectList;
     private FirebaseFirestore db;
     //RequestQueue queue; //For Volley
     Context context;
@@ -119,6 +121,8 @@ public class Repository {
         });
         return feedList;
     }
+
+    public LiveData<List<Project>> getAllProjects(){return projectList;}
 
     public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
         MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();

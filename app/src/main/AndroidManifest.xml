@@ -20,14 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PDFActivity" />
-        <activity android:name=".inspiration.InspirationDetailActivity" />
+        <activity android:name=".inspiration.InspirationDetailActivity"></activity>
         <activity android:name=".inspiration.InspirationListActivity" />
-        <activity android:name=".feed.FeedActivity" /> <!-- <activity android:name=".Project.ProjectEditActivity" /> -->
-        <activity android:name=".project.ProjectDetailsActivity" />
-        <activity android:name=".project.ProjectListActivity" />
-        <activity android:name=".project.ProjectEditActivity" />
+        <activity android:name=".feed.FeedActivity" />
+        <activity android:name=".old.OldProjectDetailsActivity" />
+        <activity android:name=".old.OldProjectListActivity" />
+        <activity android:name=".project.ProjectMainActivity" />
         <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".PDFActivity" />
+        <activity android:name=".project.ProjectEditActivity" />
     </application>
 
 </manifest>

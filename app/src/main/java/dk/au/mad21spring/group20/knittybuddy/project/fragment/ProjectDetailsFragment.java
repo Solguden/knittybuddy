@@ -98,14 +98,16 @@ public class ProjectDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (thisProject.getPublished() == false){
+                    thisProject.setPublished(true);
+                    detailVM.updateProject(thisProject);
                     makeToast("Your project is now published");
                     publishBtn.setText(R.string.unpublish);
-                    thisProject.setPublished(true);
                 }
                 else if (thisProject.getPublished() == true){
+                    thisProject.setPublished(false);
+                    detailVM.updateProject(thisProject);
                     makeToast("Your project is not longer published");
                     publishBtn.setText(R.string.publish);
-                    thisProject.setPublished(false);
                 }
             }
         });

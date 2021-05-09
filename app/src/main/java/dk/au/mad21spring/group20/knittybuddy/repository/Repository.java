@@ -210,6 +210,8 @@ public class Repository {
         Map<String, Object> map = new HashMap<>();
         map.put("description", project.getDescription());
         map.put("name", project.getName());
+        map.put("published", project.getPublished());
+        map.put("pdf", project.getPdf());
 
         ref.update(map);
     }

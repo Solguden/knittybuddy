@@ -52,6 +52,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project_list, container, false);
+
         //instantiation of widgets
         btnAddNewProject = v.findViewById(R.id.btn_project_addProject);
         btnGoBack = v.findViewById(R.id.btn_projectList_back);
@@ -69,7 +70,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
         btnGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //implement code here
+                projectSelector.finnish();
             }
         });
 
@@ -101,6 +102,18 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
                 adapter.updateProjectList(projectList);
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+
+        try {
+            projectSelector = (IProjectSelector) activity;
+        } catch (ClassCastException ex) {
+            //Activity does not implement correct interface
+            throw new ClassCastException(activity.toString() + " must implement IProjectSelector");
+        }
     }
 
     //methods

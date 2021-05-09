@@ -68,6 +68,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             projectDetail = new ProjectDetailsFragment();
 
             //setProjects
+            getProjects();
 
             //both fragments get added to the containers, but one is invisible
             getSupportFragmentManager().beginTransaction()
@@ -94,7 +95,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         }
 
         //load projects
-        projects = projectList.getAllProjects();
+        getProjects();
 
         updateFragmentViewState(userView);
     }
@@ -160,6 +161,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
     //method from implemented interface
     @Override
     public void onProjectSelected(int position) {
+        getProjects();
         if(projectDetail!=null){
             Project selectedProject = projects.get(position);
             if(selectedProject!=null) {
@@ -168,5 +170,14 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             }
         }
         updateFragmentViewState(UserView.DETAIL_VIEW);
+    }
+
+    @Override
+    public void finnish() {
+        finnish();
+    }
+
+    public void getProjects(){
+        projects = projectList.getAllProjects();
     }
 }

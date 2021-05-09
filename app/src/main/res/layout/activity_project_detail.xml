@@ -1,97 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".project.ProjectDetailsActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/projectImageDetail"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_projectDetailHeader"
-        app:layout_constraintVertical_bias="0.046"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/btn_projectDetail_back"
-        style="@style/buttonStyle"
-        android:layout_width="82dp"
-        android:layout_height="82dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/go_back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="@string/go_back" />
-
-    <Button
-        android:id="@+id/deleteProjectDetailBtn"
-        style="@style/buttonStyle"
-        android:layout_width="82dp"
-        android:layout_height="82dp"
-        android:text="@string/delete"
-        app:layout_constraintStart_toStartOf="@+id/txt_projectDetailText"
-        app:layout_constraintTop_toTopOf="@+id/btn_projectDetail_back" />
-
-    <TextView
-        android:id="@+id/txt_projectDetailHeader"
-        style="@style/textFieldStyle"
-        android:layout_width="188dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_squared_shape_dark"
-        android:gravity="center"
-        android:text="project name"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/project_name" />
-
-    <EditText
-        android:id="@+id/txt_projectDetailText"
-        style="@style/textFieldStyle"
+    <FrameLayout
+        android:id="@+id/detailContainer"
         android:layout_width="0dp"
-        android:layout_height="332dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/rounded_squared_shape_light"
-        android:gravity="top|left"
-        android:text="Notes bla bla bla"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btn_projectDetail_back"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/projectImageDetail"
-        app:layout_constraintTop_toBottomOf="@+id/projectImageDetail"
-        tools:text="Notes bla bla bla" />
-
-    <Button
-        android:id="@+id/publishDetailProjectBtn"
-        style="@style/buttonStyle"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="@string/publish"
-        app:layout_constraintBottom_toBottomOf="@+id/projectImageDetail"
-        app:layout_constraintEnd_toEndOf="@+id/txt_projectDetailText" />
-
-    <Button
-        android:id="@+id/pdfDetailProjectBtn"
-        style="@style/buttonStyle"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/pdf"
-        app:layout_constraintBottom_toTopOf="@+id/publishDetailProjectBtn"
-        app:layout_constraintEnd_toEndOf="@+id/publishDetailProjectBtn"
-        app:layout_constraintStart_toStartOf="@+id/publishDetailProjectBtn" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

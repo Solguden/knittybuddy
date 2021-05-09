@@ -6,7 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import dk.au.mad21spring.group20.knittybuddy.project.Project;
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
+
 
 public class ProjectDetailViewModel extends AndroidViewModel {
 

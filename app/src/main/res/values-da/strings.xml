@@ -11,4 +11,9 @@
     <string name="publish">Udgiv</string>
     <string name="pdf">PDF</string>
     <string name="delete">Slet</string>
+    <string name="openPdf">Åbner pdf fil</string>
+    <string name="unpublish">Fjern udgivelse</string>
+    <string name="Save">Gem</string>
+    <string name="enterProjectName">Tilføj dit projektnavn</string>
+    <string name="enterDescription">Tilføj beskrivelse en til dit projekt her</string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.au.mad21spring.group20.knittybuddy.PDFActivity;
 import dk.au.mad21spring.group20.knittybuddy.R;
 
 
@@ -20,6 +22,7 @@ public class FeedActivity extends AppCompatActivity {
     FeedViewModel feedVM;
     Button addButton;
     Button ownerButton;
+    Button pdfButton;
     List<Feed> feedList = new ArrayList<>();
     TextView txtFeed;
 
@@ -53,9 +56,22 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
 
+        pdfButton = findViewById(R.id.pdfBtn);
+        pdfButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                gotoPDF();
+            }
+        });
+        
         txtFeed = findViewById(R.id.txtFeed);
 
         updateUI();
+    }
+
+    private void gotoPDF(){
+        Intent intent = new Intent(this, PDFActivity.class);
+        startActivityForResult(intent,123 );
     }
 
     private void AddRandom(){
@@ -63,22 +79,13 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     private void getBasedOnOwnerId(){
-        List<Feed> list = new ArrayList<>();
-        list = feedVM.getByOwnerId(84);
-
-
-
-//        if(list.size()<1) {
-//            txtFeed.setText("No owner");
-//        } else {
-//            String display = "Feed count: "+list.size() ;
-//            for(Feed f : list){
-//                display += "\n" + f.getTopic()+ " " + f.getDescription() + " " + f.getDifficilty() +  " " + f.getOwnerId();
-//            }
-//            txtFeed.setText(display);
-//        }
-//        Log.w("TEEEST", list.indexOf(0) + " ");
-
+        feedVM.getByOwnerId(84).observe(this, new Observer<List<Feed>>() {
+            @Override
+            public void onChanged(List<Feed> feed) {
+                feedList = feed;
+                updateUI();
+            }
+        });
     }
 
     private void updateUI(){
@@ -92,6 +99,4 @@ public class FeedActivity extends AppCompatActivity {
             txtFeed.setText(display);
         }
     }
-
-
 }

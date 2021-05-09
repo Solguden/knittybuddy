@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 //this class is inspired by lecture 3 "ListAndGrid" demo code
 //this class handles the scrolling of projects in the project list
@@ -77,7 +78,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.projectName.setText(projectList.get(position).getName());
-        //holder.projectImage.setImageIcon(projectList.get(position).getImageId());
+        holder.projectImage.setImageResource(R.drawable.knittybuddy_launcher_pink);
     }
 
     @Override

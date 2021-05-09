@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.project;
+package dk.au.mad21spring.group20.knittybuddy.model;
 
 public class Project {
     private String Id;
@@ -6,15 +6,21 @@ public class Project {
     private String Description;
     private String ImageId;
     private String Pdf;
+    private boolean Published;
+    private String UserId;
 
-    public Project(){}
+    public Project(){
+        Published = false;
+    }
 
-    public Project(String id, String name, String description, String imageId, String pdf){
+    public Project(String id, String name, String description, String imageId, String pdf, boolean published, String userId){
         Id = id;
         Name = name;
         Description = description;
         ImageId = imageId;
         Pdf = pdf;
+        Published = published;
+        UserId = userId;
     }
 
     public String getId() {
@@ -49,12 +55,16 @@ public class Project {
         ImageId = imageId;
     }
 
-    public String setPdf() {
+    public String getPdf() {
         return Pdf;
     }
 
     public void setPdf(String pdf) {
         Pdf = pdf;
     }
+
+    public boolean getPublished() { return Published; }
+
+    public void setPublished(boolean published) { Published = published; }
 
 }

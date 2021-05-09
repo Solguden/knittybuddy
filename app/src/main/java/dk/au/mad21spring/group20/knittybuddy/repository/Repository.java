@@ -59,6 +59,11 @@ public class Repository {
         return instance;
     }
 
+    //Login
+    public void createUser(String fullName, String email, String password){
+
+    }
+
     //Feed
     void initFeed(){
         feedList = new MutableLiveData<List<Feed>>();

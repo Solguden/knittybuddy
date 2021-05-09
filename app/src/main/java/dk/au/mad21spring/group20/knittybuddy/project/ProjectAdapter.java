@@ -78,7 +78,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.projectName.setText(projectList.get(position).getName());
-        //holder.projectImage.setImageIcon(projectList.get(position).getImageId());
+        holder.projectImage.setImageResource(R.drawable.knittybuddy_launcher_pink);
     }
 
     @Override

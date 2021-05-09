@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ public class ProjectDetailsFragment extends Fragment {
     //widgets
     EditText nameProjectEditTxt;
     EditText descriptionProjectDetailsEditTxt;
+    ImageView projectImageProjectDetail;
     Button goBackBtn;
     Button pdfBtn;
     Button publishBtn;
@@ -66,6 +68,7 @@ public class ProjectDetailsFragment extends Fragment {
         //instantiation of widgets
         nameProjectEditTxt = v.findViewById(R.id.headerProjectDetailEditTxt);
         descriptionProjectDetailsEditTxt = v.findViewById(R.id.descriptionProjectDetailEditTxt);
+        projectImageProjectDetail = v.findViewById(R.id.projectImageDetail);
         goBackBtn = v.findViewById(R.id.goBackProjectDetailBtn);
         pdfBtn = v.findViewById(R.id.pdfDetailProjectBtn);
         publishBtn = v.findViewById(R.id.publishDetailProjectBtn);
@@ -74,6 +77,8 @@ public class ProjectDetailsFragment extends Fragment {
 
         builder = new AlertDialog.Builder(getContext(), R.style.alertBoxStyle);
         thisProject = new Project();
+
+        updateUI();
 
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,8 +160,6 @@ public class ProjectDetailsFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-
-        updateUI();
 
         return v;
     }
@@ -276,6 +279,7 @@ public class ProjectDetailsFragment extends Fragment {
     private void updateUI(){
         nameProjectEditTxt.setText(thisProject.getName());
         nameProjectEditTxt.setText(thisProject.getDescription());
+        projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
     }
 
     public void makeToast(String txt){

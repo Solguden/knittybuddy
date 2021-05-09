@@ -26,6 +26,7 @@ import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
 public class FeedViewModel extends ViewModel {
     private static final String TAG = "MainViewModel";
     LiveData<List<Feed>> feed;
+    LiveData<List<Feed>> filteredFeed;
     Repository repository;
     public FeedViewModel(){
         repository = Repository.getRepositoryInstance();
@@ -52,7 +53,9 @@ public class FeedViewModel extends ViewModel {
         repository.addFeed(new Feed(topic,difficulty,description,ownerId));
     }
 
-    public List<Feed> getByOwnerId(int ownerId){ return repository.getByOwnerId(ownerId); }
+    public LiveData<List<Feed>> getByOwnerId(int ownerId){
+        return repository.getByOwnerId(ownerId);
+    }
 
     public void deleteAll(){
 //        FirebaseFirestore.getInstance()

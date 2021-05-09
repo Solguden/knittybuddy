@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import dk.au.mad21spring.group20.knittybuddy.Project.Project;
+import dk.au.mad21spring.group20.knittybuddy.project.Project;
 
 public class ProjectEditViewModel extends AndroidViewModel {
 

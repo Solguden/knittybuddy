@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.Project;
+package dk.au.mad21spring.group20.knittybuddy.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -79,7 +79,7 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
 
         Intent detailsIntent = new Intent(this, ProjectDetailsActivity.class);
         detailsIntent.putExtra("id",projectList.get(index).getId()); //TO DO: hardcode name
-        startActivity(detailsIntent);
-        //startActivityForResult(detailsIntent, 100); //TO DO: hardcode requestCode
+//        startActivity(detailsIntent);
+        startActivityForResult(detailsIntent, 100); //TO DO: hardcode requestCode
     }
 }

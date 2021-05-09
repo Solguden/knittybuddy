@@ -21,7 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import dk.au.mad21spring.group20.knittybuddy.Project.Project;
+import dk.au.mad21spring.group20.knittybuddy.project.Project;
 
 
 public class ProjectListViewModel extends AndroidViewModel {

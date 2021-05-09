@@ -98,26 +98,26 @@ public class Repository {
 
     public LiveData<List<Feed>> getFeed(){return feedList;}
 
-    //VIRKER IKKE!
-    public ArrayList<Feed> getByOwnerId(int ownerId){ //bruge executer run her?
-        MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();
-                db.collection("feed")
-                        .whereEqualTo("ownerId", ownerId)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                    }
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-//                Log.d(TAG, "GAAAAAAMIIIINNNGG" + list.getValue().get(0).getTopic());
-                return list.getValue();
+    public MutableLiveData<List<Feed>> getByOwnerId(int ownerId){ //bruge executer run her?
+        feedList = new MutableLiveData<List<Feed>>();
+        db.collection("feed")
+        .whereEqualTo("ownerId", ownerId)
+        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                ArrayList<Feed> updatedFeed = new ArrayList<>();
+                if(snapshot!=null && !snapshot.isEmpty()){
+                    for(DocumentSnapshot doc : snapshot.getDocuments()){
+                        Feed f = doc.toObject(Feed.class);
+                        if(f!=null) {
+                            updatedFeed.add(f);
+                        }
+                    }
+                    feedList.setValue(updatedFeed);
+                }
+            }
+        });
+        return feedList;
     }
 
     public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
@@ -125,30 +125,23 @@ public class Repository {
         Future<ArrayList<Feed>> feed = executor.submit(new Callable<ArrayList<Feed>>() {
             @Override
             public ArrayList<Feed> call() {
-                db.collection("feed")
-                        .whereEqualTo("ownerId", ownerId)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                feedList = new MutableLiveData<List<Feed>>();
+                db.collection("feed").whereEqualTo("ownerId", 84)
+                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                ArrayList<Feed> feed = new ArrayList<>();
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                                ArrayList<Feed> updatedFeed = new ArrayList<>();
+                                if(snapshot!=null && !snapshot.isEmpty()){
+                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
                                         Feed f = doc.toObject(Feed.class);
                                         if(f!=null) {
-                                            feed.add(f);
-                                            Log.d(TAG, "Fetched feed by ownerId: " + f.getTopic() );
+                                            updatedFeed.add(f);
                                         }
                                     }
-                                    list.setValue(feed);
-                                    Log.d(TAG, "Fetched feed by ownerId: " + list.getValue().get(0).getTopic() );
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                    feedList.setValue(updatedFeed);
                                 }
                             }
                         });
-                Log.d(TAG, "GAAAAAAMIIIINNNGG" + list.getValue().get(0).getTopic());
                 return list.getValue();
             }
         });

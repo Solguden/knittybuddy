@@ -4,26 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background">
+    android:background="@drawable/rounded_squared_shape_listitem">
 
-    //this button has another color compared to the rest of the buttons
-    <Button
-        android:id="@+id/btn_project"
-        style="@style/buttonStyle"
-        android:layout_width="277dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+    <TextView
+        android:id="@+id/projectNameListItemtxt"
+        style="@style/textFieldStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/round_shape"
-        android:text="Project"
-        app:backgroundTint="@color/backgroundHeader"
+        android:text="@string/project_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/projectImageItem"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/projectImageItem"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,8 @@ package dk.au.mad21spring.group20.knittybuddy.project;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
 //this class is inspired by lecture 3 "ListAndGrid" demo code
 //this class handles the scrolling of projects in the project list
@@ -38,8 +40,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     //internal class
     public class ProjectViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        //widget
-        Button projectName;
+        //widgets
+        TextView projectName;
+        ImageView projectImage;
 
         ProjectAdapter.IProjectItemClickedListener listener;
 
@@ -49,7 +52,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             listener = projectItemClickedListener;
 
             //instantiation of widget
-            projectName = itemView.findViewById(R.id.btn_project);
+            projectName = itemView.findViewById(R.id.projectNameListItemtxt);
+            projectImage = itemView.findViewById(R.id.projectImageItem);
 
             itemView.setOnClickListener(this);
         }
@@ -74,6 +78,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.projectName.setText(projectList.get(position).getName());
+        //holder.projectImage.setImageIcon(projectList.get(position).getImageId());
     }
 
     @Override

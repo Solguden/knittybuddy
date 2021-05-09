@@ -22,11 +22,23 @@
         <item name="android:background">@drawable/round_shape</item>
         <item name="backgroundTint">@color/buttonHeader</item>
         <item name="android:fontFamily">casual</item>
+        <item name="android:layout_width">82dp</item>
+        <item name="android:layout_height">82dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textFieldStyle" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">casual</item>
+    </style>
+
+    <style name="alertBoxStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/textColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">casual</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

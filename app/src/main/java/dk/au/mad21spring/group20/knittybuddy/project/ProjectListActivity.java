@@ -1,6 +1,8 @@
 package dk.au.mad21spring.group20.knittybuddy.project;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
+import dk.au.mad21spring.group20.knittybuddy.project.ViewModel.ProjectListViewModel;
 
 public class ProjectListActivity extends AppCompatActivity implements ProjectAdapter.IProjectItemClickedListener {
 
@@ -20,6 +24,9 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
     Button btnAddNewProject;
     Button btnGoBack;
     RecyclerView rvProjectList;
+
+    //app state
+    private ProjectListViewModel listVM;
 
     //attributes
     private ProjectAdapter adapter;
@@ -29,7 +36,7 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_list);
+        setContentView(R.layout.fragment_project_list);
 
         //instantiation of widgets
         btnAddNewProject = findViewById(R.id.btn_project_addProject);
@@ -41,6 +48,19 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
         adapter = new ProjectAdapter(this);
         rvProjectList.setLayoutManager(new LinearLayoutManager(this));
         rvProjectList.setAdapter(adapter);
+
+        //view models
+        listVM = new ViewModelProvider(this).get(ProjectListViewModel.class);
+//        listVM.getAllProjects().observe(this, new Observer<ArrayList<Project>>() {
+//            @Override
+//            public void onChanged(ArrayList<Project> projects) {
+//                if (projects.size() == 0){
+//                    //create data
+//                }
+//                projectList = projects;
+//                adapter.updateProjectList(projectList);
+//            }
+//        });
 
         //button listeners
         btnAddNewProject.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +79,8 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
         });
 
         //test
-        Project testProject1 = new Project("1", "Sommerkjole", "Fin luftig kjole", "111", "pdfLink");
-        Project testProject2 = new Project("2", "Vinter trøje", "Dejlig varm sweather", "222", "pdfLink");
+        Project testProject1 = new Project("1", "Sommerkjole", "Fin luftig kjole", "111", "pdfLink", false, "1");
+        Project testProject2 = new Project("2", "Vinter trøje", "Dejlig varm sweather", "222", "pdfLink", false, "1");
         projectList.add(testProject1);
         projectList.add(testProject2);
         adapter.updateProjectList(projectList);
@@ -69,14 +89,13 @@ public class ProjectListActivity extends AppCompatActivity implements ProjectAda
     //methods
     //user can add a new project
     private void addProject() {
-        //her skal detail activity åbnes
-        //den skal være tom
+        Intent detailsIntent = new Intent(this, ProjectDetailsActivity.class);
+        startActivity(detailsIntent);
     }
 
     //user opens an existing project
     @Override
     public void onProjectClicked(int index) {
-
         Intent detailsIntent = new Intent(this, ProjectDetailsActivity.class);
         detailsIntent.putExtra("id",projectList.get(index).getId()); //TO DO: hardcode name
 //        startActivity(detailsIntent);

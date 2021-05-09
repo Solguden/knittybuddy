@@ -1,4 +1,4 @@
-package dk.au.mad21spring.group20.knittybuddy.Inspiration;
+package dk.au.mad21spring.group20.knittybuddy.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 
-public class InspirationDetailActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inspiration_detail);
+        setContentView(R.layout.activity_register);
     }
 }

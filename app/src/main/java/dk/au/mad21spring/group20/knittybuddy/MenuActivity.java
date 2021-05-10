@@ -1,9 +1,11 @@
 package dk.au.mad21spring.group20.knittybuddy;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -64,11 +66,26 @@ public class MenuActivity extends AppCompatActivity {
     private void goToProjectList(){
         Intent intent = new Intent(this, ProjectMainActivity.class);
         startActivityForResult(intent,Constants.REQUEST_CODE_PROJECTS );
+        Log.d("create project", "projectMainActivity has been created");
     }
 
     private void goToInspiration(){
         Intent intent = new Intent(this, InspirationListActivity.class);
         startActivityForResult(intent,Constants.REQUEST_CODE_INSPIRATION );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == Constants.REQUEST_CODE_PROJECTS)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                Log.d("Finish", "projectMainActivity has been finished");
+            }
+        }
     }
 
 }

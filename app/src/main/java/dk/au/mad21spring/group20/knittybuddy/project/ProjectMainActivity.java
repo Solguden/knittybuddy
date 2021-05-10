@@ -3,6 +3,7 @@ package dk.au.mad21spring.group20.knittybuddy.project;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -41,12 +42,14 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
     //list of project objects
     private List<Project> projects;
     private int selectedProjectIndex;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multi_project_main);
 
+        Log.d("create main project", "project main created");
         //instantiation of containers
         listContainer = findViewById(R.id.list_container);
         detailContainer = findViewById(R.id.details_container);
@@ -122,17 +125,20 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             if (view == UserView.LIST_VIEW) {
                 listContainer.setVisibility(View.VISIBLE);
                 detailContainer.setVisibility(View.GONE);
-                changeDetailContainerFragment(UserView.DETAIL_VIEW); //ikke sikker om dette er nødvendigt?
+                changeDetailContainerFragment(UserView.DETAIL_VIEW);
             } else if (view == UserView.DETAIL_VIEW) {
                 listContainer.setVisibility(View.GONE);
                 detailContainer.setVisibility(View.VISIBLE);
-                changeDetailContainerFragment(view); //ikke sikker om dette er nødvendigt?
+                changeDetailContainerFragment(view);
             }
         } else {
             if (view == UserView.LIST_VIEW) {
-                changeDetailContainerFragment(UserView.DETAIL_VIEW); //ikke sikker om dette er nødvendigt?
+                changeDetailContainerFragment(UserView.DETAIL_VIEW);
+                detailContainer.setVisibility(View.INVISIBLE);
+
             } else {
-                changeDetailContainerFragment(view); //ikke sikker om dette er nødvendigt?
+                changeDetailContainerFragment(view);
+                detailContainer.setVisibility(View.VISIBLE);
             }
         }
         return true;
@@ -158,6 +164,9 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
     //this method will open an empty project in the detail view
     @Override
     public void addNewProject() {
+        Project project = new Project();
+        project.setUserId(userId);
+        projectDetail.setProject(project);
         updateFragmentViewState(UserView.DETAIL_VIEW);
     }
 
@@ -169,8 +178,8 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
     }
 
     @Override
-    public void finish() {
-        finish();
+    public void makeDetailInvisible() {
+        updateFragmentViewState(UserView.LIST_VIEW);
     }
 
     public void getProjects(){

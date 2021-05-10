@@ -46,6 +46,7 @@ public class ProjectDetailsFragment extends Fragment {
     //attributes
     private Project thisProject;
     private String id;
+    private boolean textChanged = false;
 
     private IProjectSelector projectSelector;
 
@@ -69,6 +70,7 @@ public class ProjectDetailsFragment extends Fragment {
         pdfBtn = v.findViewById(R.id.pdfDetailProjectBtn);
         publishBtn = v.findViewById(R.id.publishDetailProjectBtn);
         saveBtn = v.findViewById(R.id.saveProjectDetailBtn);
+        saveBtn.setVisibility(View.INVISIBLE);
         deleteBtn = v.findViewById(R.id.deleteProjectDetailBtn);
 
         builder = new AlertDialog.Builder(getContext(), R.style.alertBoxStyle);
@@ -106,7 +108,6 @@ public class ProjectDetailsFragment extends Fragment {
             }
         });
 
-        saveBtn.setVisibility(View.GONE);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +144,12 @@ public class ProjectDetailsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                addSaveButton();
+                if (textChanged == true)
+                {
+                    addSaveButton();
+                } else {
+                    textChanged = true;
+                }
             }
 
             @Override
@@ -202,13 +208,12 @@ public class ProjectDetailsFragment extends Fragment {
 
     //methods
     public void setProject(Project project){
-//        detailVM.getProject(userId, name).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
-//            @Override
-//            public void onChanged(List<Project> project) {
-//                updateUI(project.get(0));
-//            }
-//        });
         thisProject = project;
+        if (thisProject.getId().equals("0")){
+            deleteBtn.setVisibility(View.INVISIBLE);
+        } else {
+            deleteBtn.setVisibility(View.VISIBLE);
+        }
         updateUI(thisProject);
     }
 
@@ -222,14 +227,15 @@ public class ProjectDetailsFragment extends Fragment {
 
     private void goBack() {
         if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
-            if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
-                confirmBack();
-            }
-        }
-        else if (nameProjectEditTxt.getText().toString().equals("")){
+//            if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
+//                confirmBack();
+//            }
+            confirmBack();
+        } else if (nameProjectEditTxt.getText().toString().equals("") && !descriptionProjectDetailsEditTxt.getText().toString().equals("")){
             makeToast("You must enter a project name");
-        }
-        else projectSelector.finish();
+        } else if (!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
+            confirmBack();
+        } else projectSelector.makeDetailInvisible(); //projectSelector.finish();
     }
 
     //reference: https://www.javatpoint.com/android-alert-dialog-example
@@ -239,7 +245,8 @@ public class ProjectDetailsFragment extends Fragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        projectSelector.finish();
+                        //projectSelector.finish();
+                        projectSelector.makeDetailInvisible();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -262,10 +269,11 @@ public class ProjectDetailsFragment extends Fragment {
                         deleteProject(thisProject);
                         makeToast("Project deleted");
                         //midlertidigt hack:
-                        nameProjectEditTxt.setText("");
-                        descriptionProjectDetailsEditTxt.setText("");
-                        publishBtn.setText(R.string.publish);
+                        //nameProjectEditTxt.setText("");
+                        //descriptionProjectDetailsEditTxt.setText("");
+                        //publishBtn.setText(R.string.publish);
                         //projectSelector.finish();
+                        projectSelector.makeDetailInvisible();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

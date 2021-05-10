@@ -211,6 +211,7 @@ public class Repository {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Document added: " + documentReference.getId());
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

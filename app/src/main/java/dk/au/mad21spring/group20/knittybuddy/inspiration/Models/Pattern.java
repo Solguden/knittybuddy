@@ -1,6 +1,8 @@
 package dk.au.mad21spring.group20.knittybuddy.inspiration.Models;
 
-public class Pattern {
+import org.json.JSONObject;
+
+public class Pattern extends JSONObject {
     public PatternAuthor designer;
     public Photo first_photo;
     public Boolean free;

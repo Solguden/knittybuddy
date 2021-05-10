@@ -35,7 +35,7 @@
         tools:listitem="@layout/inspiration_list_item" />
 
     <Button
-        android:id="@+id/btn_projectList_back"
+        android:id="@+id/btn_inspirationList_back"
         style="@style/buttonStyle"
         android:layout_width="76dp"
         android:layout_height="76dp"
@@ -53,14 +53,24 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_projectList_back"
-        app:layout_constraintEnd_toStartOf="@+id/btn_projectList_back"
+        android:text="@string/search"
+        app:layout_constraintEnd_toStartOf="@+id/btn_inspirationList_back"
         app:layout_constraintHorizontal_bias="0.287"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_projectList_back"
-        app:layout_constraintVertical_bias="0.516"
+        app:layout_constraintTop_toTopOf="@+id/btn_inspirationList_back"
         tools:text="@string/search" />
+
+    <Button
+        android:id="@+id/btn_inspirationList_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/search"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_inspirationList_back"
+        app:layout_constraintEnd_toEndOf="@+id/inspirationSearchText"
+        app:layout_constraintStart_toStartOf="@+id/inspirationSearchText"
+        app:layout_constraintTop_toBottomOf="@+id/inspirationSearchText"
+        app:layout_constraintVertical_bias="0.484" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

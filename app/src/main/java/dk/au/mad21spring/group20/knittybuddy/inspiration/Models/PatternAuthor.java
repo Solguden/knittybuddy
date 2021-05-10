@@ -1,6 +1,8 @@
 package dk.au.mad21spring.group20.knittybuddy.inspiration.Models;
 
-public class PatternAuthor {
+import org.json.JSONObject;
+
+public class PatternAuthor extends JSONObject {
     public int crochet_pattern_count;
     public int favorites_count;
     public int id;

@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
 import dk.au.mad21spring.group20.knittybuddy.login.RegisterActivity;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
@@ -157,7 +158,7 @@ public class Repository {
 
     public MutableLiveData<List<Project>> getAllProjectsFromDB(){
         MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
-        db.collection("projects")
+        db.collection(Constants.COLLECTION_PROJECT)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
@@ -179,17 +180,9 @@ public class Repository {
         return projects;
     }
 
-    public void updateProject(String userId, String name){
-        Task<QuerySnapshot> docref = db.collection("projects")
-                .whereEqualTo("userid", userId)
-                .whereEqualTo("name", name)
-                .get();
-
-    }
-
     public MutableLiveData<List<Project>> getProjectById(String userId, String name){
         projectList = new MutableLiveData<List<Project>>();
-        db.collection("projects")
+        db.collection(Constants.COLLECTION_PROJECT)
                 .whereEqualTo("userid", userId)
                 .whereEqualTo("name", name)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -212,12 +205,12 @@ public class Repository {
     }
 
     public void addProject(Project project){
-        db.collection("projects")
+        db.collection(Constants.COLLECTION_PROJECT)
                 .add(project)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d(TAG, "Document added: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -230,7 +223,7 @@ public class Repository {
 
     //reference: https://www.youtube.com/watch?v=KxY5-dBSdgk&ab_channel=yoursTRULY
     public void updateProject(Project project){
-        DocumentReference ref = db.collection("projects").document(project.getId());
+        DocumentReference ref = db.collection(Constants.COLLECTION_PROJECT).document(project.getId());
 
         Map<String, Object> map = new HashMap<>();
         map.put("description", project.getDescription());
@@ -239,8 +232,19 @@ public class Repository {
         map.put("pdf", project.getPdf());
 
         ref.update(map);
+
+        Log.d(TAG, "Document updated: " + project.getId() + "name: " + project.getName());
     }
 
+    public void deleteProject(Project project){
+        db.collection(Constants.COLLECTION_PROJECT).document(project.getId())
+                .delete();
+
+        Log.d(TAG, "Document deleted: " + project.getId() + "name: " + project.getName());
+    }
+
+
+    //--------------------------------------------
 
     public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
         MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();

@@ -98,16 +98,10 @@ public class ProjectDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (thisProject.getPublished() == false){
-                    thisProject.setPublished(true);
-                    detailVM.updateProject(thisProject);
-                    makeToast("Your project is now published");
-                    publishBtn.setText(R.string.unpublish);
+                    publish();
                 }
                 else if (thisProject.getPublished() == true){
-                    thisProject.setPublished(false);
-                    detailVM.updateProject(thisProject);
-                    makeToast("Your project is not longer published");
-                    publishBtn.setText(R.string.publish);
+                    unPublish();
                 }
             }
         });
@@ -176,6 +170,7 @@ public class ProjectDetailsFragment extends Fragment {
         return v;
     }
 
+
     @Override
     public void onResume() { super.onResume(); }
 
@@ -221,8 +216,8 @@ public class ProjectDetailsFragment extends Fragment {
         saveBtn.setVisibility(View.VISIBLE);
     }
 
-    private void deleteProject(String id) {
-        //kode som sletter et projekt
+    private void deleteProject(Project project) {
+        detailVM.deleteProject(project);
     }
 
     private void goBack() {
@@ -234,7 +229,7 @@ public class ProjectDetailsFragment extends Fragment {
         else if (nameProjectEditTxt.getText().toString().equals("")){
             makeToast("You must enter a project name");
         }
-        //else finish();
+        else projectSelector.finish();
     }
 
     //reference: https://www.javatpoint.com/android-alert-dialog-example
@@ -264,9 +259,13 @@ public class ProjectDetailsFragment extends Fragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteProject(thisProject.getId());
+                        deleteProject(thisProject);
                         makeToast("Project deleted");
-                        //finish();
+                        //midlertidigt hack:
+                        nameProjectEditTxt.setText("");
+                        descriptionProjectDetailsEditTxt.setText("");
+                        publishBtn.setText(R.string.publish);
+                        //projectSelector.finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -279,7 +278,43 @@ public class ProjectDetailsFragment extends Fragment {
         alert.show();
     }
 
-//    //reference: https://www.javatpoint.com/android-alert-dialog-example
+    private void publish() {
+        thisProject.setPublished(true);
+        detailVM.updateProject(thisProject);
+        makeToast("Your project is now published");
+        publishBtn.setText(R.string.unpublish);
+    }
+
+
+    private void unPublish() {
+        thisProject.setPublished(false);
+        detailVM.updateProject(thisProject);
+        makeToast("Your project is not longer published");
+        publishBtn.setText(R.string.publish);
+    }
+
+    private void updateUI(Project project){
+        nameProjectEditTxt.setText(project.getName());
+        descriptionProjectDetailsEditTxt.setText(project.getDescription());
+        projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
+        if (project.getPublished() == true){
+            publishBtn.setText(R.string.unpublish);
+        }
+        if (project.getPublished() == false){
+            publishBtn.setText(R.string.publish);
+        }
+    }
+
+    public void makeToast(String txt){
+        Context context = getContext();
+        CharSequence text = txt;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    //    //reference: https://www.javatpoint.com/android-alert-dialog-example
 //    private void confirmSaveChanges() {
 //        builder.setMessage("Do you want so save the changes?")
 //                .setCancelable(false)
@@ -300,19 +335,4 @@ public class ProjectDetailsFragment extends Fragment {
 //        AlertDialog alert = builder.create();
 //        alert.show();
 //    }
-
-    private void updateUI(Project project){
-        nameProjectEditTxt.setText(project.getName());
-        descriptionProjectDetailsEditTxt.setText(project.getDescription());
-        projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
-    }
-
-    public void makeToast(String txt){
-        Context context = getContext();
-        CharSequence text = txt;
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
 }

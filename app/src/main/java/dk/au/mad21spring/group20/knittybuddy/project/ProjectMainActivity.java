@@ -147,7 +147,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         }
     }
 
-    //ressource: https://stackoverflow.com/questions/5832368/tablet-or-phone-android
+    //reference: https://stackoverflow.com/questions/5832368/tablet-or-phone-android
     public boolean isTablet(Context context) {
         boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
         boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);

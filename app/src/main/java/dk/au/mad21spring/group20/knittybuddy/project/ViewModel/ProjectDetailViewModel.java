@@ -42,4 +42,6 @@ public class ProjectDetailViewModel extends AndroidViewModel {
     public void addNewProject(Project project){
         repository.addProject(project);
     }
+
+    public void deleteProject(Project project) {repository.deleteProject(project); }
 }

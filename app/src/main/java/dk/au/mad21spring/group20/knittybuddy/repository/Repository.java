@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -35,6 +37,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.firebase.firestore.SnapshotMetadata;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,9 +50,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
+import dk.au.mad21spring.group20.knittybuddy.login.RegisterActivity;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
+import dk.au.mad21spring.group20.knittybuddy.model.User;
 
 public class Repository {
     private ExecutorService executor;       //for asynch processing
@@ -75,6 +81,27 @@ public class Repository {
             instance = new Repository();
         }
         return instance;
+    }
+
+    //Login
+    public MutableLiveData<Boolean> createUser(User user){
+        MutableLiveData<Boolean> created = new MutableLiveData<Boolean>(false);
+        db.collection("users").add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        created.setValue(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                        created.setValue(false);
+                    }
+                });
+        return created;
     }
 
     //Feed
@@ -145,14 +172,17 @@ public class Repository {
 
     public MutableLiveData<List<Project>> getAllProjectsFromDB(){
         MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
-        db.collection("projects")
+        db.collection(Constants.COLLECTION_PROJECT)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
                         ArrayList<Project> newProjectList = new ArrayList<>();
                         if(snapshot!=null && !snapshot.isEmpty()){
                             for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Log.d("image id from database", "" + doc.toObject(Project.class).getImageId());
+                                Log.d("name from database", "" + doc.toObject(Project.class).getName());
                                 Project p = doc.toObject(Project.class);
+                                p.setId(doc.getId());
                                 if(p!=null) {
                                     newProjectList.add(p);
                                 }
@@ -163,6 +193,73 @@ public class Repository {
                 });
         return projects;
     }
+
+    public MutableLiveData<List<Project>> getProjectById(String userId, String name){
+        projectList = new MutableLiveData<List<Project>>();
+        db.collection(Constants.COLLECTION_PROJECT)
+                .whereEqualTo("userid", userId)
+                .whereEqualTo("name", name)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        ArrayList<Project> updatedProject = new ArrayList<>();
+                        if(snapshot!=null && !snapshot.isEmpty()){
+                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Project p = doc.toObject(Project.class);
+                                p.setId(doc.getId());
+                                if(p!=null) {
+                                    updatedProject.add(p);
+                                }
+                            }
+                            projectList.setValue(updatedProject);
+                        }
+                    }
+                });
+        return projectList;
+    }
+
+    public void addProject(Project project){
+        db.collection(Constants.COLLECTION_PROJECT)
+                .add(project)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Document added: " + documentReference.getId());
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+
+    //reference: https://www.youtube.com/watch?v=KxY5-dBSdgk&ab_channel=yoursTRULY
+    public void updateProject(Project project){
+        DocumentReference ref = db.collection(Constants.COLLECTION_PROJECT).document(project.getId());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("description", project.getDescription());
+        map.put("name", project.getName());
+        map.put("published", project.getPublished());
+        map.put("pdf", project.getPdf());
+
+        ref.update(map);
+
+        Log.d(TAG, "Document updated: " + project.getId() + "name: " + project.getName());
+    }
+
+    public void deleteProject(Project project){
+        db.collection(Constants.COLLECTION_PROJECT).document(project.getId())
+                .delete();
+
+        Log.d(TAG, "Document deleted: " + project.getId() + "name: " + project.getName());
+    }
+
+
+    //--------------------------------------------
 
     public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
         MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();

@@ -4,16 +4,22 @@ public class Project {
     private String Id;
     private String Name;
     private String Description;
-    private String ImageId;
+    private int ImageId;
     private String Pdf;
     private boolean Published;
     private String UserId;
 
     public Project(){
-        Published = false;
+        Id = "0"; //default value
+        Name = "";
+        Description = "";
+        ImageId = 2131165326; //default value - app logo
+        Pdf = "no pdf";
+        Published = false; //a project is per default not published
+        UserId = "0";
     }
 
-    public Project(String id, String name, String description, String imageId, String pdf, boolean published, String userId){
+    public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId){
         Id = id;
         Name = name;
         Description = description;
@@ -34,7 +40,6 @@ public class Project {
     public String getName() {
         return Name;
     }
-
     public void setName(String name) {
         Name = name;
     }
@@ -47,11 +52,11 @@ public class Project {
         Description = description;
     }
 
-    public String getImageId() {
+    public int getImageId() {
         return ImageId;
     }
 
-    public void setImageId(String imageId) {
+    public void setImageId(int imageId) {
         ImageId = imageId;
     }
 
@@ -66,5 +71,9 @@ public class Project {
     public boolean getPublished() { return Published; }
 
     public void setPublished(boolean published) { Published = published; }
+
+    public String getUserId() { return UserId; }
+
+    public void setUserId(String userId) { UserId = userId; }
 
 }

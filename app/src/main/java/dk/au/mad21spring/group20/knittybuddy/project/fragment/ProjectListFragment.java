@@ -1,7 +1,9 @@
 package dk.au.mad21spring.group20.knittybuddy.project.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +54,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project_list, container, false);
-
+        Log.d("create", "create  view project list");
         //instantiation of widgets
         btnAddNewProject = v.findViewById(R.id.btn_project_addProject);
         btnGoBack = v.findViewById(R.id.btn_projectList_back);
@@ -70,7 +72,12 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
         btnGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                projectSelector.finnish();
+                //projectSelector.finish();
+                //projectSelector.makeDetailInvisible();
+
+                //her skal vi stoppe for activity "ProjectMainActivity" og gå tilbage til "MenuActivity"
+                getActivity().setResult(Activity.RESULT_OK);
+                getActivity().finish();
             }
         });
 
@@ -85,6 +92,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Log.d("create", "create activity (fragment) project list");
         //recyclerview
         adapter = new ProjectAdapter(this);
         rvProjectList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -92,9 +100,11 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
 
         //view models
         listVM = new ViewModelProvider(getActivity()).get(ProjectListViewModel.class);
+        Log.d("project list", ""+ getActivity());
         listVM.getAllProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() { //er i tvivl om "getViewLifecycleOwner()" - https://blog.usejournal.com/observe-livedata-from-viewmodel-in-fragment-fd7d14f9f5fb
             @Override
             public void onChanged(List<Project> projects) {
+                Log.d("onChanged", "fragment project list");
                 if (projects.size() == 0){
                     projectList = new ArrayList<Project>();
                 }
@@ -102,6 +112,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
                 adapter.updateProjectList(projectList);
             }
         });
+        Log.d("lifecycle", "" + getViewLifecycleOwner());
     }
 
     @Override
@@ -129,13 +140,13 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     @Override
     public void onProjectClicked(int index){
         thisProject = projectList.get(index);
-        onProjectSelected(index);
+        onProjectSelected(thisProject);
     }
 
     //method from IProjectSelector
-    public void onProjectSelected(int position){
+    public void onProjectSelected(Project project){
         if(projectSelector!=null) {
-            projectSelector.onProjectSelected(position);
+            projectSelector.onProjectSelected(project);
         }
     }
 

@@ -1,7 +1,5 @@
 package dk.au.mad21spring.group20.knittybuddy.model;
 
-import com.google.firebase.firestore.auth.User;
-
 public class Project {
     private String Id;
     private String Name;
@@ -12,7 +10,13 @@ public class Project {
     private String UserId;
 
     public Project(){
-        Published = false;
+        Id = "0"; //default value
+        Name = "";
+        Description = "";
+        ImageId = 2131165326; //default value - app logo
+        Pdf = "no pdf";
+        Published = false; //a project is per default not published
+        UserId = "0";
     }
 
     public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId){

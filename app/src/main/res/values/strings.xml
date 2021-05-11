@@ -10,9 +10,15 @@
     <string name="publish">Publish</string>
     <string name="pdf">PDF</string>
     <string name="delete">Delete</string>
+    <string name="inspiration_description">Inspiration description</string>
+    <string name="inspiration">Inspiration</string>
+<!--    <string name="search">Search</string>-->
     <string name="openPdf">Opens PDF file</string>
     <string name="unpublish">Undo publish</string>
     <string name="Save">Save</string>
     <string name="enterProjectName">Enter project name here</string>
     <string name="enterDescription">Enter discription here</string>
+    <string name="search">Search</string>
+    <string name="SearchHint" />
+    <string name="InspiHint">Search...</string>
 </resources>

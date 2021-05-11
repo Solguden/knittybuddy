@@ -1,5 +1,6 @@
 package dk.au.mad21spring.group20.knittybuddy.project;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +81,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.projectName.setText(projectList.get(position).getName());
-        holder.projectImage.setImageResource(R.drawable.knittybuddy_launcher_pink);
+        //holder.projectImage.setImageResource(R.drawable.knittybuddy_launcher_pink);
+        Glide.with(holder.projectImage.getContext()).load(projectList.get(position).getImageUrl()).into(holder.projectImage);
+        Log.d("IMAGETEST", "onBindViewHolder: " + projectList.get(position).getImageUrl());
     }
 
     @Override

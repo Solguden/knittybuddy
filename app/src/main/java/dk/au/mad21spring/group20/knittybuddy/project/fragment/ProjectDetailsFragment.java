@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -96,9 +98,9 @@ public class ProjectDetailsFragment extends Fragment {
         thisProject.setPdf("pdf");
         thisProject.setPublished(false);
         thisProject.setUserId("4");
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
 
         projectImageProjectDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,7 +233,7 @@ public class ProjectDetailsFragment extends Fragment {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String url = uri.toString();
-                                thisProject.setImageURL(url);
+                                thisProject.setImageUrl(url);
                                 detailVM.updateImageProject(url,thisProject.getId());
                             }
                         });
@@ -375,7 +377,9 @@ public class ProjectDetailsFragment extends Fragment {
     private void updateUI(Project project){
         nameProjectEditTxt.setText(project.getName());
         descriptionProjectDetailsEditTxt.setText(project.getDescription());
-        projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
+//        projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
+        Glide.with(projectImageProjectDetail.getContext()).load(project.getImageUrl()).into(projectImageProjectDetail);
+
         if (project.getPublished() == true){
             publishBtn.setText(R.string.unpublish);
         }

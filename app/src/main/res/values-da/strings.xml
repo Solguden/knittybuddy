@@ -20,4 +20,8 @@
     <string name="follow">Følg</string>
     <string name="username">Brugernavn</string>
     <string name="description">Project beskrivelse</string>
+    <string name="inspiration_description">Inspirationsbeskrivelse</string>
+    <string name="inspiration">Inspiration</string>
+    <string name="SearchHint">Søgnings hint</string>
+    <string name="InspiHint">Søg...</string>
 </resources>

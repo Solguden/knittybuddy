@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
@@ -71,7 +72,6 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             projectDetail = new ProjectDetailsFragment();
 
             //setProjects
-            //projectDetail.setProject(projects.get(selectedProjectIndex));
 
             //both fragments get added to the containers, but one is invisible
             getSupportFragmentManager().beginTransaction()
@@ -83,9 +83,6 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             getProjects();
 
         } else {
-            //selectedProjectIndex = savedInstanceState.getInt("index");
-            //userView = (UserView) savedInstanceState.getSerializable("user");
-
             //load projects
             getProjects();
             if (userView == null){
@@ -165,7 +162,7 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
     @Override
     public void addNewProject() {
         Project project = new Project();
-        project.setUserId(userId);
+        project.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
         projectDetail.setProject(project);
         updateFragmentViewState(UserView.DETAIL_VIEW);
     }

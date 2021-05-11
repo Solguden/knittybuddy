@@ -17,8 +17,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
@@ -72,10 +77,6 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
         btnGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //projectSelector.finish();
-                //projectSelector.makeDetailInvisible();
-
-                //her skal vi stoppe for activity "ProjectMainActivity" og gå tilbage til "MenuActivity"
                 getActivity().setResult(Activity.RESULT_OK);
                 getActivity().finish();
             }
@@ -101,7 +102,9 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
         //view models
         listVM = new ViewModelProvider(getActivity()).get(ProjectListViewModel.class);
         Log.d("project list", ""+ getActivity());
-        listVM.getAllProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() { //er i tvivl om "getViewLifecycleOwner()" - https://blog.usejournal.com/observe-livedata-from-viewmodel-in-fragment-fd7d14f9f5fb
+        Log.d("User", ""+FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        listVM.getAllProjectsByUserId(FirebaseAuth.getInstance().getCurrentUser().getUid()).observe(getViewLifecycleOwner(), new Observer<List<Project>>() { //er i tvivl om "getViewLifecycleOwner()" - https://blog.usejournal.com/observe-livedata-from-viewmodel-in-fragment-fd7d14f9f5fb
             @Override
             public void onChanged(List<Project> projects) {
                 Log.d("onChanged", "fragment project list");
@@ -112,7 +115,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
                 adapter.updateProjectList(projectList);
             }
         });
-        Log.d("lifecycle", "" + getViewLifecycleOwner());
+
     }
 
     @Override

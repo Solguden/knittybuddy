@@ -16,4 +16,12 @@
     <string name="Save">Gem</string>
     <string name="enterProjectName">Tilføj dit projektnavn</string>
     <string name="enterDescription">Tilføj beskrivelse en til dit projekt her</string>
+    <string name="search">Søg</string>
+    <string name="follow">Følg</string>
+    <string name="username">Brugernavn</string>
+    <string name="description">Project beskrivelse</string>
+    <string name="inspiration_description">Inspirationsbeskrivelse</string>
+    <string name="inspiration">Inspiration</string>
+    <string name="SearchHint">Søgnings hint</string>
+    <string name="InspiHint">Søg...</string>
 </resources>

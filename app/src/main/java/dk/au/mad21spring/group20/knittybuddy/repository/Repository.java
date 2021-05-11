@@ -76,7 +76,7 @@ public class Repository {
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
         initFeed();
-        projectList = getAllProjectsFromDB();
+        //projectList = getAllProjectsFromDB();
     }
 
     public static Repository getRepositoryInstance(){
@@ -182,12 +182,39 @@ public class Repository {
                         ArrayList<Project> newProjectList = new ArrayList<>();
                         if(snapshot!=null && !snapshot.isEmpty()){
                             for(DocumentSnapshot doc : snapshot.getDocuments()){
-                                Log.d("image id from database", "" + doc.toObject(Project.class).getImageId());
-                                Log.d("name from database", "" + doc.toObject(Project.class).getName());
+                                Log.d("Id from database", "" + doc.toObject(Project.class).getId());
+                                Log.d("Name from database", "" + doc.toObject(Project.class).getName());
                                 Project p = doc.toObject(Project.class);
                                 p.setId(doc.getId());
                                 if(p!=null) {
                                     newProjectList.add(p);
+                                }
+                            }
+                            projects.setValue(newProjectList);
+                        }
+                    }
+                });
+        return projects;
+    }
+
+    public MutableLiveData<List<Project>> getAllProjectsByUserId(String userId) {
+        MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
+        db.collection(Constants.COLLECTION_PROJECT)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        ArrayList<Project> newProjectList = new ArrayList<>();
+                        if(snapshot!=null && !snapshot.isEmpty()){
+                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Log.d("userId in db", "" + doc.toObject(Project.class).getUserId());
+                                Log.d("project name in db", "" + doc.toObject(Project.class).getName());
+                                Project p = doc.toObject(Project.class);
+                                p.setId(doc.getId());
+                                updateProjectId(p.getId());
+                                if(p!=null) {
+                                    if (p.getUserId().equals(userId)){
+                                        newProjectList.add(p);
+                                    }
                                 }
                             }
                             projects.setValue(newProjectList);
@@ -210,6 +237,7 @@ public class Repository {
                             for(DocumentSnapshot doc : snapshot.getDocuments()){
                                 Project p = doc.toObject(Project.class);
                                 p.setId(doc.getId());
+
                                 if(p!=null) {
                                     updatedProject.add(p);
                                 }
@@ -251,7 +279,27 @@ public class Repository {
 
         ref.update(map);
 
-        Log.d(TAG, "Document updated: " + project.getId() + "name: " + project.getName());
+        Log.d("Update", "Document updated: " + project.getId() + "name: " + project.getName());
+    }
+
+    public void updateUserId(Project project, String userId){
+        DocumentReference ref = db.collection(Constants.COLLECTION_PROJECT).document(project.getId());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        ref.update(map);
+
+        Log.d("Update", "UserID updated for project: " + project.getId() + "userid: " + userId);
+    }
+
+    public void updateProjectId(String projectId){
+        DocumentReference ref = db.collection(Constants.COLLECTION_PROJECT).document(projectId);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", projectId);
+        ref.update(map);
+
+        Log.d("Update", "Id updated for project: " + projectId);
     }
 
     public void updateImageUrl(String imageURL, String projectId){

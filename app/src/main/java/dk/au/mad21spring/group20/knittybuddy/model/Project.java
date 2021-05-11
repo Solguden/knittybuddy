@@ -1,5 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.model;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Project {
     private String Id;
     private String Name;
@@ -19,8 +21,8 @@ public class Project {
         ImageId = 2131165326; //default value - app logo
         Pdf = "no pdf";
         Published = false; //a project is per default not published
-        UserId = "0";
-        ImageUrl ="";
+        UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ImageURL ="";
     }
 
     public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId, String imageURL){

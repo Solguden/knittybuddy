@@ -1,11 +1,18 @@
 package dk.au.mad21spring.group20.knittybuddy.project.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,6 +39,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Document;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,7 +115,6 @@ public class ProjectDetailsFragment extends Fragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-
         projectImageProjectDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,6 +132,7 @@ public class ProjectDetailsFragment extends Fragment {
         pdfBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openPDF();
                 makeToast("PDF is now open");
             }
         });
@@ -202,6 +216,35 @@ public class ProjectDetailsFragment extends Fragment {
 
         return v;
     }
+
+    private void openPDF() {
+//        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+//
+//        PdfDocument pdfDocument = new PdfDocument();
+//        Paint paint = new Paint();
+//        PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
+//        PdfDocument.Page myPage = pdfDocument.startPage(mypageInfo);
+//        Canvas canvas = myPage.getCanvas();
+//
+//        paint.setTextSize(15.5f);
+//        paint.setColor(Color.rgb(0,50,250));
+//
+//        canvas.drawText(thisProject.getName(),20,20,paint);
+//        paint.setTextSize(10f);
+//        canvas.drawText(thisProject.getDescription(),20,40,paint);
+//
+//        pdfDocument.finishPage(myPage);
+//        File file = new File(getContext().getExternalFilesDir("/"),thisProject.getId());
+//        try {
+//            pdfDocument.writeTo(new FileOutputStream(file));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        pdfDocument.close();
+    }
+
     //selectPicture() and uploadPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
     private void selectPicture() {
         Intent intent = new Intent();
@@ -377,8 +420,13 @@ public class ProjectDetailsFragment extends Fragment {
     private void updateUI(Project project){
         nameProjectEditTxt.setText(project.getName());
         descriptionProjectDetailsEditTxt.setText(project.getDescription());
-//        projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
-        Glide.with(projectImageProjectDetail.getContext()).load(project.getImageUrl()).into(projectImageProjectDetail);
+        String imageUrl = project.getImageUrl();
+        if(!TextUtils.isEmpty(imageUrl)){
+            Glide.with(projectImageProjectDetail.getContext()).load(imageUrl).into(projectImageProjectDetail);
+        }
+        else{
+            projectImageProjectDetail.setImageResource(R.drawable.knittybuddy_launcher_pink);
+        }
 
         if (project.getPublished() == true){
             publishBtn.setText(R.string.unpublish);

@@ -22,7 +22,7 @@ public class Project {
         Pdf = "no pdf";
         Published = false; //a project is per default not published
         UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ImageURL ="";
+        ImageUrl ="";
     }
 
     public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId, String imageURL){

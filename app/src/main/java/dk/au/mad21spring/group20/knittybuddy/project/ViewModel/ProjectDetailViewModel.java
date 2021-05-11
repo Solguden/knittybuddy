@@ -39,6 +39,10 @@ public class ProjectDetailViewModel extends AndroidViewModel {
         repository.updateProject(project);
     }
 
+    public void updateImageProject(String imageUrl, String projectId){
+        repository.updateImageUrl(imageUrl,projectId);
+    }
+
     public void addNewProject(Project project){
         repository.addProject(project);
     }

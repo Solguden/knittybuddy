@@ -237,6 +237,16 @@ public class Repository {
         Log.d(TAG, "Document updated: " + project.getId() + "name: " + project.getName());
     }
 
+    public void updateImageUrl(String imageURL, String projectId){
+        DocumentReference ref = db.collection(Constants.COLLECTION_PROJECT).document(projectId);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("imageUrl", imageURL);
+
+        ref.update(map);
+        Log.d(TAG, "Document updated: " + projectId + "imageUrl: " + imageURL);
+    }
+
     public void deleteProject(Project project){
         db.collection(Constants.COLLECTION_PROJECT).document(project.getId())
                 .delete();

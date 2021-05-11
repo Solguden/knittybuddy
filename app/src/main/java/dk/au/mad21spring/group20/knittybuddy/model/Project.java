@@ -8,6 +8,9 @@ public class Project {
     private String Pdf;
     private boolean Published;
     private String UserId;
+    private String ImageURL;
+
+
 
     public Project(){
         Id = "0"; //default value
@@ -17,9 +20,10 @@ public class Project {
         Pdf = "no pdf";
         Published = false; //a project is per default not published
         UserId = "0";
+        ImageURL ="";
     }
 
-    public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId){
+    public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId, String imageURL){
         Id = id;
         Name = name;
         Description = description;
@@ -27,6 +31,7 @@ public class Project {
         Pdf = pdf;
         Published = published;
         UserId = userId;
+        ImageURL = imageURL;
     }
 
     public String getId() {
@@ -75,5 +80,13 @@ public class Project {
     public String getUserId() { return UserId; }
 
     public void setUserId(String userId) { UserId = userId; }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
+    }
 
 }

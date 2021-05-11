@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_squared_shape_dark"
         android:gravity="center"
-        android:text="@string/my_projects"
+        android:text="@string/inspiration"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,13 +52,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/InspiHint"
         android:inputType="textPersonName"
-        android:text="@string/search"
         app:layout_constraintEnd_toStartOf="@+id/btn_inspirationList_back"
         app:layout_constraintHorizontal_bias="0.287"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_inspirationList_back"
-        tools:text="@string/search" />
+        app:layout_constraintTop_toTopOf="@+id/btn_inspirationList_back" />
 
     <Button
         android:id="@+id/btn_inspirationList_search"

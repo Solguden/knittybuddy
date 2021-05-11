@@ -4,10 +4,12 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -53,6 +55,7 @@ import java.util.concurrent.Future;
 import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
+import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.PatternResponse;
 import dk.au.mad21spring.group20.knittybuddy.login.RegisterActivity;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.model.User;
@@ -366,27 +369,44 @@ public class Repository {
         queue.add(stringRequest);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void parseJSON(String json)
     {
-//        Gson gson = new GsonBuilder().create();
-       List<Pattern> patterns = new ArrayList<>();
-        try {
+        Gson gson = new GsonBuilder().create();
+        PatternResponse response = gson.fromJson(json, PatternResponse.class);
 
-//            Pattern pattern = new Pattern();
+        Log.d(TAG, "Respons: " + response);
 
-            JSONArray jsonArray = new JSONArray(json);
 
-//            JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-            Pattern p1 = (Pattern) jsonArray.getJSONObject(0);
-            Pattern p2 = (Pattern) jsonArray.getJSONObject(1);
-            Pattern p3 = (Pattern) jsonArray.getJSONObject(2);
 
-            patterns.add(p1);
-            patterns.add(p2);
-            patterns.add(p3);
+//        Pattern p1 = new Pattern()
 
-            patternList.setValue(patterns);
+//        patternList.setValue();
+
+
+//       List<Pattern> patterns = new ArrayList<>();
+//        try {
+//
+////            Pattern pattern = new Pattern();
+//
+//            JSONObject jsonObject = new JSONObject(json);
+//
+//            Log.d("TAG", "JSONObject:" + jsonObject);
+//
+//            JSONArray jsonArray = new JSONArray(jsonObject);
+//
+//
+//
+//            Pattern p1 = (Pattern) jsonArray.getJSONObject(0);
+//            Pattern p2 = (Pattern) jsonArray.getJSONObject(1);
+//            Pattern p3 = (Pattern) jsonArray.getJSONObject(2);
+//
+//            patterns.add(p1);
+//            patterns.add(p2);
+//            patterns.add(p3);
+
+
 
 
 
@@ -403,10 +423,10 @@ public class Repository {
 //            Pattern pattern = jsonObject;
 
 
-        }
-        catch (JSONException e) {
-            Log.e(TAG,"", e);
-        }
+//        }
+//        catch (JSONException e) {
+//            Log.e(TAG,"", e);
+//        }
 
     }
 }

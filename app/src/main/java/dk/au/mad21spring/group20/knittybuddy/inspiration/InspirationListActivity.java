@@ -10,6 +10,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
 public class InspirationListActivity extends AppCompatActivity implements InspirationAdaptor.IPatternItemClickedListener{
 
     public static final int REQ_DETAIL = 200;
+    private static final String TAG = "InspirationList";
+
 
     private Repository repository;
     private InspirationListViewModel inspirationListViewModel;
@@ -56,13 +59,15 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         recyclerView.setAdapter(adaptor);
 
         inspirationListViewModel = new ViewModelProvider(this).get(InspirationListViewModel.class);
-        inspirationListViewModel.getPatterns().observe(this, new Observer<List<Pattern>>() {
-            @Override
-            public void onChanged(List<Pattern> patterns) {
-                patternList = patterns;
-//                updateUI();
-            }
-        });
+//        inspirationListViewModel.getPatterns().observe(this, new Observer<List<Pattern>>() {
+//            @Override
+//            public void onChanged(List<Pattern> patterns) {
+//                patternList = patterns;
+////                updateUI();
+//            }
+//        });
+
+        searchText = findViewById(R.id.inspirationSearchText);
 
         searchBtn = findViewById(R.id.btn_inspirationList_search);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +93,7 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
 
     private void searchPatterns(String input)
     {
+        Log.d(TAG, "Search for input:" + input);
         if (!input.equals(""))
         {
             inspirationListViewModel.getRepoPatterns(input);

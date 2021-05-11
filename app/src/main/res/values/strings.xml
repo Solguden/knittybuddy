@@ -19,4 +19,6 @@
     <string name="enterProjectName">Enter project name here</string>
     <string name="enterDescription">Enter discription here</string>
     <string name="search">Search</string>
+    <string name="SearchHint" />
+    <string name="InspiHint">Search...</string>
 </resources>

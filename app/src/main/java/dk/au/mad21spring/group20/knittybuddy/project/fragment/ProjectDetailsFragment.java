@@ -2,6 +2,8 @@ package dk.au.mad21spring.group20.knittybuddy.project.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,12 +22,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.List;
+import java.util.UUID;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.project.IProjectSelector;
 import dk.au.mad21spring.group20.knittybuddy.project.ViewModel.ProjectDetailViewModel;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ProjectDetailsFragment extends Fragment {
 
@@ -39,6 +51,9 @@ public class ProjectDetailsFragment extends Fragment {
     Button saveBtn;
     Button deleteBtn;
     AlertDialog.Builder builder;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     //app state
     private ProjectDetailViewModel detailVM;
@@ -81,6 +96,16 @@ public class ProjectDetailsFragment extends Fragment {
         thisProject.setPdf("pdf");
         thisProject.setPublished(false);
         thisProject.setUserId("4");
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        projectImageProjectDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPicture();
+            }
+        });
 
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +199,52 @@ public class ProjectDetailsFragment extends Fragment {
         });
 
         return v;
+    }
+    //selectPicture() and uploadPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
+    private void selectPicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+            imageUri = data.getData();
+            projectImageProjectDetail.setImageURI(imageUri);
+            uploadPicture();
+        }
+    }
+
+    private void uploadPicture(){
+        final String random = UUID.randomUUID().toString();
+        StorageReference imageRef = storageReference.child("images/"+random);
+
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
+                        firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String url = uri.toString();
+                                thisProject.setImageURL(url);
+                                detailVM.updateImageProject(url,thisProject.getId());
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+
     }
 
 

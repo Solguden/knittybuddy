@@ -4,6 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".inspiration.InspirationListActivity">
+
+
+    <TextView
+        android:id="@+id/InspirationListHeaderText"
+        style="@style/textFieldStyle"
+        android:layout_width="188dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_squared_shape_dark"
+        android:gravity="center"
+        android:text="@string/inspiration"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/inspiration" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inspirationRcView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/InspirationListHeaderText"
+        app:layout_constraintStart_toStartOf="@+id/InspirationListHeaderText"
+        app:layout_constraintTop_toBottomOf="@+id/InspirationListHeaderText"
+        tools:itemCount="10"
+        tools:listitem="@layout/inspiration_list_item" />
+
+    <Button
+        android:id="@+id/btn_inspirationList_back"
+        style="@style/buttonStyle"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/go_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/go_back" />
+
+    <EditText
+        android:id="@+id/inspirationSearchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/InspiHint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/btn_inspirationList_back"
+        app:layout_constraintHorizontal_bias="0.287"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_inspirationList_back" />
+
+    <Button
+        android:id="@+id/btn_inspirationList_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/search"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_inspirationList_back"
+        app:layout_constraintEnd_toEndOf="@+id/inspirationSearchText"
+        app:layout_constraintStart_toStartOf="@+id/inspirationSearchText"
+        app:layout_constraintTop_toBottomOf="@+id/inspirationSearchText"
+        app:layout_constraintVertical_bias="0.484" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

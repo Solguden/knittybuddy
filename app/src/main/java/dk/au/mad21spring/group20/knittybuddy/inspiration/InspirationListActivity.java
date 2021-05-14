@@ -1,6 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.inspiration;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,9 +20,11 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.ComPattern;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.ViewModels.InspirationListViewModel;
 import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
@@ -42,6 +45,8 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
     private EditText searchText;
 
     private List<Pattern> patternList;
+    private List<ComPattern> comPatternList;
+
 
     private int currentIndex;
 
@@ -58,7 +63,19 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
 
+        comPatternList = new ArrayList<>();
+
         inspirationListViewModel = new ViewModelProvider(this).get(InspirationListViewModel.class);
+        inspirationListViewModel.getPatterns().observe(this, new Observer<List<ComPattern>>() {
+            @Override
+            public void onChanged(List<ComPattern> comPatterns) {
+                    Log.d(TAG, "Hello");
+                    comPatternList.addAll(comPatterns);
+                    adaptor.updatePatternList(comPatternList);
+
+            }
+        });
+
 //        inspirationListViewModel.getPatterns().observe(this, new Observer<List<Pattern>>() {
 //            @Override
 //            public void onChanged(List<Pattern> patterns) {
@@ -97,12 +114,23 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         if (!input.equals(""))
         {
             inspirationListViewModel.getRepoPatterns(input);
+            LiveData<List<ComPattern>> data = inspirationListViewModel.getPatterns();
+            Log.d(TAG, "DATA: " + data.getValue());
         }
         else
         {
             Toast.makeText(this, "Please input a search term", Toast.LENGTH_SHORT).show();
         }
-        inspirationListViewModel.getPatterns();
+
+
+//        inspirationListViewModel.getPatterns().observe(this, new Observer<List<ComPattern>>() {
+//            @Override
+//            public void onChanged(List<ComPattern> comPatterns) {
+//                comPatternList.addAll(comPatterns);
+//                Log.d(TAG, "comPatternList: " + comPatternList);
+//            }
+//        });
+
     }
 
 

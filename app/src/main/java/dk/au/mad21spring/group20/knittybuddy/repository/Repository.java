@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import android.app.Application;
 import android.os.Build;
 import android.util.Log;
 
@@ -19,10 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,22 +27,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.google.firebase.firestore.SnapshotMetadata;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -54,9 +43,9 @@ import java.util.concurrent.Future;
 
 import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
+import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.ComPattern;
+import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.ComPatternResponse;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
-import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.PatternResponse;
-import dk.au.mad21spring.group20.knittybuddy.login.RegisterActivity;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.model.User;
 
@@ -65,6 +54,8 @@ public class Repository {
     private MutableLiveData<List<Feed>> feedList;
     private MutableLiveData<List<Project>> projectList;
     private MutableLiveData<List<Pattern>> patternList;
+    private MutableLiveData<List<ComPattern>> comPatternList;
+    private LiveData<List<ComPattern>> comPatterns;
     private FirebaseFirestore db;
 
     private RequestQueue queue;
@@ -76,6 +67,10 @@ public class Repository {
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
         initFeed();
+        comPatternList = new MutableLiveData<>();
+        comPatterns = (LiveData<List<ComPattern>>) comPatternList.getValue();
+
+        Log.d(TAG, "comPatterns: " + comPatterns);
         //projectList = getAllProjectsFromDB();
     }
 
@@ -370,19 +365,34 @@ public class Repository {
 //
 //    }
 
-    public MutableLiveData<List<Pattern>> getPatterns()
-    {
-        return patternList;
-    }
+    public LiveData<List<ComPattern>> getPatterns() { return comPatternList; }
 
-    public void getSearchPatterns(String input, Context context)
+//    public void setPatterns(ArrayList<ComPattern> patterns) {
+//        comPatternList.setValue(patterns);
+//    }
+
+
+
+    public void getSearchPatterns(String input, Context context) //
     {
 //        Context context = app.getApplicationContext();
         String url = urlBase(input);
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                sendRequest(url, context);
+                sendRequest(url, context, new VolleyCallback() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onSuccess(String result) {
+                        MutableLiveData<List<ComPattern>> parsed = parseJSON(result);
+                        Log.d(TAG, "Parsed: " + parsed);
+                    }
+
+                    @Override
+                    public void onError(String result) {
+
+                    }
+                });
             }
         });
 
@@ -395,19 +405,29 @@ public class Repository {
         return base;
     }
 
-    private void sendRequest(String url, Context context)
+    public interface VolleyCallback {
+        void onSuccess(String result);
+        void onError(String result);
+    }
+
+    private void sendRequest(String url, Context context, final VolleyCallback callback) // void
     {
+
         if (queue == null)
         {
             queue = Volley.newRequestQueue(context);
         }
 
+        LiveData<List<ComPattern>> data = new MutableLiveData<>();
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
             new Response.Listener<String>() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(String response) {
                     Log.d(TAG, "Response: " + response);
-                    parseJSON(response);
+//                    parseJSON(response);
+                    callback.onSuccess(response);
                 }
             },
             new Response.ErrorListener() {
@@ -425,17 +445,67 @@ public class Repository {
             }
         };
         queue.add(stringRequest);
+
+        Log.d(TAG, "StringRequest: " + stringRequest);
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void parseJSON(String json)
+    private MutableLiveData<List<ComPattern>> parseJSON(String json)
     {
         Gson gson = new GsonBuilder().create();
-        PatternResponse response = gson.fromJson(json, PatternResponse.class);
+        ComPatternResponse response = gson.fromJson(json, ComPatternResponse.class);
 
         Log.d(TAG, "Respons: " + response);
 
 
+//        ComPattern p0 = new ComPattern(response.getPattern().get(0).getId(), response.getPattern().get(0).getName(), response.getPattern().get(0).getAuthor(), response.getPattern().get(0).getPhoto());
+
+        ComPattern p1 = response.getPattern().get(0);
+        ComPattern p2 = response.getPattern().get(1);
+        ComPattern p3 = response.getPattern().get(2);
+
+        ComPattern pattern1 = new ComPattern(p1.getId(), p1.getName(), p1.getAuthor(), p1.getPhoto());
+        ComPattern pattern2 = new ComPattern(p2.getId(), p2.getName(), p2.getAuthor(), p2.getPhoto());
+        ComPattern pattern3 = new ComPattern(p3.getId(), p3.getName(), p3.getAuthor(), p3.getPhoto());
+
+
+        int id = p1.getId();
+
+        Log.d(TAG, "Pattern 1: " + p1);
+        Log.d(TAG, "ID: " + id);
+        Log.d(TAG, "Pattern Object 1 ID: " + pattern1.id);
+
+        comPatternList = new MutableLiveData<List<ComPattern>>();
+
+        ArrayList<ComPattern> lcp = new ArrayList<ComPattern>();
+
+        lcp.add(pattern1);
+        lcp.add(pattern2);
+
+        comPatternList.setValue(lcp);
+
+
+
+        Log.d(TAG, "lcp + comPatternList: " + lcp + " " + comPatternList.getValue());
+
+        return comPatternList;
+
+//        comPatterns.add(pattern2);
+//        comPatterns.add()
+
+
+//        comPatternList.setValue(comPatterns);
+
+//        List<Pattern> lp = [p1, p2, p3];
+
+//        List<Pattern> p = new ArrayList<Pattern>();
+//        p.add(p1);
+//        p.add(p2);
+//        p.add(p3);
+//        Log.d(TAG, "List of patterns: " + p);
+
+//        patternList = (MutableLiveData<List<Pattern>>) p;
 
 
 //        Pattern p1 = new Pattern()

@@ -8,6 +8,8 @@ public class ComPattern {
     public PatternAuthor pattern_author;
     public Photo first_photo;
 
+    public ComPattern() {}
+
     public ComPattern(int id, String name, PatternAuthor author, Photo photo) {
         this.id = id;
         this.name = name;

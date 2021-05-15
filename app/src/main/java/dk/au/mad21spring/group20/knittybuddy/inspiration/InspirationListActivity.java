@@ -70,9 +70,12 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
             @Override
             public void onChanged(List<ComPattern> comPatterns) {
                     Log.d(TAG, "Hello");
+                    if (comPatternList.size() != 0)
+                    {
+                        comPatternList.clear();
+                    }
                     comPatternList.addAll(comPatterns);
                     adaptor.updatePatternList(comPatternList);
-
             }
         });
 
@@ -137,9 +140,15 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
     @Override
     public void onPatternClicked(int index) {
         currentIndex = index;
-        Pattern thisPattern = patternList.get(index);
+        ComPattern thisPattern = comPatternList.get(index);
         Intent i = new Intent(this, InspirationDetailActivity.class);
         i.putExtra("thisID", thisPattern.id);
+        i.putExtra("thisPatternName", thisPattern.name);
+        i.putExtra("thisPatternPhoto", thisPattern.first_photo.medium_url);
+        i.putExtra("thisAuthorName", thisPattern.pattern_author.users[0].username);
+        i.putExtra("thisAuthorPhoto", thisPattern.pattern_author.users[0].photo_url);
+
+
         startActivityForResult(i, REQ_DETAIL);
     }
 }

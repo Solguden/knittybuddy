@@ -4,6 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".inspiration.InspirationDetailActivity">
+
+    <TextView
+        android:id="@+id/InspirationListHeaderText"
+        style="@style/textFieldStyle"
+        android:layout_width="188dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_squared_shape_dark"
+        android:gravity="center"
+        android:text="@string/inspiration"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/inspiration" />
+
+    <Button
+        android:id="@+id/btn_inspirationDetail_back"
+        style="@style/buttonStyle"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/go_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/go_back" />
+
+    <TextView
+        android:id="@+id/InspirationDetailPatternName"
+        style="@style/textFieldStyle"
+        android:layout_width="237dp"
+        android:layout_height="40dp"
+        android:text="@string/detail_name"
+        app:layout_constraintBottom_toTopOf="@+id/InspirationDetailPatternPhoto"
+        app:layout_constraintStart_toStartOf="@+id/InspirationDetailPatternPhoto" />
+
+
+    <ImageView
+        android:id="@+id/InspirationDetailPatternPhoto"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="88dp"
+        app:layout_constraintEnd_toEndOf="@+id/InspirationListHeaderText"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/InspirationListHeaderText"
+        app:layout_constraintTop_toBottomOf="@+id/InspirationListHeaderText"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/InspirationDetailAuthorName"
+        style="@style/textFieldStyle"
+        android:layout_width="175dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/detail_author"
+        app:layout_constraintStart_toEndOf="@+id/InspirationDetailAuthorPhoto"
+        app:layout_constraintTop_toTopOf="@+id/InspirationDetailAuthorPhoto" />
+
+    <ImageView
+        android:id="@+id/InspirationDetailAuthorPhoto"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="@+id/InspirationDetailPatternPhoto"
+        app:layout_constraintTop_toBottomOf="@+id/InspirationDetailPatternPhoto"
+        tools:srcCompat="@tools:sample/avatars" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

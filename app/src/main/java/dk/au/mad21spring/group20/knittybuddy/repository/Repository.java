@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -68,7 +69,7 @@ public class Repository {
         db = FirebaseFirestore.getInstance();
         initFeed();
         comPatternList = new MutableLiveData<>();
-        comPatterns = (LiveData<List<ComPattern>>) comPatternList.getValue();
+//        comPatterns = (LiveData<List<ComPattern>>) comPatternList.getValue();
 
         Log.d(TAG, "comPatterns: " + comPatterns);
         //projectList = getAllProjectsFromDB();
@@ -367,6 +368,10 @@ public class Repository {
 
     public LiveData<List<ComPattern>> getPatterns() { return comPatternList; }
 
+//    public LiveData<ComPattern> getPatternData(int id) {
+//        comPatternList
+//    }
+
 //    public void setPatterns(ArrayList<ComPattern> patterns) {
 //        comPatternList.setValue(patterns);
 //    }
@@ -385,7 +390,11 @@ public class Repository {
                     @Override
                     public void onSuccess(String result) {
                         MutableLiveData<List<ComPattern>> parsed = parseJSON(result);
-                        Log.d(TAG, "Parsed: " + parsed);
+                        Log.d(TAG, "Parsed: " + parsed.getValue());
+                        if (parsed.getValue() == null)
+                        {
+                            Toast.makeText(context, "No results found!", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -458,103 +467,45 @@ public class Repository {
 
         Log.d(TAG, "Respons: " + response);
 
-
 //        ComPattern p0 = new ComPattern(response.getPattern().get(0).getId(), response.getPattern().get(0).getName(), response.getPattern().get(0).getAuthor(), response.getPattern().get(0).getPhoto());
 
-        ComPattern p1 = response.getPattern().get(0);
-        ComPattern p2 = response.getPattern().get(1);
-        ComPattern p3 = response.getPattern().get(2);
+        if (response.getPattern().size() != 0)
+        {
+//            ComPattern p1 = response.getPattern().get(0);
+//            ComPattern p2 = response.getPattern().get(1);
+//            ComPattern p3 = response.getPattern().get(2);
+//            ComPattern p4 = response.getPattern().get(3);
+//            ComPattern p5 = response.getPattern().get(4);
 
-        ComPattern pattern1 = new ComPattern(p1.getId(), p1.getName(), p1.getAuthor(), p1.getPhoto());
-        ComPattern pattern2 = new ComPattern(p2.getId(), p2.getName(), p2.getAuthor(), p2.getPhoto());
-        ComPattern pattern3 = new ComPattern(p3.getId(), p3.getName(), p3.getAuthor(), p3.getPhoto());
-
-
-        int id = p1.getId();
-
-        Log.d(TAG, "Pattern 1: " + p1);
-        Log.d(TAG, "ID: " + id);
-        Log.d(TAG, "Pattern Object 1 ID: " + pattern1.id);
-
-        comPatternList = new MutableLiveData<List<ComPattern>>();
-
-        ArrayList<ComPattern> lcp = new ArrayList<ComPattern>();
-
-        lcp.add(pattern1);
-        lcp.add(pattern2);
-
-        comPatternList.setValue(lcp);
+            List<ComPattern> lp = response.getPattern();
 
 
+//            ComPattern pattern1 = new ComPattern(p1.getId(), p1.getName(), p1.getAuthor(), p1.getPhoto());
+//            ComPattern pattern2 = new ComPattern(p2.getId(), p2.getName(), p2.getAuthor(), p2.getPhoto());
+//            ComPattern pattern3 = new ComPattern(p3.getId(), p3.getName(), p3.getAuthor(), p3.getPhoto());
+//            ComPattern pattern4 = new ComPattern(p4.getId(), p4.getName(), p4.getAuthor(), p4.getPhoto());
+//            ComPattern pattern5 = new ComPattern(p5.getId(), p5.getName(), p5.getAuthor(), p5.getPhoto());
+//
+//            int id = p1.getId();
 
-        Log.d(TAG, "lcp + comPatternList: " + lcp + " " + comPatternList.getValue());
+//            Log.d(TAG, "Pattern 1: " + p1);
+//            Log.d(TAG, "ID: " + id);
+//            Log.d(TAG, "Pattern Object 1 ID: " + pattern1.id);
+//
+//            ArrayList<ComPattern> lcp = new ArrayList<ComPattern>();
+//
+//            lcp.add(pattern1);
+//            lcp.add(pattern2);
+//            lcp.add(pattern3);
+//            lcp.add(pattern4);
+//            lcp.add(pattern5);
+
+            comPatternList.setValue(lp);
+
+            Log.d(TAG, "lcp + comPatternList: " + lp + " " + comPatternList.getValue());
+        }
+
 
         return comPatternList;
-
-//        comPatterns.add(pattern2);
-//        comPatterns.add()
-
-
-//        comPatternList.setValue(comPatterns);
-
-//        List<Pattern> lp = [p1, p2, p3];
-
-//        List<Pattern> p = new ArrayList<Pattern>();
-//        p.add(p1);
-//        p.add(p2);
-//        p.add(p3);
-//        Log.d(TAG, "List of patterns: " + p);
-
-//        patternList = (MutableLiveData<List<Pattern>>) p;
-
-
-//        Pattern p1 = new Pattern()
-
-//        patternList.setValue();
-
-
-//       List<Pattern> patterns = new ArrayList<>();
-//        try {
-//
-////            Pattern pattern = new Pattern();
-//
-//            JSONObject jsonObject = new JSONObject(json);
-//
-//            Log.d("TAG", "JSONObject:" + jsonObject);
-//
-//            JSONArray jsonArray = new JSONArray(jsonObject);
-//
-//
-//
-//            Pattern p1 = (Pattern) jsonArray.getJSONObject(0);
-//            Pattern p2 = (Pattern) jsonArray.getJSONObject(1);
-//            Pattern p3 = (Pattern) jsonArray.getJSONObject(2);
-//
-//            patterns.add(p1);
-//            patterns.add(p2);
-//            patterns.add(p3);
-
-
-
-
-
-//            Pattern p = (Pattern) jsonArray.get(0);
-
-//            pattern.id = jsonObject.getInt("id");
-//            pattern.name = jsonObject.getString("name");
-//            pattern.pattern_author = jsonObject.get("pattern_author");
-//            pattern.first_photo
-
-
-//            Pattern pattern = gson.fromJson(jsonObject);
-
-//            Pattern pattern = jsonObject;
-
-
-//        }
-//        catch (JSONException e) {
-//            Log.e(TAG,"", e);
-//        }
-
     }
 }

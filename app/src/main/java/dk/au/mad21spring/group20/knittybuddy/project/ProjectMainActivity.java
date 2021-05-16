@@ -1,6 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.project;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,8 +59,10 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         //determine device type
         if (!isTablet(this)){
             deviceType = DeviceType.MOBILE;
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         } else {
             deviceType = DeviceType.TABLET;
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         //check if its the first time the activity is opened

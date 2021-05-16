@@ -23,13 +23,15 @@ import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
 public class ForegroundService extends Service {
 
     //attributes
-    public static final String serviceChannel = "serviceChannel";
-    public static final int notificationId = 75;
+    private static final String SERVICE = "ForegroundService";
+    private static final String CHANNEL = "serviceChannel";
+    private static final int NOTIFICATION_ID = 75;
     public static final String extraKeyBroadcastResult = "EXTRA_KEY_BROADCAST_RESULT";
     private boolean serviceStarted = false;
 
-    ExecutorService executorService;
+    ExecutorService executor;
     Repository repository;
+
 
     //constructor
     public ForegroundService() { }
@@ -38,55 +40,57 @@ public class ForegroundService extends Service {
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.d("ForegroundService", "Foreground service created");
+        Log.d(SERVICE, "Foreground service created");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("ForegroundService", "Foreground service started");
+        Log.d(SERVICE, "Foreground service started");
 
         //Version check
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(serviceChannel, "Foreground Service", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channel = new NotificationChannel(CHANNEL, "Foreground Service", NotificationManager.IMPORTANCE_LOW);
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
 
         //build the notification
-        Notification notification = new NotificationCompat.Builder(this, serviceChannel)
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Will be updated with random projects for inspiration")
                 .setSmallIcon(R.drawable.knittybuddy_launcher_pink)
                 .setTicker("")
                 .build();
-
-        //call to startForeground will promore this Service to a foreground service (needs manifest permission)
+        
+        //call to startForeground will promote this Service to a foreground service (needs manifest permission)
         //also require the notification to be set, so that user can always see that Service is running in the background
-        startForeground(notificationId, notification);
+        startForeground(NOTIFICATION_ID, notification);
 
         //this method starts recursive foreground work
-        doForegroundStuff();
+        startForegroundRecursion();
+
 
         //returning START_STICKY will make the Service restart again eventually if it gets killed off (e.g. due to resources)
         return START_STICKY;
     }
 
-    private void doForegroundStuff()
+    private void startForegroundRecursion()
     {
-        Log.d("ForegroundService", "Doing foreground stuff");
+        Log.d(SERVICE, "Foreground recursion [1] started");
         if (!serviceStarted)
         {
             serviceStarted = true;
-            doRecursiveWork();
+            foregroundRecursion();
         }
     }
 
     //method runs recursively (calls itself in the end) as long as started==true
-    private void doRecursiveWork(){
+    private void foregroundRecursion() {
+        Log.d(SERVICE, "Foreground recursion [2] started");
         //lazy creation of ExecutorService running as a single threaded executor
         //this executor will allow us to do work off the main thread
-        if(executorService == null) {
-            executorService = Executors.newSingleThreadExecutor();
+        if(executor == null) {
+            executor = Executors.newSingleThreadExecutor();
         }
 
         if (repository == null) {
@@ -94,24 +98,28 @@ public class ForegroundService extends Service {
         }
 
         //submit a new Runnable (implement onRun() ) to the executor - code will run on other thread
-        executorService.submit(new Runnable() {
+        executor.submit(new Runnable() {
             @Override
             public void run() {
+                Log.d(SERVICE, "Foreground started RUN");
                 try
                 {
-                    Thread.sleep(100);
+
+                    Thread.sleep(20000);
                     Project rndProject = repository.getRandomProject();
+                    Log.d(SERVICE, "Random project");
+
 
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                     //Version check
                     if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                        NotificationChannel channel = new NotificationChannel(serviceChannel, "Foreground Service", NotificationManager.IMPORTANCE_LOW);
+                        NotificationChannel channel = new NotificationChannel(CHANNEL, "Foreground Service", NotificationManager.IMPORTANCE_DEFAULT);
                         notificationManager.createNotificationChannel(channel);
                     }
 
                     //build the notification
-                    Notification notification = new NotificationCompat.Builder(getApplicationContext(), serviceChannel)
+                    Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL)
                             .setContentTitle(getString(R.string.notiPublishedProjects))
                             .setContentText(rndProject.getName() + getString(R.string.notiBy) + rndProject.getUserId())
                             .setSmallIcon(R.drawable.knittybuddy_launcher_pink)
@@ -119,15 +127,16 @@ public class ForegroundService extends Service {
                             .build();
 
                     //NotificationManagerCompat nmc = NotificationManagerCompat.from(getApplicationContext());
-                    notificationManager.notify(43,notification);
+                    notificationManager.notify(70, notification);
                     Log.d("ForegroundService","run: " + rndProject.getName() + "was shown as a notification");
 
-                } catch (InterruptedException e) {
-                    Log.e("ForegroundService", "Error", e);
+                } catch (Exception e) { //Interrupted
+                    e.printStackTrace();
+                    Log.e(SERVICE, "Error", e);
                 }
                 //the recursive bit - if started still true, call self again
                 if(serviceStarted) {
-                    doRecursiveWork();
+                    foregroundRecursion();
                 }
             }
         });

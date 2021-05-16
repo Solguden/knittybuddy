@@ -68,13 +68,13 @@ public class Repository {
     private static final String TAG = "Repository";
     private List<Project> allPublishedProjects;
 
-    public Repository(/*Application app*/){
+    public Repository(){
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
         comPatternList = new MutableLiveData<>();
-//        comPatterns = (LiveData<List<ComPattern>>) comPatternList.getValue();
         Log.d(TAG, "comPatterns: " + comPatterns);
         allPublishedProjects = new ArrayList<>();
+
     }
 
     public static Repository getRepositoryInstance(){
@@ -169,10 +169,10 @@ public class Repository {
                                 }
                             }
                             allProjects.setValue(published);
+                            allPublishedProjects = allProjects.getValue();
                         }
                     }
                 });
-        allPublishedProjects = allProjects.getValue();
         return allProjects;
     }
 
@@ -307,9 +307,14 @@ public class Repository {
     }
 
     public Project getRandomProject(){
+        if (allPublishedProjects == null)
+        {
+            getAllPublishedProjects();
+        }
         Random r = new Random();
+        List<Project> notificationList = allPublishedProjects;
+        Project randomProject = notificationList.get(r.nextInt(notificationList.size()));
 
-        Project randomProject = allPublishedProjects.get(r.nextInt(allPublishedProjects.size()));
         return randomProject;
     }
 

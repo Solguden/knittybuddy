@@ -256,7 +256,7 @@ public class ProjectDetailsFragment extends Fragment {
 //        pdfDocument.close();
     }
 
-    //selectPicture() and uploadPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
+    //selectPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
     private void selectPicture() {
         //New intent
         Intent intent = new Intent();
@@ -278,44 +278,11 @@ public class ProjectDetailsFragment extends Fragment {
             //set image uri
             projectImageProjectDetail.setImageURI(imageUri);
             //upload
-            uploadPicture();
+            detailVM.uploadImage(imageUri, thisProject.getId());
+//            uploadPicture();
         }
     }
 
-    //Method for uploading image to storage
-    private void uploadPicture(){
-        //Generate random image name/id
-        final String random = UUID.randomUUID().toString();
-        //Setup storage reference for correct folder
-        StorageReference imageRef = storageReference.child("images/"+random);
-
-        // "put" / upload file to storage
-        imageRef.putFile(imageUri)
-            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //Retrieve image download url
-                    Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
-                    firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            //Save in string
-                            String url = uri.toString();
-                            //Save to this project
-                            thisProject.setImageUrl(url);
-                            //Save in firestore db
-                            detailVM.updateImageProject(url,thisProject.getId());
-                        }
-                    });
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    makeToast("Image upload failed");
-                }
-            });
-    }
 
     @Override
     public void onResume() { super.onResume(); }

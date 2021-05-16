@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +31,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -62,6 +68,8 @@ public class Repository {
     private MutableLiveData<List<ComPattern>> comPatternList;
     private LiveData<List<ComPattern>> comPatterns;
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     private RequestQueue queue;
     private static Repository instance;
@@ -74,6 +82,9 @@ public class Repository {
         comPatternList = new MutableLiveData<>();
         Log.d(TAG, "comPatterns: " + comPatterns);
         allPublishedProjects = new ArrayList<>();
+        //Storage setup for retrieving project image
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
     }
 
@@ -127,6 +138,33 @@ public class Repository {
                     }
                 });
         return usersThisUserFollows;
+    }
+
+    //Storage image upload - inspried by https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
+    public void uploadPicture(Uri uri, String projectId ){
+        //Generate random image name/id
+        final String random = UUID.randomUUID().toString();
+        //Setup storage reference for correct folder
+        StorageReference imageRef = storageReference.child("images/"+random);
+
+        // "put" / upload file to storage
+        imageRef.putFile(uri)
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //Retrieve image download url
+                    Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
+                    firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Save in string
+                            String url = uri.toString();
+                            //Save in firestore db
+                            updateImageUrl(url,projectId);
+                        }
+                    });
+                }
+            });
     }
 
     //projects

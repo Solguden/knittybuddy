@@ -47,4 +47,5 @@
     <string name="fullname">Dit fulde navn</string>
     <string name="register">Tilmeld</string>
     <string name="login">Login</string>
+    <string name="passwordreq">Kodeord skal være mindst 6 karakterer</string>
 </resources>

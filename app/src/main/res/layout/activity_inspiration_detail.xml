@@ -38,9 +38,12 @@
     <TextView
         android:id="@+id/InspirationDetailPatternName"
         style="@style/textFieldStyle"
-        android:layout_width="237dp"
-        android:layout_height="40dp"
+        android:layout_width="312dp"
+        android:layout_height="56dp"
+        android:gravity="bottom|left"
         android:text="@string/detail_name"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/InspirationDetailPatternPhoto"
         app:layout_constraintStart_toStartOf="@+id/InspirationDetailPatternPhoto" />
 

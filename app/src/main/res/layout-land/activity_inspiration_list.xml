@@ -41,8 +41,8 @@
     <Button
         android:id="@+id/btn_inspirationList_back"
         style="@style/buttonStyle"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"

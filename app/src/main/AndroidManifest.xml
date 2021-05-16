@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".inspiration.InspirationDetailActivity"></activity>
-        <activity android:name=".inspiration.InspirationListActivity" />
+        <activity android:name=".inspiration.InspirationListActivity"
+            />
+<!--        android:windowSoftInputMode="adjustPan"-->
         <activity android:name=".feed.FeedActivity" />
         <activity android:name=".old.OldProjectDetailsActivity" />
         <activity android:name=".old.OldProjectListActivity" />

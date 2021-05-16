@@ -8,6 +8,9 @@
     tools:context=".inspiration.InspirationListActivity">
 
 
+    <!--        app:layout_constraintTop_toBottomOf="@+id/InspirationListHeaderText"
+-->
+
     <TextView
         android:id="@+id/InspirationListHeaderText"
         style="@style/textFieldStyle"
@@ -18,22 +21,23 @@
         android:gravity="center"
         android:text="@string/inspiration"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/inspirationRcView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/inspiration" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inspirationRcView"
-        android:layout_width="411dp"
-        android:layout_height="474dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/inspirationSearchText"
+        android:layout_width="467dp"
+        android:layout_height="290dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_inspirationList_back"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/inspiration_list_item" />
-<!--        app:layout_constraintTop_toBottomOf="@+id/InspirationListHeaderText"
--->
+
     <Button
         android:id="@+id/btn_inspirationList_back"
         style="@style/buttonStyle"
@@ -51,13 +55,14 @@
         android:id="@+id/inspirationSearchText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
         android:ems="10"
         android:hint="@string/InspiHint"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/btn_inspirationList_back"
-        app:layout_constraintHorizontal_bias="0.287"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_inspirationList_back" />
+        app:layout_constraintEnd_toEndOf="@+id/InspirationListHeaderText"
+        app:layout_constraintStart_toStartOf="@+id/InspirationListHeaderText"
+        app:layout_constraintTop_toBottomOf="@+id/InspirationListHeaderText" />
+    <!--        android:imeOptions="flagNoExtractUi"-->
 
     <Button
         android:id="@+id/btn_inspirationList_search"
@@ -65,11 +70,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/search"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_inspirationList_back"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/inspirationSearchText"
         app:layout_constraintStart_toStartOf="@+id/inspirationSearchText"
         app:layout_constraintTop_toBottomOf="@+id/inspirationSearchText"
-        app:layout_constraintVertical_bias="0.484" />
+        app:layout_constraintVertical_bias="0.008" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,12 +20,11 @@ import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
 public class InspirationAdaptor extends RecyclerView.Adapter<InspirationAdaptor.InspirationViewHolder> {
 
     private List<ComPattern> comPatternList;
+    private IPatternItemClickedListener listener;
 
     public interface IPatternItemClickedListener{
         void onPatternClicked(int index);
     }
-
-    private IPatternItemClickedListener listener;
 
     public InspirationAdaptor(IPatternItemClickedListener listener) { this.listener = listener; }
 
@@ -39,6 +38,8 @@ public class InspirationAdaptor extends RecyclerView.Adapter<InspirationAdaptor.
         ImageView inspirationImage;
         TextView nameText;
         TextView descriptionText;
+
+        InspirationAdaptor.IPatternItemClickedListener listener;
 
         public InspirationViewHolder(@NonNull View itemView, IPatternItemClickedListener patternItemClickedListener) {
             super(itemView);

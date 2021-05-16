@@ -20,14 +20,7 @@ public class InspirationListViewModel extends AndroidViewModel {
     private static final String TAG = "InspirationListViewModel";
     Repository repository;
     Context context;
-//    LiveData<List<Pattern>> patterns;
     LiveData<List<ComPattern>> comPatterns = new MutableLiveData<>();
-
-
-    public LiveData<List<ComPattern>> getPatterns() { return comPatterns; } // GetPatternSearch (REPO?))
-
-    public void getRepoPatterns(String input) { repository.getSearchPatterns(input, context); }
-
 
     public InspirationListViewModel(@NonNull Application app)
     {
@@ -36,4 +29,10 @@ public class InspirationListViewModel extends AndroidViewModel {
         context = app.getApplicationContext();
         comPatterns = repository.getPatterns();
     }
+
+    public LiveData<List<ComPattern>> getPatterns() { return comPatterns; }
+
+    public void getRepoPatterns(String input) { repository.getSearchPatterns(input, context); }
+
+
 }

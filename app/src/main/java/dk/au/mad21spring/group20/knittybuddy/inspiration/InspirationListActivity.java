@@ -35,8 +35,6 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
     public static final int REQ_DETAIL = 200;
     private static final String TAG = "InspirationList";
 
-
-    private Repository repository;
     private InspirationListViewModel inspirationListViewModel;
 
     private InspirationAdaptor adaptor;
@@ -45,26 +43,18 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
     private Button backBtn;
     private EditText searchText;
 
-    private List<Pattern> patternList;
     private List<ComPattern> comPatternList;
-
-
     private int currentIndex;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inspiration_list);
 
-//        repository = new Repository(getApplication());
-
         adaptor = new InspirationAdaptor(this);
         recyclerView = findViewById(R.id.inspirationRcView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//       ((LinearLayoutManager)recyclerView.getLayoutManager()).setStackFromEnd(true);
         recyclerView.setAdapter(adaptor);
-
 
         comPatternList = new ArrayList<>();
 
@@ -72,7 +62,7 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         inspirationListViewModel.getPatterns().observe(this, new Observer<List<ComPattern>>() {
             @Override
             public void onChanged(List<ComPattern> comPatterns) {
-                    Log.d(TAG, "Hello");
+                    // Clear list for new search and add new items from search.
                     if (comPatternList.size() != 0)
                     {
                         comPatternList.clear();
@@ -81,14 +71,6 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
                     adaptor.updatePatternList(comPatternList);
             }
         });
-
-//        inspirationListViewModel.getPatterns().observe(this, new Observer<List<Pattern>>() {
-//            @Override
-//            public void onChanged(List<Pattern> patterns) {
-//                patternList = patterns;
-////                updateUI();
-//            }
-//        });
 
         searchText = findViewById(R.id.inspirationSearchText);
 
@@ -110,11 +92,6 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
                 finish();
             }
         });
-
-
-
-//        queue = Volley.newRequestQueue(this);
-
     }
 
     private void searchPatterns(String input)
@@ -130,18 +107,7 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         {
             Toast.makeText(this, "Please input a search term", Toast.LENGTH_SHORT).show();
         }
-
-
-//        inspirationListViewModel.getPatterns().observe(this, new Observer<List<ComPattern>>() {
-//            @Override
-//            public void onChanged(List<ComPattern> comPatterns) {
-//                comPatternList.addAll(comPatterns);
-//                Log.d(TAG, "comPatternList: " + comPatternList);
-//            }
-//        });
-
     }
-
 
     @Override
     public void onPatternClicked(int index) {
@@ -153,7 +119,6 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         i.putExtra("thisPatternPhoto", thisPattern.first_photo.medium_url);
         i.putExtra("thisAuthorName", thisPattern.pattern_author.users[0].username);
         i.putExtra("thisAuthorPhoto", thisPattern.pattern_author.users[0].photo_url);
-
 
         startActivityForResult(i, REQ_DETAIL);
     }

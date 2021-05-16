@@ -64,9 +64,7 @@ public class Repository {
     private MutableLiveData<List<Project>> feedList;
     private MutableLiveData<List<String>> usersList;
     private MutableLiveData<List<Project>> projectList;
-    private MutableLiveData<List<Pattern>> patternList;
     private MutableLiveData<List<ComPattern>> comPatternList;
-    private LiveData<List<ComPattern>> comPatterns;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -80,7 +78,6 @@ public class Repository {
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
         comPatternList = new MutableLiveData<>();
-        Log.d(TAG, "comPatterns: " + comPatterns);
         allPublishedProjects = new ArrayList<>();
         //Storage setup for retrieving project image
         storage = FirebaseStorage.getInstance();
@@ -358,6 +355,7 @@ public class Repository {
 
     public LiveData<List<ComPattern>> getPatterns() { return comPatternList; }
 
+    // Search the Ravelry API for Patterns.
     public void getSearchPatterns(String input, Context context) //
     {
         String url = urlBase(input);
@@ -383,10 +381,10 @@ public class Repository {
                 });
             }
         });
-
         Log.d(TAG, "Send request to get patterns from search term: " + input);
     }
 
+    // Setup basepath to API.
     private String urlBase(String input)
     {
         String base = "https://api.ravelry.com/patterns/search.json?query=" + input;
@@ -406,9 +404,7 @@ public class Repository {
         }
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-
             new Response.Listener<String>() {
-//                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(String response) {
                     Log.d(TAG, "Response: " + response);
@@ -421,6 +417,7 @@ public class Repository {
                 Log.e(TAG, "sendRequest failed!", error);
             }
         }) {
+            // Add Authentication headers to API-Request.
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -430,28 +427,18 @@ public class Repository {
             }
         };
         queue.add(stringRequest);
-
-        Log.d(TAG, "StringRequest: " + stringRequest);
     }
 
-
-//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private MutableLiveData<List<ComPattern>> parseJSON(String json)
     {
         Gson gson = new GsonBuilder().create();
         ComPatternResponse response = gson.fromJson(json, ComPatternResponse.class);
 
-        Log.d(TAG, "Respons: " + response);
-
         if (response.getPattern().size() != 0)
         {
             List<ComPattern> lp = response.getPattern();
-
             comPatternList.setValue(lp);
-
-            Log.d(TAG, "lp + comPatternList: " + lp + " " + comPatternList.getValue());
         }
-
         return comPatternList;
     }
 }

@@ -82,6 +82,4 @@ public class InspirationAdaptor extends RecyclerView.Adapter<InspirationAdaptor.
             return comPatternList.size();
         return 0;
     }
-
-
 }

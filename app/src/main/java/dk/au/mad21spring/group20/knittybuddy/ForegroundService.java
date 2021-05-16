@@ -19,14 +19,13 @@ import java.util.concurrent.Executors;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
 
-//Lecture 5
+//Foreground service heavily inspired by Lecture 5 and my own project for Assignment 2.
 public class ForegroundService extends Service {
 
     //attributes
     private static final String SERVICE = "ForegroundService";
     private static final String CHANNEL = "serviceChannel";
     private static final int NOTIFICATION_ID = 75;
-    public static final String extraKeyBroadcastResult = "EXTRA_KEY_BROADCAST_RESULT";
     private boolean serviceStarted = false;
 
     ExecutorService executor;

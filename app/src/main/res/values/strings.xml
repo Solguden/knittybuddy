@@ -40,4 +40,10 @@
     <string name="myProjects">My projects</string>
     <string name="notiPublishedProjects">Get inspiration from others! Take a look at this project</string>
     <string name="notiBy">, made by:</string>
+    <string name="email">Email address</string>
+    <string name="password">Password</string>
+    <string name="registerHere">Register for KnittyBuddy!</string>
+    <string name="fullname">Full name</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
 </resources>

@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.PDFActivity;
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
@@ -83,9 +84,7 @@ public class ProjectDetailsFragment extends Fragment {
     private IProjectSelector projectSelector;
 
     //empty constructor
-    public ProjectDetailsFragment () {
-
-    }
+    public ProjectDetailsFragment () {}
 
     //life cycle methods
     @Nullable
@@ -113,6 +112,8 @@ public class ProjectDetailsFragment extends Fragment {
         thisProject.setPdf("pdf");
         thisProject.setPublished(false);
         thisProject.setUserId("4");
+
+        //Storage setup for retrieving project image
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -218,6 +219,7 @@ public class ProjectDetailsFragment extends Fragment {
         return v;
     }
 
+    //Delete if not working
     private void openPDF() {
         Intent pdfIntent = new Intent(getActivity(), PDFActivity.class);
         startActivity(pdfIntent);
@@ -250,47 +252,63 @@ public class ProjectDetailsFragment extends Fragment {
 
     //selectPicture() and uploadPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
     private void selectPicture() {
+        //New intent
         Intent intent = new Intent();
+        //Setting intent type
         intent.setType("image/*");
+        //Setting intent action
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,1);
+        //Start intent
+        startActivityForResult(intent, Constants.REQUEST_CODE_PROJECT_SELECT_IMAGE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+        //React on image selected result
+        if (requestCode == Constants.REQUEST_CODE_PROJECT_SELECT_IMAGE && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+            //get data and save image uri
             imageUri = data.getData();
+            //set image uri
             projectImageProjectDetail.setImageURI(imageUri);
+            //upload
             uploadPicture();
         }
     }
 
+    //Method for uploading image to storage
     private void uploadPicture(){
+        //Generate random image name/id
         final String random = UUID.randomUUID().toString();
+        //Setup storage reference for correct folder
         StorageReference imageRef = storageReference.child("images/"+random);
 
+        // "put" / upload file to storage
         imageRef.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
-                        firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String url = uri.toString();
-                                thisProject.setImageUrl(url);
-                                detailVM.updateImageProject(url,thisProject.getId());
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //Retrieve image download url
+                    Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
+                    firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Save in string
+                            String url = uri.toString();
+                            //Save to this project
+                            thisProject.setImageUrl(url);
+                            //Save in firestore db
+                            detailVM.updateImageProject(url,thisProject.getId());
+                        }
+                    });
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    makeToast("Image upload failed");
+                }
+            });
     }
 
     @Override

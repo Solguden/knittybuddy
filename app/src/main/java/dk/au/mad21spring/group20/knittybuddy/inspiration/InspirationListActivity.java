@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -61,7 +62,9 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         adaptor = new InspirationAdaptor(this);
         recyclerView = findViewById(R.id.inspirationRcView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//       ((LinearLayoutManager)recyclerView.getLayoutManager()).setStackFromEnd(true);
         recyclerView.setAdapter(adaptor);
+
 
         comPatternList = new ArrayList<>();
 
@@ -95,6 +98,8 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
             public void onClick(View v) {
                 String search = searchText.getText().toString();
                 searchPatterns(search);
+                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         });
 
@@ -105,6 +110,7 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
                 finish();
             }
         });
+
 
 
 //        queue = Volley.newRequestQueue(this);

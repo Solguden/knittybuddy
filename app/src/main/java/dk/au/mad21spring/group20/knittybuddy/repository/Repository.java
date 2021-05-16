@@ -68,13 +68,13 @@ public class Repository {
     private static final String TAG = "Repository";
     private List<Project> allPublishedProjects;
 
-    public Repository(/*Application app*/){
+    public Repository(){
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
         comPatternList = new MutableLiveData<>();
-//        comPatterns = (LiveData<List<ComPattern>>) comPatternList.getValue();
         Log.d(TAG, "comPatterns: " + comPatterns);
         allPublishedProjects = new ArrayList<>();
+
     }
 
     public static Repository getRepositoryInstance(){
@@ -84,7 +84,7 @@ public class Repository {
         return instance;
     }
 
-    //Login
+    //Create user in firestore db
     public MutableLiveData<Boolean> createUser(User user){
         MutableLiveData<Boolean> created = new MutableLiveData<Boolean>(false);
         db.collection("users").add(user)
@@ -129,47 +129,6 @@ public class Repository {
         return usersThisUserFollows;
     }
 
-    public List<String> getUsersThisUserFollowsAsync(String thisUser){
-        MutableLiveData<ArrayList<String>> list = new MutableLiveData<ArrayList<String>>();
-        Future<ArrayList<String>> feed = executor.submit(new Callable<ArrayList<String>>() {
-            @Override
-            public ArrayList<String> call() {
-                usersList = new MutableLiveData<List<String>>();
-                db.collection(Constants.COLLECTION_USER).whereEqualTo("userId", thisUser)
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                                ArrayList<String> users = new ArrayList<>();
-                                if(snapshot!=null && !snapshot.isEmpty()){
-                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-                                        User thisUser = doc.toObject(User.class);
-                                        if(thisUser!=null) {
-                                            for (String userId : thisUser.getUsersThisUserFollows()) {
-                                                users.add(userId);
-                                            }
-                                        }
-                                    }
-                                    usersList.setValue(users);
-                                }
-                            }
-                        });
-                return list.getValue();
-            }
-        });
-
-        try {
-            Log.d("Feed users", "Feed" + feed.get() );
-            return feed.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-
     //projects
     public LiveData<List<Project>> getPublishedProjectsByUserId(String userId){
         MutableLiveData<List<Project>> publishedProjects = new MutableLiveData<List<Project>>();
@@ -210,10 +169,10 @@ public class Repository {
                                 }
                             }
                             allProjects.setValue(published);
+                            allPublishedProjects = allProjects.getValue();
                         }
                     }
                 });
-        allPublishedProjects = allProjects.getValue();
         return allProjects;
     }
 
@@ -348,51 +307,16 @@ public class Repository {
     }
 
     public Project getRandomProject(){
+        if (allPublishedProjects == null)
+        {
+            getAllPublishedProjects();
+        }
         Random r = new Random();
+        List<Project> notificationList = allPublishedProjects;
+        Project randomProject = notificationList.get(r.nextInt(notificationList.size()));
 
-        Project randomProject = allPublishedProjects.get(r.nextInt(allPublishedProjects.size()));
         return randomProject;
     }
-
-    //--------------------------------------------
-
-//    public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
-//        MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();
-//        Future<ArrayList<Feed>> feed = executor.submit(new Callable<ArrayList<Feed>>() {
-//            @Override
-//            public ArrayList<Feed> call() {
-//                feedList = new MutableLiveData<List<Feed>>();
-//                db.collection("feed").whereEqualTo("ownerId", 84)
-//                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-//                                ArrayList<Feed> updatedFeed = new ArrayList<>();
-//                                if(snapshot!=null && !snapshot.isEmpty()){
-//                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-//                                        Feed f = doc.toObject(Feed.class);
-//                                        if(f!=null) {
-//                                            updatedFeed.add(f);
-//                                        }
-//                                    }
-//                                    feedList.setValue(updatedFeed);
-//                                }
-//                            }
-//                        });
-//                return list.getValue();
-//            }
-//        });
-//
-//        try {
-//            Log.d(TAG, "Fetched feed by TEEEST: " + feed.get() );
-//            return feed.get();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
 
 //    public List<Pattern> searchPatternsAsync(String input){
 //        Future<List<Pattern>> p = executor.submit(new Callable<List<Pattern>>() {

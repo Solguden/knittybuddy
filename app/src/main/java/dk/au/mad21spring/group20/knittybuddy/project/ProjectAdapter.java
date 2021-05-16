@@ -82,6 +82,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.projectName.setText(projectList.get(position).getName());
+        //Use glide if imageurl is defined
         String imageUrl = projectList.get(position).getImageUrl();
         if(!TextUtils.isEmpty(imageUrl)){
             Glide.with(holder.projectImage.getContext()).load(imageUrl).into(holder.projectImage);

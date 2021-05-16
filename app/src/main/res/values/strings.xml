@@ -25,4 +25,6 @@
     <string name="InspiHint">Search...</string>
     <string name="detail_name">Name of pattern</string>
     <string name="detail_author">Name of author</string>
+    <string name="starAdded">You stared a project!</string>
+    <string name="starRemoved">A star is removed</string>
 </resources>

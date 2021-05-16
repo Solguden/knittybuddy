@@ -24,4 +24,8 @@
     <string name="inspiration">Inspiration</string>
     <string name="SearchHint">Søgnings hint</string>
     <string name="InspiHint">Søg...</string>
+    <string name="detail_name">Navn på mønster</string>
+    <string name="detail_author">Navn på forfatter</string>
+    <string name="starAdded">Du har markeret et projekt med en stjerne!</string>
+    <string name="starRemoved">Du har fjernet din stjernemarkering</string>
 </resources>

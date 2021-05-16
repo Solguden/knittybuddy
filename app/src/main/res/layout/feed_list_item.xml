@@ -25,6 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="@string/username"
+        android:maxLength="10"
         app:layout_constraintBottom_toBottomOf="@+id/projectImageFeedItem"
         app:layout_constraintStart_toEndOf="@+id/projectImageFeedItem"
         app:layout_constraintTop_toBottomOf="@+id/projectNameFeedList" />

@@ -6,9 +6,7 @@ public class PatternResponse {
     public List<Pattern> patterns;
     public Pageninator pageninator;
 
-
     public List<Pattern> getPattern() {
         return patterns;
     }
-
 }

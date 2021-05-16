@@ -11,13 +11,3 @@ public class Pattern {
     public PatternAuthor pattern_author;
     public String permalink;
 }
-
-
-//data class Pattern(
-//    val id: Long,
-//    val name: String,
-//    val permalink: String,
-//    @Json(name = "first_photo") val firstPhoto: Photo,
-//    val designer: PatternAuthor,
-//    @Json(name = "pattern_author") val patternAuthor: PatternAuthor
-//)

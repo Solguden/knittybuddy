@@ -59,10 +59,8 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
         //determine device type
         if (!isTablet(this)){
             deviceType = DeviceType.MOBILE;
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         } else {
             deviceType = DeviceType.TABLET;
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         //check if its the first time the activity is opened

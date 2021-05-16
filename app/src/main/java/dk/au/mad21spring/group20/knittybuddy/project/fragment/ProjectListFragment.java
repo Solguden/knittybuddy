@@ -51,9 +51,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     private IProjectSelector projectSelector;
 
     //empty constructor
-    public ProjectListFragment () {
-
-    }
+    public ProjectListFragment () { }
 
     //life cycle methods
     @Nullable
@@ -61,10 +59,6 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project_list, container, false);
-
-//        if (isTablet(getContext()) == true){
-//            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        }
 
         Log.d("create", "create  view project list");
         //instantiation of widgets

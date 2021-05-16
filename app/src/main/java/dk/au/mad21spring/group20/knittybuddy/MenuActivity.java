@@ -20,9 +20,6 @@ public class MenuActivity extends AppCompatActivity {
     private Button btnProjects;
     private Button btnInspiration;
 
-    //attributes
-
-
     //life cycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {

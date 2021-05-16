@@ -55,7 +55,7 @@ public class OldProjectDetailsActivity extends AppCompatActivity {
         projectId = data.getStringExtra("id"); //TO DO: hardcode name and default
 
         //have some code here that gets the project object from the viewModel
-        //thisProject = new Project("", "Hej", "", 123, "", false, "","");
+        thisProject = new Project("", "Hej", "", 123, "", false, "","");
         //button listener
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override

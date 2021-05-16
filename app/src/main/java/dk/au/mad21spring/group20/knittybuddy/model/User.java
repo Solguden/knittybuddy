@@ -1,20 +1,16 @@
 package dk.au.mad21spring.group20.knittybuddy.model;
 
-import java.util.List;
-
 public class User {
     private String FullName;
     private String Email;
     private String UserId;
-    private List<String> UsersThisUserFollows;
 
     public User(){};
 
-    public User(String fullName, String email, String userId, List<String> list) {
+    public User(String fullName, String email, String userId) {
         FullName = fullName;
         Email = email;
         UserId = userId;
-        UsersThisUserFollows = list;
     }
 
     public String getFullName() {
@@ -40,8 +36,4 @@ public class User {
     public void setUserId(String userId) {
         UserId = userId;
     }
-
-    public List<String> getUsersThisUserFollows() { return UsersThisUserFollows; }
-
-    public void setUsersThisUserFollows(List<String> list) { UsersThisUserFollows = list; }
 }

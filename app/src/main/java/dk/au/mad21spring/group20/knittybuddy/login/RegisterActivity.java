@@ -17,9 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.User;
 import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
@@ -96,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(fullName, email, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ArrayList<String>());
+                            User user = new User(fullName, email, FirebaseAuth.getInstance().getCurrentUser().getUid());
                             repository.createUser(user).observe(RegisterActivity.this, new Observer<Boolean>() {
                                 @Override
                                 public void onChanged(Boolean created) {

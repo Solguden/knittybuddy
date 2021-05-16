@@ -411,14 +411,6 @@ public class Repository {
 
     public LiveData<List<ComPattern>> getPatterns() { return comPatternList; }
 
-//    public LiveData<ComPattern> getPatternData(int id) {
-//        comPatternList
-//    }
-
-//    public void setPatterns(ArrayList<ComPattern> patterns) {
-//        comPatternList.setValue(patterns);
-//    }
-
 
 
     public void getSearchPatterns(String input, Context context) //
@@ -464,34 +456,18 @@ public class Repository {
 
     private void sendRequest(String url, Context context, final VolleyCallback callback) // void
     {
-
         if (queue == null)
-    {
-        queue = Volley.newRequestQueue(context);
-    }
-
-        LiveData<List<ComPattern>> data = new MutableLiveData<>();
+        {
+            queue = Volley.newRequestQueue(context);
+        }
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d(TAG, "Response: " + response);
-//                        parseJSON(response);
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e(TAG, "sendRequest failed!", error);
-//                    }
-//                }) {
+
             new Response.Listener<String>() {
 //                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(String response) {
                     Log.d(TAG, "Response: " + response);
-//                    parseJSON(response);
                     callback.onSuccess(response);
                 }
             },
@@ -523,44 +499,14 @@ public class Repository {
 
         Log.d(TAG, "Respons: " + response);
 
-//        ComPattern p0 = new ComPattern(response.getPattern().get(0).getId(), response.getPattern().get(0).getName(), response.getPattern().get(0).getAuthor(), response.getPattern().get(0).getPhoto());
-
         if (response.getPattern().size() != 0)
         {
-//            ComPattern p1 = response.getPattern().get(0);
-//            ComPattern p2 = response.getPattern().get(1);
-//            ComPattern p3 = response.getPattern().get(2);
-//            ComPattern p4 = response.getPattern().get(3);
-//            ComPattern p5 = response.getPattern().get(4);
-
             List<ComPattern> lp = response.getPattern();
-
-
-//            ComPattern pattern1 = new ComPattern(p1.getId(), p1.getName(), p1.getAuthor(), p1.getPhoto());
-//            ComPattern pattern2 = new ComPattern(p2.getId(), p2.getName(), p2.getAuthor(), p2.getPhoto());
-//            ComPattern pattern3 = new ComPattern(p3.getId(), p3.getName(), p3.getAuthor(), p3.getPhoto());
-//            ComPattern pattern4 = new ComPattern(p4.getId(), p4.getName(), p4.getAuthor(), p4.getPhoto());
-//            ComPattern pattern5 = new ComPattern(p5.getId(), p5.getName(), p5.getAuthor(), p5.getPhoto());
-//
-//            int id = p1.getId();
-
-//            Log.d(TAG, "Pattern 1: " + p1);
-//            Log.d(TAG, "ID: " + id);
-//            Log.d(TAG, "Pattern Object 1 ID: " + pattern1.id);
-//
-//            ArrayList<ComPattern> lcp = new ArrayList<ComPattern>();
-//
-//            lcp.add(pattern1);
-//            lcp.add(pattern2);
-//            lcp.add(pattern3);
-//            lcp.add(pattern4);
-//            lcp.add(pattern5);
 
             comPatternList.setValue(lp);
 
-            Log.d(TAG, "lcp + comPatternList: " + lp + " " + comPatternList.getValue());
+            Log.d(TAG, "lp + comPatternList: " + lp + " " + comPatternList.getValue());
         }
-
 
         return comPatternList;
     }

@@ -33,10 +33,6 @@ public class FeedViewModel extends ViewModel {
         repository = Repository.getRepositoryInstance();
     }
 
-    public LiveData<List<String>> getUsersThisUserFollows(String thisUserId) { return repository.getUsersThisUserFollows(thisUserId); }
-    //public List<String> getUsers(String thisUser) { return repository.getUsersThisUserFollowsAsync(thisUser); }
-    //public List<String> getUsers(String thisUser) { return repository.getUsersThisUserFollows2(thisUser); }
-    public LiveData<List<Project>> getPublishedProjects(String userId) { return repository.getPublishedProjectsByUserId(userId); }
     public LiveData<List<Project>> getAllPublishedProjects() { return repository.getAllPublishedProjects(); }
 
     public void removeStar(String user, Project project){

@@ -62,31 +62,31 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
 
         //view models
         feedVM = new ViewModelProvider(this, new FeedViewModelFactory(getApplication())).get(FeedViewModel.class);
-                feedVM.getAllPublishedProjects().observe(this, new Observer<List<Project>>() {
-                    @Override
-                    public void onChanged(List<Project> projects) {
-                        startForegroundService();
+        feedVM.getAllPublishedProjects().observe(this, new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> projects) {
+                startForegroundService();
 
-                        feed.clear();
-                        List<Project> feedReverse = new ArrayList<>();
+                feed.clear();
+                List<Project> feedReverse = new ArrayList<>();
 
 
-                        for (Project p : projects) {
-                            Log.d("FEED", "project published: " + p.getName() + "by user " + p.getUserId());
-                            if (!p.getUserId().equals(userId)){
-                                feedReverse.add(p);
-                            }
-                        }
-                        //reverses the list of projects for the feed
-                        int size = feedReverse.size()-1;
-                        for(int i=size;i>=0;i--){
-                            feed.add(feedReverse.get(i));
-                        }
-
-                        //feed = projects;
-                        adaptor.updateFeed(feed);
+                for (Project p : projects) {
+                    Log.d("FEED", "project published: " + p.getName() + "by user " + p.getUserId());
+                    if (!p.getUserId().equals(userId)){
+                        feedReverse.add(p);
                     }
-                });
+                }
+                //reverses the list of projects for the feed
+                int size = feedReverse.size()-1;
+                for(int i=size;i>=0;i--){
+                    feed.add(feedReverse.get(i));
+                }
+
+                //feed = projects;
+                adaptor.updateFeed(feed);
+            }
+        });
 
         //listeners
         goBackBtn.setOnClickListener(new View.OnClickListener() {

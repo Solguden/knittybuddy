@@ -95,10 +95,6 @@ public class ProjectDetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project_detail, container, false);
 
-//        if (isTablet(getContext()) == true){
-//            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        }
-
         //instantiation of widgets
         nameProjectEditTxt = v.findViewById(R.id.headerProjectDetailEditTxt);
         descriptionProjectDetailsEditTxt = v.findViewById(R.id.descriptionProjectDetailEditTxt);
@@ -225,35 +221,9 @@ public class ProjectDetailsFragment extends Fragment {
         return v;
     }
 
-    //Delete if not working
     private void openPDF() {
         Intent pdfIntent = new Intent(getActivity(), PDFActivity.class);
         startActivity(pdfIntent);
-//        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
-//
-//        PdfDocument pdfDocument = new PdfDocument();
-//        Paint paint = new Paint();
-//        PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
-//        PdfDocument.Page myPage = pdfDocument.startPage(mypageInfo);
-//        Canvas canvas = myPage.getCanvas();
-//
-//        paint.setTextSize(15.5f);
-//        paint.setColor(Color.rgb(0,50,250));
-//
-//        canvas.drawText(thisProject.getName(),20,20,paint);
-//        paint.setTextSize(10f);
-//        canvas.drawText(thisProject.getDescription(),20,40,paint);
-//
-//        pdfDocument.finishPage(myPage);
-//        File file = new File(getContext().getExternalFilesDir("/"),thisProject.getId());
-//        try {
-//            pdfDocument.writeTo(new FileOutputStream(file));
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        pdfDocument.close();
     }
 
     //selectPicture() and uploadPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
@@ -367,9 +337,6 @@ public class ProjectDetailsFragment extends Fragment {
 
     private void goBack() {
         if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
-//            if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
-//                confirmBack();
-//            }
             confirmBack();
         } else if (nameProjectEditTxt.getText().toString().equals("") && !descriptionProjectDetailsEditTxt.getText().toString().equals("")){
             makeToast(getString(R.string.provideProjectName));

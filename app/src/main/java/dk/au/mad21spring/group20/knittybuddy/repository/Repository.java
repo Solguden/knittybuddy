@@ -318,31 +318,10 @@ public class Repository {
         return randomProject;
     }
 
-//    public List<Pattern> searchPatternsAsync(String input){
-//        Future<List<Pattern>> p = executor.submit(new Callable<List<Pattern>>() {
-//            @Override
-//            public List<Pattern> call() throws Exception {
-//                return null;
-//            }
-//        })
-//
-//    }
-
     public LiveData<List<ComPattern>> getPatterns() { return comPatternList; }
-
-//    public LiveData<ComPattern> getPatternData(int id) {
-//        comPatternList
-//    }
-
-//    public void setPatterns(ArrayList<ComPattern> patterns) {
-//        comPatternList.setValue(patterns);
-//    }
-
-
 
     public void getSearchPatterns(String input, Context context) //
     {
-//        Context context = app.getApplicationContext();
         String url = urlBase(input);
         executor.execute(new Runnable() {
             @Override

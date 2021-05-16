@@ -1,5 +1,6 @@
 package dk.au.mad21spring.group20.knittybuddy.feed;
 
+import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,52 +22,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
 
 public class FeedViewModel extends ViewModel {
-    private static final String TAG = "MainViewModel";
-    LiveData<List<Feed>> feed;
-    LiveData<List<Feed>> filteredFeed;
+
     Repository repository;
-    public FeedViewModel(){
+
+    public FeedViewModel(Application application){
         repository = Repository.getRepositoryInstance();
-        feed = repository.getFeed();
     }
 
-    public LiveData<List<Feed>> getFeed() { return feed; }
+    public LiveData<List<String>> getUsersThisUserFollows(String thisUserId) { return repository.getUsersThisUserFollows(thisUserId); }
+    //public List<String> getUsers(String thisUser) { return repository.getUsersThisUserFollowsAsync(thisUser); }
+    //public List<String> getUsers(String thisUser) { return repository.getUsersThisUserFollows2(thisUser); }
+    public LiveData<List<Project>> getPublishedProjects(String userId) { return repository.getPublishedProjectsByUserId(userId); }
+    public LiveData<List<Project>> getAllPublishedProjects() { return repository.getAllPublishedProjects(); }
 
-    public void generateFeedBasedOnFollowers(){
-
+    public void removeStar(String user, Project project){
+        repository.removeStarFromProject(user, project);
+        Log.d("STAR", "remove star from project " + project.getName() + " for user " + user);
     }
-
-    public void addRandomFeed(){
-        Random random = new Random();
-        String[] topics = new String[]{"A", "B", "C", "D","E"};
-        String[] difficulties = new String[]{"1", "2", "3", "4","5"};
-        String[] descriptions = new String[]{"Good","Bad","Fun","Ugly"};
-
-        String topic = topics[random.nextInt(topics.length)];
-        String difficulty = difficulties[random.nextInt(difficulties.length)];
-        String description = descriptions[random.nextInt(descriptions.length)];
-        int ownerId = random.nextInt(80) + 20;
-
-        repository.addFeed(new Feed(topic,difficulty,description,ownerId));
-    }
-
-    public LiveData<List<Feed>> getByOwnerId(int ownerId){
-        return repository.getByOwnerId(ownerId);
-    }
-
-    public void deleteAll(){
-//        FirebaseFirestore.getInstance()
-//                .collection("feed")
-//                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot snapshots) {
-//                for(DocumentSnapshot doc : snapshots){
-//                    doc.getReference().delete();
-//                }
-//            }
-//        });
-    }
+    public void addStar(String user, Project project){ Log.d("STAR", "add star from project " + project.getName() + " for user " + user); }
 }

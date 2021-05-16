@@ -2,6 +2,9 @@ package dk.au.mad21spring.group20.knittybuddy.model;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Project {
     private String Id;
     private String Name;
@@ -11,7 +14,7 @@ public class Project {
     private boolean Published;
     private String UserId;
     private String ImageUrl;
-
+    private List<String> StaredBy;
 
 
     public Project(){
@@ -23,9 +26,10 @@ public class Project {
         Published = false; //a project is per default not published
         UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ImageUrl ="";
+        StaredBy = new ArrayList<>();
     }
 
-    public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId, String imageURL){
+    public Project(String id, String name, String description, int imageId, String pdf, boolean published, String userId, String imageURL, List<String> staredBy){
         Id = id;
         Name = name;
         Description = description;
@@ -34,6 +38,7 @@ public class Project {
         Published = published;
         UserId = userId;
         ImageUrl = imageURL;
+        StaredBy = staredBy;
     }
 
     public String getId() {
@@ -89,6 +94,14 @@ public class Project {
 
     public void setImageUrl(String imageURL) {
         ImageUrl = imageURL;
+    }
+
+    public List<String> getStaredBy() {
+        return StaredBy;
+    }
+
+    public void setStaredBy(List<String> staredBy) {
+        StaredBy = staredBy;
     }
 
 }

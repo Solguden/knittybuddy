@@ -56,7 +56,7 @@ public class ForegroundService extends Service {
         //build the notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText("Will be updated with random projects for inspiration")
+                .setContentText(getString(R.string.mainNoti))
                 .setSmallIcon(R.drawable.notification_icon_foreground)
                 .setTicker("")
                 .build();

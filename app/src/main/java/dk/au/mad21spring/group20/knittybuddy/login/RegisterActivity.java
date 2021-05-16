@@ -69,34 +69,34 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Name validation
         if(fullName.isEmpty()){
-            fullNameTxt.setError("Full name is required");
+            fullNameTxt.setError(getString(R.string.fullnameReq));
             fullNameTxt.requestFocus();
             return;
         }
 
         //Email validation
         if(email.isEmpty()){
-            emailTxt.setError("Email is required");
+            emailTxt.setError(getString(R.string.emailReq));
             emailTxt.requestFocus();
             return;
         }
 
         //Email validation
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            emailTxt.setError("Email must be valid");
+            emailTxt.setError(getString(R.string.emailVal));
             emailTxt.requestFocus();
         }
 
         //Password validation
         if(password.isEmpty()){
-            passwordTxt.setError("Password is required");
+            passwordTxt.setError(getString(R.string.passwordReq));
             passwordTxt.requestFocus();
             return;
         }
 
         //Password validation
         if(password.length() < 6){
-            passwordTxt.setError("Password must be longer than 6 characters");
+            passwordTxt.setError(getString(R.string.passwordreqSix));
             passwordTxt.requestFocus();
             return;
         }
@@ -115,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onChanged(Boolean created) {
                                 if(created){
                                     //Success toast
-                                    Toast.makeText(RegisterActivity.this,"User has successfully been created",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RegisterActivity.this,getString(R.string.userCreated),Toast.LENGTH_LONG).show();
                                     //Redirect to login
                                     gotoLogin();
                                 }

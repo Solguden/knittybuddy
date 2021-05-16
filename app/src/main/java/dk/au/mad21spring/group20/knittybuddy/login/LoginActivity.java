@@ -18,9 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.MenuActivity;
-import dk.au.mad21spring.group20.knittybuddy.PDFActivity;
 import dk.au.mad21spring.group20.knittybuddy.R;
-import dk.au.mad21spring.group20.knittybuddy.repository.Repository;
+
 //Inspired by: https://www.youtube.com/watch?v=Z-RE1QuUWPg&ab_channel=CodeWithMazn
 public class LoginActivity extends AppCompatActivity {
 
@@ -69,25 +68,25 @@ public class LoginActivity extends AppCompatActivity {
 
         //Email validation
         if(email.isEmpty()){
-            emailTxt.setError("Email is required");
+            emailTxt.setError(getString(R.string.emailReq));
             emailTxt.requestFocus();
             return;
         }
         //Email validation
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            emailTxt.setError("Email must be valid");
+            emailTxt.setError(getString(R.string.emailVal));
             emailTxt.requestFocus();
         }
 
         //Password validation
         if(password.isEmpty()){
-            passwordTxt.setError("Password is required");
+            passwordTxt.setError(getString(R.string.passwordReq));
             passwordTxt.requestFocus();
             return;
         }
         //Password validation
         if(password.length() < 6){
-            passwordTxt.setError("Password must be longer than 6 characters");
+            passwordTxt.setError(getString(R.string.passwordreqSix));
             passwordTxt.requestFocus();
             return;
         }
@@ -99,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()){ //on success go to menu
                     gotoMenu();
                 }else{//on failure show toast
-                    Toast.makeText(LoginActivity.this,"Login failed. Try again.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,getString(R.string.loginFail),Toast.LENGTH_LONG).show();
                 }
             }
         });

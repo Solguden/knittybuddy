@@ -46,5 +46,13 @@
     <string name="fullname">Full name</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
-    <string name="passwordreq">Password must be atleast 6 characters</string>
+    <string name="passwordreqSix">Password must be atleast 6 characters</string>
+    <string name="mainNoti">Will be updated with random projects for inspiration</string>
+    <string name="emailReq">Email is required</string>
+    <string name="emailVal">Email must be valid</string>
+    <string name="passwordReq">Password is required</string>
+    <string name="loginFail">Login failed. Please try again!</string>
+    <string name="fullnameReq">Full name is required</string>
+    <string name="userCreated">User has successfully been created</string>
+    <string name="searchTerm">Please input a search term</string>
 </resources>

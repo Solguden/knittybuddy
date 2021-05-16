@@ -47,5 +47,13 @@
     <string name="fullname">Dit fulde navn</string>
     <string name="register">Tilmeld</string>
     <string name="login">Login</string>
-    <string name="passwordreq">Kodeord skal være mindst 6 karakterer</string>
+    <string name="passwordreqSix">Kodeord skal være mindst 6 karakterer</string>
+    <string name="mainNoti">Opdateres med tilfældige projekter til inspiration</string>
+    <string name="emailReq">Email er nødvendig</string>
+    <string name="emailVal">Email skal være gyldig</string>
+    <string name="passwordReq">Kodeord er nødvendig</string>
+    <string name="loginFail">Login fejlede. Prøv venligst igen</string>
+    <string name="fullnameReq">Dit fulde navn er nødvendigt</string>
+    <string name="userCreated">Din bruger er oprettet</string>
+    <string name="searchTerm">Venligst indtast dit søgeord</string>
 </resources>

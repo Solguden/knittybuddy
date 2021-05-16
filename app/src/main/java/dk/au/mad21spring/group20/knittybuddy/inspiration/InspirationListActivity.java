@@ -105,7 +105,7 @@ public class InspirationListActivity extends AppCompatActivity implements Inspir
         }
         else
         {
-            Toast.makeText(this, "Please input a search term", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.searchTerm), Toast.LENGTH_SHORT).show();
         }
     }
 

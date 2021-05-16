@@ -93,8 +93,11 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
                 feedVM.getAllPublishedProjects().observe(this, new Observer<List<Project>>() {
                     @Override
                     public void onChanged(List<Project> projects) {
+                        startForegroundService();
+
                         feed.clear();
                         List<Project> feedReverse = new ArrayList<>();
+
 
                         for (Project p : projects) {
                             Log.d("FEED", "project published: " + p.getName() + "by user " + p.getUserId());
@@ -148,7 +151,7 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
 //            }
 //        });
 
-        startForegroundService();
+
     }
 
     //from IStarClicker

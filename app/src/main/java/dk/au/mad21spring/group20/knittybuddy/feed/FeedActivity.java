@@ -51,7 +51,6 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
         //instantiates widgets and objects
         goBackBtn = findViewById(R.id.goBackFeedBtn);
         feedListRv = findViewById(R.id.projectFeedRv);
-        searchUser = findViewById(R.id.searchUser);
         feed = new ArrayList<>();
         usersThisUserFollows = new ArrayList<>();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -63,7 +62,31 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
 
         //view models
         feedVM = new ViewModelProvider(this, new FeedViewModelFactory(getApplication())).get(FeedViewModel.class);
-        //usersThisUserFollows = feedVM.getUsers(userId);
+        feedVM.getAllPublishedProjects().observe(this, new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> projects) {
+                startForegroundService();
+
+                feed.clear();
+                List<Project> feedReverse = new ArrayList<>();
+
+
+                for (Project p : projects) {
+                    Log.d("FEED", "project published: " + p.getName() + "by user " + p.getUserId());
+                    if (!p.getUserId().equals(userId)){
+                        feedReverse.add(p);
+                    }
+                }
+                //reverses the list of projects for the feed
+                int size = feedReverse.size()-1;
+                for(int i=size;i>=0;i--){
+                    feed.add(feedReverse.get(i));
+                }
+
+                //feed = projects;
+                adaptor.updateFeed(feed);
+            }
+        });
 
         //listeners
         goBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,84 +95,6 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
                 finish();
             }
         });
-
-        //the viewmodel observes on the users this user is following. This can be used to observe on the projects the users have published. These projects will appear in the feed
-        //the getUsersThisUSerFollows calls an async method since we need to know the users before we get the published projects
-//        feedVM.getUsersThisUserFollows(userId).observe(this, new Observer<List<String>>() {
-//            @Override
-//            public void onChanged(List<String> users) {
-//                for (String user : users) {
-//                    Log.d("FEED", "This user " + userId + "is following user " + user);
-//                }
-//                usersThisUserFollows = users;
-//            }
-//        });
-
-        //there will only be observed on published projects if the user is following other users
-//        if (usersThisUserFollows.size() == 0){
-//            //ignore
-//        } else {
-//            for (String user : usersThisUserFollows) {
-                feedVM.getAllPublishedProjects().observe(this, new Observer<List<Project>>() {
-                    @Override
-                    public void onChanged(List<Project> projects) {
-                        startForegroundService();
-
-                        feed.clear();
-                        List<Project> feedReverse = new ArrayList<>();
-
-
-                        for (Project p : projects) {
-                            Log.d("FEED", "project published: " + p.getName() + "by user " + p.getUserId());
-                            if (!p.getUserId().equals(userId)){
-                                feedReverse.add(p);
-                            }
-                        }
-                        //reverses the list of projects for the feed
-                        int size = feedReverse.size()-1;
-                        for(int i=size;i>=0;i--){
-                            feed.add(feedReverse.get(i));
-                        }
-
-                        //feed = projects;
-                        adaptor.updateFeed(feed);
-                    }
-                });
-//            }
-//        }
-
-        //listeners
-//        followBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //insert code
-//            }
-//        });
-//
-//        searchBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //insert code
-//            }
-//        });
-
-//        searchUser.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (searchUser.getText().equals("")){
-//                    followBtn.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
 
 
     }

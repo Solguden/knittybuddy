@@ -41,4 +41,10 @@
     <string name="myProjects">Mine projekter</string>
     <string name="notiPublishedProjects">Få inspiration fra andre. Tag et kig på dette projekt</string>
     <string name="notiBy">", lavet af: "</string>
+    <string name="email">Email adresse</string>
+    <string name="password">Kodeord</string>
+    <string name="registerHere">Tilmeld dig StrikkeMakker i dag!</string>
+    <string name="fullname">Dit fulde navn</string>
+    <string name="register">Tilmeld</string>
+    <string name="login">Login</string>
 </resources>

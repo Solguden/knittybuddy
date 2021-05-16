@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -48,6 +50,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import dk.au.mad21spring.group20.knittybuddy.Constants;
 import dk.au.mad21spring.group20.knittybuddy.PDFActivity;
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
@@ -83,9 +86,7 @@ public class ProjectDetailsFragment extends Fragment {
     private IProjectSelector projectSelector;
 
     //empty constructor
-    public ProjectDetailsFragment () {
-
-    }
+    public ProjectDetailsFragment () {}
 
     //life cycle methods
     @Nullable
@@ -113,6 +114,8 @@ public class ProjectDetailsFragment extends Fragment {
         thisProject.setPdf("pdf");
         thisProject.setPublished(false);
         thisProject.setUserId("4");
+
+        //Storage setup for retrieving project image
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -221,77 +224,35 @@ public class ProjectDetailsFragment extends Fragment {
     private void openPDF() {
         Intent pdfIntent = new Intent(getActivity(), PDFActivity.class);
         startActivity(pdfIntent);
-//        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
-//
-//        PdfDocument pdfDocument = new PdfDocument();
-//        Paint paint = new Paint();
-//        PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
-//        PdfDocument.Page myPage = pdfDocument.startPage(mypageInfo);
-//        Canvas canvas = myPage.getCanvas();
-//
-//        paint.setTextSize(15.5f);
-//        paint.setColor(Color.rgb(0,50,250));
-//
-//        canvas.drawText(thisProject.getName(),20,20,paint);
-//        paint.setTextSize(10f);
-//        canvas.drawText(thisProject.getDescription(),20,40,paint);
-//
-//        pdfDocument.finishPage(myPage);
-//        File file = new File(getContext().getExternalFilesDir("/"),thisProject.getId());
-//        try {
-//            pdfDocument.writeTo(new FileOutputStream(file));
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        pdfDocument.close();
     }
 
-    //selectPicture() and uploadPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
+    //selectPicture()  based on https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
     private void selectPicture() {
+        //New intent
         Intent intent = new Intent();
+        //Setting intent type
         intent.setType("image/*");
+        //Setting intent action
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,1);
+        //Start intent
+        startActivityForResult(intent, Constants.REQUEST_CODE_PROJECT_SELECT_IMAGE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+        //React on image selected result
+        if (requestCode == Constants.REQUEST_CODE_PROJECT_SELECT_IMAGE && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+            //get data and save image uri
             imageUri = data.getData();
+            //set image uri
             projectImageProjectDetail.setImageURI(imageUri);
-            uploadPicture();
+            //upload
+            detailVM.uploadImage(imageUri, thisProject.getId());
+//            uploadPicture();
         }
     }
 
-    private void uploadPicture(){
-        final String random = UUID.randomUUID().toString();
-        StorageReference imageRef = storageReference.child("images/"+random);
-
-        imageRef.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
-                        firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String url = uri.toString();
-                                thisProject.setImageUrl(url);
-                                detailVM.updateImageProject(url,thisProject.getId());
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
 
     @Override
     public void onResume() { super.onResume(); }
@@ -343,9 +304,6 @@ public class ProjectDetailsFragment extends Fragment {
 
     private void goBack() {
         if (!thisProject.getDescription().equals(descriptionProjectDetailsEditTxt.getText().toString())){
-//            if(!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
-//                confirmBack();
-//            }
             confirmBack();
         } else if (nameProjectEditTxt.getText().toString().equals("") && !descriptionProjectDetailsEditTxt.getText().toString().equals("")){
             makeToast(getString(R.string.provideProjectName));
@@ -437,5 +395,12 @@ public class ProjectDetailsFragment extends Fragment {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    //reference: https://stackoverflow.com/questions/5832368/tablet-or-phone-android
+    public boolean isTablet(Context context) {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
     }
 }

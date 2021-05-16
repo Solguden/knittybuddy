@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +31,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -62,6 +68,8 @@ public class Repository {
     private MutableLiveData<List<ComPattern>> comPatternList;
     private LiveData<List<ComPattern>> comPatterns;
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     private RequestQueue queue;
     private static Repository instance;
@@ -74,6 +82,9 @@ public class Repository {
         comPatternList = new MutableLiveData<>();
         Log.d(TAG, "comPatterns: " + comPatterns);
         allPublishedProjects = new ArrayList<>();
+        //Storage setup for retrieving project image
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
     }
 
@@ -84,7 +95,7 @@ public class Repository {
         return instance;
     }
 
-    //Login
+    //Create user in firestore db
     public MutableLiveData<Boolean> createUser(User user){
         MutableLiveData<Boolean> created = new MutableLiveData<Boolean>(false);
         db.collection("users").add(user)
@@ -129,46 +140,32 @@ public class Repository {
         return usersThisUserFollows;
     }
 
-    public List<String> getUsersThisUserFollowsAsync(String thisUser){
-        MutableLiveData<ArrayList<String>> list = new MutableLiveData<ArrayList<String>>();
-        Future<ArrayList<String>> feed = executor.submit(new Callable<ArrayList<String>>() {
-            @Override
-            public ArrayList<String> call() {
-                usersList = new MutableLiveData<List<String>>();
-                db.collection(Constants.COLLECTION_USER).whereEqualTo("userId", thisUser)
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                                ArrayList<String> users = new ArrayList<>();
-                                if(snapshot!=null && !snapshot.isEmpty()){
-                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-                                        User thisUser = doc.toObject(User.class);
-                                        if(thisUser!=null) {
-                                            for (String userId : thisUser.getUsersThisUserFollows()) {
-                                                users.add(userId);
-                                            }
-                                        }
-                                    }
-                                    usersList.setValue(users);
-                                }
-                            }
-                        });
-                return list.getValue();
-            }
-        });
+    //Storage image upload - inspried by https://www.youtube.com/watch?v=CQ5qcJetYAI&ab_channel=BenO%27Brien
+    public void uploadPicture(Uri uri, String projectId ){
+        //Generate random image name/id
+        final String random = UUID.randomUUID().toString();
+        //Setup storage reference for correct folder
+        StorageReference imageRef = storageReference.child("images/"+random);
 
-        try {
-            Log.d("Feed users", "Feed" + feed.get() );
-            return feed.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        // "put" / upload file to storage
+        imageRef.putFile(uri)
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //Retrieve image download url
+                    Task<Uri> firbaseURI = taskSnapshot.getStorage().getDownloadUrl();
+                    firbaseURI.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Save in string
+                            String url = uri.toString();
+                            //Save in firestore db
+                            updateImageUrl(url,projectId);
+                        }
+                    });
+                }
+            });
     }
-
 
     //projects
     public LiveData<List<Project>> getPublishedProjectsByUserId(String userId){
@@ -359,63 +356,10 @@ public class Repository {
         return randomProject;
     }
 
-    //--------------------------------------------
-
-//    public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
-//        MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();
-//        Future<ArrayList<Feed>> feed = executor.submit(new Callable<ArrayList<Feed>>() {
-//            @Override
-//            public ArrayList<Feed> call() {
-//                feedList = new MutableLiveData<List<Feed>>();
-//                db.collection("feed").whereEqualTo("ownerId", 84)
-//                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-//                                ArrayList<Feed> updatedFeed = new ArrayList<>();
-//                                if(snapshot!=null && !snapshot.isEmpty()){
-//                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-//                                        Feed f = doc.toObject(Feed.class);
-//                                        if(f!=null) {
-//                                            updatedFeed.add(f);
-//                                        }
-//                                    }
-//                                    feedList.setValue(updatedFeed);
-//                                }
-//                            }
-//                        });
-//                return list.getValue();
-//            }
-//        });
-//
-//        try {
-//            Log.d(TAG, "Fetched feed by TEEEST: " + feed.get() );
-//            return feed.get();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
-//    public List<Pattern> searchPatternsAsync(String input){
-//        Future<List<Pattern>> p = executor.submit(new Callable<List<Pattern>>() {
-//            @Override
-//            public List<Pattern> call() throws Exception {
-//                return null;
-//            }
-//        })
-//
-//    }
-
     public LiveData<List<ComPattern>> getPatterns() { return comPatternList; }
-
-
 
     public void getSearchPatterns(String input, Context context) //
     {
-//        Context context = app.getApplicationContext();
         String url = urlBase(input);
         executor.execute(new Runnable() {
             @Override

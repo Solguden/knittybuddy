@@ -1,6 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.project.ViewModel;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -48,4 +49,6 @@ public class ProjectDetailViewModel extends AndroidViewModel {
     }
 
     public void deleteProject(Project project) {repository.deleteProject(project); }
+
+    public void uploadImage(Uri uri, String projectId) { repository.uploadPicture(uri, projectId);}
 }

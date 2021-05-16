@@ -2,6 +2,8 @@ package dk.au.mad21spring.group20.knittybuddy.project.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,9 +51,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     private IProjectSelector projectSelector;
 
     //empty constructor
-    public ProjectListFragment () {
-
-    }
+    public ProjectListFragment () { }
 
     //life cycle methods
     @Nullable
@@ -59,6 +59,7 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_project_list, container, false);
+
         Log.d("create", "create  view project list");
         //instantiation of widgets
         btnAddNewProject = v.findViewById(R.id.btn_project_addProject);
@@ -159,4 +160,10 @@ public class ProjectListFragment extends Fragment implements ProjectAdapter.IPro
         }
     }
 
+    //reference: https://stackoverflow.com/questions/5832368/tablet-or-phone-android
+    public boolean isTablet(Context context) {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
+    }
 }

@@ -24,18 +24,8 @@ public class ProjectListViewModel extends AndroidViewModel {
     public ProjectListViewModel(@NonNull Application application) {
         super(application);
         repository = Repository.getRepositoryInstance();
-        //projects = repository.getAllProjects();
     }
 
-    //methods
-    //public LiveData<List<Project>> getAllProjects() { return projects; }
-
-    public LiveData<List<Project>> getAllProjectsByUserId(String userId) {return repository.getAllProjectsByUserId(userId); }
-
-    public void addProject(Project project){
-    }
-
-    public Project getProject(String id){ //TO DO: build this method in the repository
-        return new Project();
-    }
+    //method
+    public LiveData<List<Project>> getAllProjectsByUserId(String userId) { return repository.getAllProjectsByUserId(userId); }
 }

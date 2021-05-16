@@ -1,6 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.project;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;

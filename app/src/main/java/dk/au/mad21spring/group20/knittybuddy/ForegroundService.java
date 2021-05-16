@@ -58,7 +58,7 @@ public class ForegroundService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Will be updated with random projects for inspiration")
-                .setSmallIcon(R.drawable.knittybuddy_launcher_pink)
+                .setSmallIcon(R.drawable.notification_icon_foreground)
                 .setTicker("")
                 .build();
         
@@ -122,7 +122,7 @@ public class ForegroundService extends Service {
                     Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL)
                             .setContentTitle(getString(R.string.notiPublishedProjects))
                             .setContentText(rndProject.getName() + getString(R.string.notiBy) + rndProject.getUserId())
-                            .setSmallIcon(R.drawable.knittybuddy_launcher_pink)
+                            .setSmallIcon(R.drawable.notification_icon_foreground)
                             .setTicker("")
                             .build();
 

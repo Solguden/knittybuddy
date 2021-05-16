@@ -6,6 +6,5 @@ public interface IProjectSelector {
 
     void addNewProject();
     void onProjectSelected(Project project);
-    //void finish();
     void makeDetailInvisible();
 }

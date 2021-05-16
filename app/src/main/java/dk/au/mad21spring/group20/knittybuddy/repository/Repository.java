@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +66,7 @@ public class Repository {
     private RequestQueue queue;
     private static Repository instance;
     private static final String TAG = "Repository";
+    private List<Project> allPublishedProjects;
 
     public Repository(/*Application app*/){
         executor = Executors.newSingleThreadExecutor();
@@ -72,6 +74,7 @@ public class Repository {
         comPatternList = new MutableLiveData<>();
 //        comPatterns = (LiveData<List<ComPattern>>) comPatternList.getValue();
         Log.d(TAG, "comPatterns: " + comPatterns);
+        allPublishedProjects = new ArrayList<>();
     }
 
     public static Repository getRepositoryInstance(){
@@ -102,31 +105,6 @@ public class Repository {
         return created;
     }
 
-    //feed
-//    public LiveData<List<Project>> getFeed(String userId){
-//        Log.d("Feed", "This user is: " + userId);
-//        LiveData<List<String>> usersThisUserFollows = getUsersThisUserFollows(userId);
-//
-//        Log.d("Feed", "This user is follows these users");
-//        if (usersThisUserFollows != null){
-//            for (String user : usersThisUserFollows.getValue()) {
-//                Log.d("Feed", "User with id: " + user);
-//            }
-//        }
-//
-//        MutableLiveData<List<Project>> feed = new MutableLiveData<List<Project>>();
-//        ArrayList<Project> projects = new ArrayList<>();
-//
-//        for (String user : usersThisUserFollows.getValue()) {
-//            for (Project p : getPublishedProjectsByUserId(user).getValue()) {
-//                projects.add(p);
-//            }
-//        }
-//        feed.setValue(projects);
-//
-//        return feed;
-//    }
-
     public LiveData<List<String>> getUsersThisUserFollows(String userId){
         MutableLiveData<List<String>> usersThisUserFollows = new MutableLiveData<List<String>>();
         db.collection(Constants.COLLECTION_USER)
@@ -150,7 +128,6 @@ public class Repository {
                 });
         return usersThisUserFollows;
     }
-
 
     public List<String> getUsersThisUserFollowsAsync(String thisUser){
         MutableLiveData<ArrayList<String>> list = new MutableLiveData<ArrayList<String>>();
@@ -192,6 +169,8 @@ public class Repository {
         return null;
     }
 
+
+    //projects
     public LiveData<List<Project>> getPublishedProjectsByUserId(String userId){
         MutableLiveData<List<Project>> publishedProjects = new MutableLiveData<List<Project>>();
         db.collection(Constants.COLLECTION_PROJECT)
@@ -234,34 +213,9 @@ public class Repository {
                         }
                     }
                 });
+        allPublishedProjects = allProjects.getValue();
         return allProjects;
     }
-
-    
-//    //project
-//    public MutableLiveData<List<Project>> getAllProjectsFromDB(){
-//        MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
-//        db.collection(Constants.COLLECTION_PROJECT)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-//                        ArrayList<Project> newProjectList = new ArrayList<>();
-//                        if(snapshot!=null && !snapshot.isEmpty()){
-//                            for(DocumentSnapshot doc : snapshot.getDocuments()){
-//                                Log.d("Id from database", "" + doc.toObject(Project.class).getId());
-//                                Log.d("Name from database", "" + doc.toObject(Project.class).getName());
-//                                Project p = doc.toObject(Project.class);
-//                                p.setId(doc.getId());
-//                                if(p!=null) {
-//                                    newProjectList.add(p);
-//                                }
-//                            }
-//                            projects.setValue(newProjectList);
-//                        }
-//                    }
-//                });
-//        return projects;
-//    }
 
     public MutableLiveData<List<Project>> getAllProjectsByUserId(String userId) {
         MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
@@ -391,6 +345,13 @@ public class Repository {
 
     public void addStarToProject(String userID, Project project){
 
+    }
+
+    public Project getRandomProject(){
+        Random r = new Random();
+
+        Project randomProject = allPublishedProjects.get(r.nextInt(allPublishedProjects.size()));
+        return randomProject;
     }
 
     //--------------------------------------------

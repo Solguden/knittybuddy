@@ -43,5 +43,8 @@ public class FeedViewModel extends ViewModel {
         repository.removeStarFromProject(user, project);
         Log.d("STAR", "remove star from project " + project.getName() + " for user " + user);
     }
-    public void addStar(String user, Project project){ Log.d("STAR", "add star from project " + project.getName() + " for user " + user); }
+    public void addStar(String user, Project project){
+        repository.addStarToProject(user, project);
+        Log.d("STAR", "add star from project " + project.getName() + " for user " + user);
+    }
 }

@@ -6,19 +6,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.au.mad21spring.group20.knittybuddy.ForegroundService;
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
@@ -26,8 +28,7 @@ import dk.au.mad21spring.group20.knittybuddy.model.Project;
 public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStarClicker {
 
     //widgets
-    Button followBtn;
-    Button searchBtn;
+    Button goBackBtn;
     RecyclerView feedListRv;
     EditText searchUser;
 
@@ -48,8 +49,7 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
         setContentView(R.layout.activity_feed);
 
         //instantiates widgets and objects
-        followBtn = findViewById(R.id.followFeedBtn);
-        searchBtn = findViewById(R.id.searchFeedBtn);
+        goBackBtn = findViewById(R.id.goBackFeedBtn);
         feedListRv = findViewById(R.id.projectFeedRv);
         searchUser = findViewById(R.id.searchUser);
         feed = new ArrayList<>();
@@ -64,6 +64,14 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
         //view models
         feedVM = new ViewModelProvider(this, new FeedViewModelFactory(getApplication())).get(FeedViewModel.class);
         //usersThisUserFollows = feedVM.getUsers(userId);
+
+        //listeners
+        goBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //the viewmodel observes on the users this user is following. This can be used to observe on the projects the users have published. These projects will appear in the feed
         //the getUsersThisUSerFollows calls an async method since we need to know the users before we get the published projects
@@ -139,16 +147,28 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
 //            public void afterTextChanged(Editable s) {
 //            }
 //        });
+
+        startForegroundService();
     }
 
     //from IStarClicker
     @Override
     public void onRemoveStar(int projectIndex) {
         feedVM.removeStar(userId, feed.get(projectIndex));
+        Toast.makeText(this, R.string.starRemoved, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAddStar(int projectIndex) {
         feedVM.addStar(userId, feed.get(projectIndex));
+        Toast.makeText(this, R.string.starAdded, Toast.LENGTH_SHORT).show();
+    }
+
+    //notification
+    private void startForegroundService()
+    {
+        Intent foregroundIntent = new Intent(this, ForegroundService.class);
+        startService(foregroundIntent);
     }
 }
+

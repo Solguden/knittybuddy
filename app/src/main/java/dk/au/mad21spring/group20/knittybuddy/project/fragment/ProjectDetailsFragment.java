@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import dk.au.mad21spring.group20.knittybuddy.PDFActivity;
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.project.IProjectSelector;
@@ -133,7 +134,7 @@ public class ProjectDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openPDF();
-                makeToast("PDF is now open");
+                makeToast(getString(R.string.openPdf));
             }
         });
 
@@ -156,14 +157,14 @@ public class ProjectDetailsFragment extends Fragment {
                 thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
                 thisProject.setName(nameProjectEditTxt.getText().toString());
                 if (thisProject.getName().equals("")){
-                    makeToast("You must provide a project name");
+                    makeToast(getString(R.string.provideProjectName));
                 } else {
                     if (thisProject.getId().equals("0")){
                         detailVM.addNewProject(thisProject);
-                        makeToast("Project created");
+                        makeToast(getString(R.string.projectCreated));
                     } else {
                         detailVM.updateProject(thisProject);
-                        makeToast("Changes saved");
+                        makeToast(getString(R.string.changesSaves));
                     }
                     saveBtn.setVisibility(View.INVISIBLE);
                 }
@@ -218,6 +219,8 @@ public class ProjectDetailsFragment extends Fragment {
     }
 
     private void openPDF() {
+        Intent pdfIntent = new Intent(getActivity(), PDFActivity.class);
+        startActivity(pdfIntent);
 //        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 //
 //        PdfDocument pdfDocument = new PdfDocument();
@@ -288,10 +291,7 @@ public class ProjectDetailsFragment extends Fragment {
 
                     }
                 });
-
-
     }
-
 
     @Override
     public void onResume() { super.onResume(); }
@@ -348,7 +348,7 @@ public class ProjectDetailsFragment extends Fragment {
 //            }
             confirmBack();
         } else if (nameProjectEditTxt.getText().toString().equals("") && !descriptionProjectDetailsEditTxt.getText().toString().equals("")){
-            makeToast("You must enter a project name");
+            makeToast(getString(R.string.provideProjectName));
         } else if (!thisProject.getName().equals(nameProjectEditTxt.getText().toString())){
             confirmBack();
         } else projectSelector.makeDetailInvisible(); //projectSelector.finish();
@@ -356,16 +356,16 @@ public class ProjectDetailsFragment extends Fragment {
 
     //reference: https://www.javatpoint.com/android-alert-dialog-example
     private void confirmBack() {
-        builder.setMessage("Are you sure you want to go back without saving the changes?")
+        builder.setMessage(R.string.backWithoutSave)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //projectSelector.finish();
                         projectSelector.makeDetailInvisible();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -377,22 +377,17 @@ public class ProjectDetailsFragment extends Fragment {
 
     //reference: https://www.javatpoint.com/android-alert-dialog-example
     private void confirmDelete() {
-        builder.setMessage("Are you sure you want to delete this project")
+        builder.setMessage(R.string.delete)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteProject(thisProject);
-                        makeToast("Project deleted");
-                        //midlertidigt hack:
-                        //nameProjectEditTxt.setText("");
-                        //descriptionProjectDetailsEditTxt.setText("");
-                        //publishBtn.setText(R.string.publish);
-                        //projectSelector.finish();
+                        makeToast(getString(R.string.projectDeleted));
                         projectSelector.makeDetailInvisible();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -405,15 +400,14 @@ public class ProjectDetailsFragment extends Fragment {
     private void publish() {
         thisProject.setPublished(true);
         detailVM.updateProject(thisProject);
-        makeToast("Your project is now published");
+        makeToast(getString(R.string.projectPublished));
         publishBtn.setText(R.string.unpublish);
     }
-
 
     private void unPublish() {
         thisProject.setPublished(false);
         detailVM.updateProject(thisProject);
-        makeToast("Your project is not longer published");
+        makeToast(getString(R.string.publishedRemoved));
         publishBtn.setText(R.string.publish);
     }
 
@@ -444,26 +438,4 @@ public class ProjectDetailsFragment extends Fragment {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-
-    //    //reference: https://www.javatpoint.com/android-alert-dialog-example
-//    private void confirmSaveChanges() {
-//        builder.setMessage("Do you want so save the changes?")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        thisProject.setDescription(descriptionProjectDetailsEditTxt.getText().toString());
-//                        makeToast("Changes saved");
-//                    }
-//                })
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                        makeToast("Changes not saved");
-//                    }
-//                });
-//        AlertDialog alert = builder.create();
-//        alert.show();
-//    }
 }

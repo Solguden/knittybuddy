@@ -24,4 +24,21 @@
     <string name="inspiration">Inspiration</string>
     <string name="SearchHint">Søgnings hint</string>
     <string name="InspiHint">Søg...</string>
+    <string name="detail_name">Navn på mønster</string>
+    <string name="detail_author">Navn på forfatter</string>
+    <string name="starAdded">Du har markeret et projekt med en stjerne!</string>
+    <string name="starRemoved">Du har fjernet din stjernemarkering</string>
+    <string name="provideProjectName">Du skal angive et projektnavn!</string>
+    <string name="projectCreated">Projektet er oprettet</string>
+    <string name="changesSaves">Ændringerne er gemt</string>
+    <string name="backWithoutSave">Er du sikker på at du vil gå tilbage uden at gemme?</string>
+    <string name="Yes">Ja</string>
+    <string name="No">Nej</string>
+    <string name="deleteProject">Er du sikker på at du vil slette projektet?</string>
+    <string name="projectDeleted">Projektet er slettet</string>
+    <string name="projectPublished">Dit projekt er nu udgivet</string>
+    <string name="publishedRemoved">Dit projekt er ikke længere udgivet</string>
+    <string name="myProjects">Mine projekter</string>
+    <string name="notiPublishedProjects">Få inspiration fra andre. Tag et kig på dette projekt</string>
+    <string name="notiBy">", lavet af: "</string>
 </resources>

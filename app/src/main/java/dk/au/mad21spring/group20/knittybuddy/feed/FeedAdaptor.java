@@ -1,6 +1,7 @@
 package dk.au.mad21spring.group20.knittybuddy.feed;
 
 import android.net.IpSecTransform;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,12 @@ public class FeedAdaptor extends RecyclerView.Adapter<FeedAdaptor.ProjectViewHol
         holder.projectName.setText(projectList.get(position).getName());
         holder.userName.setText(projectList.get(position).getUserId()); //burde være username, men jeg kan ikke få det til at virke..
         holder.description.setText(projectList.get(position).getDescription());
+
+        if(!TextUtils.isEmpty(projectList.get(position).getImageUrl())){
+            Glide.with(holder.projectImage.getContext()).load(projectList.get(position).getImageUrl()).into(holder.projectImage);
+        } else {
+            holder.projectImage.setImageResource(R.drawable.knittybuddy_launcher_pink);
+        }
 
         //set the visibility for the buttons
         for (String follower : projectList.get(position).getStaredBy()) {

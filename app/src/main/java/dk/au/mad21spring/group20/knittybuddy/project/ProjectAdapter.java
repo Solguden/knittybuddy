@@ -85,10 +85,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         String imageUrl = projectList.get(position).getImageUrl();
         if(!TextUtils.isEmpty(imageUrl)){
             Glide.with(holder.projectImage.getContext()).load(imageUrl).into(holder.projectImage);
-        }else {
+        } else {
             holder.projectImage.setImageResource(R.drawable.knittybuddy_launcher_pink);
         }
-        Log.d("IMAGETEST", "onBindViewHolder: " + projectList.get(position).getImageUrl());
     }
 
     @Override

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.au.mad21spring.group20.knittybuddy.ForegroundService;
 import dk.au.mad21spring.group20.knittybuddy.R;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 
@@ -145,6 +147,8 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
 //            public void afterTextChanged(Editable s) {
 //            }
 //        });
+
+        startForegroundService();
     }
 
     //from IStarClicker
@@ -158,6 +162,13 @@ public class FeedActivity extends AppCompatActivity implements FeedAdaptor.IStar
     public void onAddStar(int projectIndex) {
         feedVM.addStar(userId, feed.get(projectIndex));
         Toast.makeText(this, R.string.starAdded, Toast.LENGTH_SHORT).show();
+    }
+
+    //notification
+    private void startForegroundService()
+    {
+        Intent foregroundIntent = new Intent(this, ForegroundService.class);
+        startService(foregroundIntent);
     }
 }
 

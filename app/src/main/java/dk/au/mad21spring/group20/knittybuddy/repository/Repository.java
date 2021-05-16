@@ -507,21 +507,21 @@ public class Repository {
         LiveData<List<ComPattern>> data = new MutableLiveData<>();
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Response: " + response);
-                        parseJSON(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "sendRequest failed!", error);
-                    }
-                }) {
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d(TAG, "Response: " + response);
+//                        parseJSON(response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e(TAG, "sendRequest failed!", error);
+//                    }
+//                }) {
             new Response.Listener<String>() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(String response) {
                     Log.d(TAG, "Response: " + response);
@@ -549,7 +549,7 @@ public class Repository {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private MutableLiveData<List<ComPattern>> parseJSON(String json)
     {
         Gson gson = new GsonBuilder().create();

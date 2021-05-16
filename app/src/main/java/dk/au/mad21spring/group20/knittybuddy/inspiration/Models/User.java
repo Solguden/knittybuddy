@@ -8,13 +8,3 @@ public class User {
     public String tiny_photo_url;
     public String username;
 }
-
-//"users": [
-//                    {
-//                        "id": 1415368,
-//                        "username": "tincanknits",
-//                        "tiny_photo_url": "https://avatars-d.ravelrycache.com/tincanknits/633077163/IMG_0463_tiny.jpg",
-//                        "small_photo_url": "https://avatars-d.ravelrycache.com/tincanknits/633077163/IMG_0463_small.jpg",
-//                        "photo_url": "https://avatars-d.ravelrycache.com/tincanknits/633077163/IMG_0463_large.jpg"
-//                    }
-//                ]

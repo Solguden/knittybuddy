@@ -59,7 +59,7 @@ public class ForegroundService extends Service {
                 .setSmallIcon(R.drawable.knittybuddy_launcher_pink)
                 .setTicker("")
                 .build();
-        
+
         //call to startForeground will promore this Service to a foreground service (needs manifest permission)
         //also require the notification to be set, so that user can always see that Service is running in the background
         startForeground(notificationId, notification);

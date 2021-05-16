@@ -23,4 +23,6 @@
     <string name="description">Project description</string>
     <string name="SearchHint" />
     <string name="InspiHint">Search...</string>
+    <string name="detail_name">Name of pattern</string>
+    <string name="detail_author">Name of author</string>
 </resources>

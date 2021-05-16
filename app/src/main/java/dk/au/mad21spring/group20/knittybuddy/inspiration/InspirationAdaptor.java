@@ -14,11 +14,12 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import dk.au.mad21spring.group20.knittybuddy.R;
+import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.ComPattern;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
 
 public class InspirationAdaptor extends RecyclerView.Adapter<InspirationAdaptor.InspirationViewHolder> {
 
-    private List<Pattern> patternList;
+    private List<ComPattern> comPatternList;
 
     public interface IPatternItemClickedListener{
         void onPatternClicked(int index);
@@ -28,6 +29,10 @@ public class InspirationAdaptor extends RecyclerView.Adapter<InspirationAdaptor.
 
     public InspirationAdaptor(IPatternItemClickedListener listener) { this.listener = listener; }
 
+    public void updatePatternList(List<ComPattern> list){
+        comPatternList = list;
+        notifyDataSetChanged();
+    }
 
     public class InspirationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -64,16 +69,16 @@ public class InspirationAdaptor extends RecyclerView.Adapter<InspirationAdaptor.
 
     @Override
     public void onBindViewHolder(@NonNull InspirationViewHolder holder, int position) {
-        holder.nameText.setText(patternList.get(position).name);
-        holder.descriptionText.setText(patternList.get(position).pattern_author.name);
+        holder.nameText.setText(comPatternList.get(position).name);
+        holder.descriptionText.setText(comPatternList.get(position).pattern_author.name);
 
-        Glide.with(holder.inspirationImage.getContext()).load(patternList.get(position).first_photo.square_url).into(holder.inspirationImage);
+        Glide.with(holder.inspirationImage.getContext()).load(comPatternList.get(position).first_photo.square_url).into(holder.inspirationImage);
     }
 
     @Override
     public int getItemCount() {
-        if (patternList != null)
-            return patternList.size();
+        if (comPatternList != null)
+            return comPatternList.size();
         return 0;
     }
 

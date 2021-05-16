@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import android.app.Application;
 import android.os.Build;
 import android.util.Log;
 
@@ -19,33 +18,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.google.firebase.firestore.SnapshotMetadata;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -53,16 +40,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import dk.au.mad21spring.group20.knittybuddy.Constants;
-import dk.au.mad21spring.group20.knittybuddy.feed.Feed;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.Pattern;
 import dk.au.mad21spring.group20.knittybuddy.inspiration.Models.PatternResponse;
-import dk.au.mad21spring.group20.knittybuddy.login.RegisterActivity;
 import dk.au.mad21spring.group20.knittybuddy.model.Project;
 import dk.au.mad21spring.group20.knittybuddy.model.User;
 
 public class Repository {
     private ExecutorService executor;       //for asynch processing
-    private MutableLiveData<List<Feed>> feedList;
+    private MutableLiveData<List<Project>> feedList;
+    private MutableLiveData<List<String>> usersList;
     private MutableLiveData<List<Project>> projectList;
     private MutableLiveData<List<Pattern>> patternList;
     private FirebaseFirestore db;
@@ -72,11 +58,8 @@ public class Repository {
     private static final String TAG = "Repository";
 
     public Repository(/*Application app*/){
-        //context = app.getApplicationContext(); // Kun nødvendig for room?
         executor = Executors.newSingleThreadExecutor();
         db = FirebaseFirestore.getInstance();
-        initFeed();
-        //projectList = getAllProjectsFromDB();
     }
 
     public static Repository getRepositoryInstance(){
@@ -107,95 +90,166 @@ public class Repository {
         return created;
     }
 
-    //Feed
-    void initFeed(){
-        feedList = new MutableLiveData<List<Feed>>();
-        db.collection("feed")
-        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                ArrayList<Feed> updatedFeed = new ArrayList<>();
-                if(snapshot!=null && !snapshot.isEmpty()){
-                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-                        Feed f = doc.toObject(Feed.class);
-                        if(f!=null) {
-                            updatedFeed.add(f);
-                        }
-                    }
-                    feedList.setValue(updatedFeed);
-                }
-            }
-        });
-    }
+    //feed
+//    public LiveData<List<Project>> getFeed(String userId){
+//        Log.d("Feed", "This user is: " + userId);
+//        LiveData<List<String>> usersThisUserFollows = getUsersThisUserFollows(userId);
+//
+//        Log.d("Feed", "This user is follows these users");
+//        if (usersThisUserFollows != null){
+//            for (String user : usersThisUserFollows.getValue()) {
+//                Log.d("Feed", "User with id: " + user);
+//            }
+//        }
+//
+//        MutableLiveData<List<Project>> feed = new MutableLiveData<List<Project>>();
+//        ArrayList<Project> projects = new ArrayList<>();
+//
+//        for (String user : usersThisUserFollows.getValue()) {
+//            for (Project p : getPublishedProjectsByUserId(user).getValue()) {
+//                projects.add(p);
+//            }
+//        }
+//        feed.setValue(projects);
+//
+//        return feed;
+//    }
 
-    public void addFeed(Feed feed){
-        db.collection("feed")
-        .add(new Feed(feed.getTopic(),feed.getDifficilty(),feed.getDescription(),feed.getOwnerId()))
-        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                //Tilføj manuelt til liste her?
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding document", e);
-            }
-        });
-    }
-
-    public LiveData<List<Feed>> getFeed(){return feedList;}
-
-    public MutableLiveData<List<Feed>> getByOwnerId(int ownerId){ //bruge executer run her?
-        feedList = new MutableLiveData<List<Feed>>();
-        db.collection("feed")
-        .whereEqualTo("ownerId", ownerId)
-        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                ArrayList<Feed> updatedFeed = new ArrayList<>();
-                if(snapshot!=null && !snapshot.isEmpty()){
-                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-                        Feed f = doc.toObject(Feed.class);
-                        if(f!=null) {
-                            updatedFeed.add(f);
-                        }
-                    }
-                    feedList.setValue(updatedFeed);
-                }
-            }
-        });
-        return feedList;
-    }
-
-    //project
-    public LiveData<List<Project>> getAllProjects(){return projectList;}
-
-    public MutableLiveData<List<Project>> getAllProjectsFromDB(){
-        MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
-        db.collection(Constants.COLLECTION_PROJECT)
+    public LiveData<List<String>> getUsersThisUserFollows(String userId){
+        MutableLiveData<List<String>> usersThisUserFollows = new MutableLiveData<List<String>>();
+        db.collection(Constants.COLLECTION_USER)
+                //.whereEqualTo("userId", userId)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                        ArrayList<Project> newProjectList = new ArrayList<>();
+                        ArrayList<String> users = new ArrayList<>();
                         if(snapshot!=null && !snapshot.isEmpty()){
                             for(DocumentSnapshot doc : snapshot.getDocuments()){
-                                Log.d("Id from database", "" + doc.toObject(Project.class).getId());
-                                Log.d("Name from database", "" + doc.toObject(Project.class).getName());
-                                Project p = doc.toObject(Project.class);
-                                p.setId(doc.getId());
-                                if(p!=null) {
-                                    newProjectList.add(p);
+                                User thisUser = doc.toObject(User.class);
+                                if(thisUser!=null) {
+                                    for (String userId : thisUser.getUsersThisUserFollows()) {
+                                        users.add(userId);
+                                    }
                                 }
                             }
-                            projects.setValue(newProjectList);
+                            usersThisUserFollows.setValue(users);
                         }
                     }
                 });
-        return projects;
+        return usersThisUserFollows;
     }
+
+
+    public List<String> getUsersThisUserFollowsAsync(String thisUser){
+        MutableLiveData<ArrayList<String>> list = new MutableLiveData<ArrayList<String>>();
+        Future<ArrayList<String>> feed = executor.submit(new Callable<ArrayList<String>>() {
+            @Override
+            public ArrayList<String> call() {
+                usersList = new MutableLiveData<List<String>>();
+                db.collection(Constants.COLLECTION_USER).whereEqualTo("userId", thisUser)
+                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                                ArrayList<String> users = new ArrayList<>();
+                                if(snapshot!=null && !snapshot.isEmpty()){
+                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                        User thisUser = doc.toObject(User.class);
+                                        if(thisUser!=null) {
+                                            for (String userId : thisUser.getUsersThisUserFollows()) {
+                                                users.add(userId);
+                                            }
+                                        }
+                                    }
+                                    usersList.setValue(users);
+                                }
+                            }
+                        });
+                return list.getValue();
+            }
+        });
+
+        try {
+            Log.d("Feed users", "Feed" + feed.get() );
+            return feed.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public LiveData<List<Project>> getPublishedProjectsByUserId(String userId){
+        MutableLiveData<List<Project>> publishedProjects = new MutableLiveData<List<Project>>();
+        db.collection(Constants.COLLECTION_PROJECT)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("published", true)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        ArrayList<Project> published = new ArrayList<>();
+                        if(snapshot!=null && !snapshot.isEmpty()){
+                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Project p = doc.toObject(Project.class);
+                                if(p!=null) {
+                                    published.add(p);
+                                }
+                            }
+                            publishedProjects.setValue(published);
+                        }
+                    }
+                });
+        return publishedProjects;
+    }
+
+    public LiveData<List<Project>> getAllPublishedProjects(){
+        MutableLiveData<List<Project>> allProjects = new MutableLiveData<List<Project>>();
+        db.collection(Constants.COLLECTION_PROJECT)
+                .whereEqualTo("published", true)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        ArrayList<Project> published = new ArrayList<>();
+                        if(snapshot!=null && !snapshot.isEmpty()){
+                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+                                Project p = doc.toObject(Project.class);
+                                if(p!=null) {
+                                    published.add(p);
+                                }
+                            }
+                            allProjects.setValue(published);
+                        }
+                    }
+                });
+        return allProjects;
+    }
+
+    
+//    //project
+//    public MutableLiveData<List<Project>> getAllProjectsFromDB(){
+//        MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
+//        db.collection(Constants.COLLECTION_PROJECT)
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+//                        ArrayList<Project> newProjectList = new ArrayList<>();
+//                        if(snapshot!=null && !snapshot.isEmpty()){
+//                            for(DocumentSnapshot doc : snapshot.getDocuments()){
+//                                Log.d("Id from database", "" + doc.toObject(Project.class).getId());
+//                                Log.d("Name from database", "" + doc.toObject(Project.class).getName());
+//                                Project p = doc.toObject(Project.class);
+//                                p.setId(doc.getId());
+//                                if(p!=null) {
+//                                    newProjectList.add(p);
+//                                }
+//                            }
+//                            projects.setValue(newProjectList);
+//                        }
+//                    }
+//                });
+//        return projects;
+//    }
 
     public MutableLiveData<List<Project>> getAllProjectsByUserId(String userId) {
         MutableLiveData<List<Project>> projects = new MutableLiveData<List<Project>>();
@@ -319,46 +373,53 @@ public class Repository {
         Log.d(TAG, "Document deleted: " + project.getId() + "name: " + project.getName());
     }
 
+    public void removeStarFromProject(String userID, Project project){
+
+    }
+
+    public void addStarToProject(String userID, Project project){
+
+    }
 
     //--------------------------------------------
 
-    public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
-        MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();
-        Future<ArrayList<Feed>> feed = executor.submit(new Callable<ArrayList<Feed>>() {
-            @Override
-            public ArrayList<Feed> call() {
-                feedList = new MutableLiveData<List<Feed>>();
-                db.collection("feed").whereEqualTo("ownerId", 84)
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                                ArrayList<Feed> updatedFeed = new ArrayList<>();
-                                if(snapshot!=null && !snapshot.isEmpty()){
-                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
-                                        Feed f = doc.toObject(Feed.class);
-                                        if(f!=null) {
-                                            updatedFeed.add(f);
-                                        }
-                                    }
-                                    feedList.setValue(updatedFeed);
-                                }
-                            }
-                        });
-                return list.getValue();
-            }
-        });
-
-        try {
-            Log.d(TAG, "Fetched feed by TEEEST: " + feed.get() );
-            return feed.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+//    public ArrayList<Feed> getByOwnerIdAsynch(int ownerId){ //bruge executer run her?
+//        MutableLiveData<ArrayList<Feed>> list = new MutableLiveData<ArrayList<Feed>>();
+//        Future<ArrayList<Feed>> feed = executor.submit(new Callable<ArrayList<Feed>>() {
+//            @Override
+//            public ArrayList<Feed> call() {
+//                feedList = new MutableLiveData<List<Feed>>();
+//                db.collection("feed").whereEqualTo("ownerId", 84)
+//                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+//                                ArrayList<Feed> updatedFeed = new ArrayList<>();
+//                                if(snapshot!=null && !snapshot.isEmpty()){
+//                                    for(DocumentSnapshot doc : snapshot.getDocuments()){
+//                                        Feed f = doc.toObject(Feed.class);
+//                                        if(f!=null) {
+//                                            updatedFeed.add(f);
+//                                        }
+//                                    }
+//                                    feedList.setValue(updatedFeed);
+//                                }
+//                            }
+//                        });
+//                return list.getValue();
+//            }
+//        });
+//
+//        try {
+//            Log.d(TAG, "Fetched feed by TEEEST: " + feed.get() );
+//            return feed.get();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
 //    public List<Pattern> searchPatternsAsync(String input){
 //        Future<List<Pattern>> p = executor.submit(new Callable<List<Pattern>>() {
@@ -398,24 +459,24 @@ public class Repository {
     private void sendRequest(String url, Context context)
     {
         if (queue == null)
-        {
-            queue = Volley.newRequestQueue(context);
-        }
+    {
+        queue = Volley.newRequestQueue(context);
+    }
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d(TAG, "Response: " + response);
-                    parseJSON(response);
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "sendRequest failed!", error);
-            }
-        }) {
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "Response: " + response);
+                        parseJSON(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "sendRequest failed!", error);
+                    }
+                }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();

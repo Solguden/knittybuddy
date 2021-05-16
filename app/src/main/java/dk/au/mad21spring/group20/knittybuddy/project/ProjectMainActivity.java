@@ -83,8 +83,6 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             getProjects();
 
         } else {
-            //load projects
-            getProjects();
             if (userView == null){
                 userView = UserView.LIST_VIEW; //default
             }
@@ -98,6 +96,8 @@ public class ProjectMainActivity extends AppCompatActivity implements IProjectSe
             if (projectDetail == null){
                 projectDetail = new ProjectDetailsFragment();
             }
+            //load projects
+            getProjects();
         }
 
         updateFragmentViewState(userView);
